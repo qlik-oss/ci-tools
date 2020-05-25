@@ -1,0 +1,16 @@
+name: 'Helm test, package, push to Artifactory'
+description: 'GitHub Action for packaging, testing helm charts and publishing to Artifactory helm repo'
+author: 'ibiqlik'
+
+inputs:
+  action:
+    required: true
+    description: 'Options: package, test, publish, package_and_test'
+
+runs:
+  using: 'node12'
+  main: 'main.js'
+
+branding:
+  color: blue
+  icon: check-square
