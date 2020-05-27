@@ -1,29 +1,32 @@
 #!/bin/bash -l
 set -o pipefail
-# set -x
 
+# Get tags, latest release and its commit sha
 git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
-# Get latest release
-LATEST_RELEASE=$(git describe --tags `git rev-list --tags --max-count=1`)
-[ -z "$LATEST_RELEASE" ] && LATEST_RELEASE="v0.0.0"
 
-# Get PR HEAD commit instead of merge commit
-if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-    GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+get_latest_tag="git tag -l --sort=-v:refname | egrep '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1"
+
+if git tag -l 2> /dev/null; then
+    LATEST_RELEASE=$(eval $get_latest_tag)
+  else
+    LATEST_RELEASE="v0.0.0"
 fi
 
-LATEST_RELEASE=${LATEST_RELEASE#v}
-SHORT_TAG_SHA=${GITHUB_SHA:0:7}
+if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+    GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+    GIT_REV="${LATEST_RELEASE}-${GITHUB_SHA:0:7}"
+    VERSION=${GIT_REV#v}
+fi
 
-# On tag push set MAKE_RELEASE variable to true
-if [ -z "${MAKE_RELEASE:-}" ]; then
-    VERSION="$LATEST_RELEASE-$SHORT_TAG_SHA"
-else
-    # Get version 1.2.3 from gh actions env var GITHUB_REF="refs/tags/v1.2.3"
+# On tag push, set MAKE_RELEASE variable to true
+if [ -n "${MAKE_RELEASE:-}" ]; then
+    # Get version v*.*.* from GITHUB_REF="refs/tags/v1.2.3"
     VERSION=${GITHUB_REF#*/v}
 fi
 
-export LATEST_RELEASE
-export SHORT_TAG_SHA
+[ -z "$VERSION" ] && exit 1
 export VERSION
-echo $VERSION
+echo "Set version: ${VERSION}"
+
+# Set GitHub Action environment variable for following job steps
+echo "::set-env name=VERSION::${VERSION}"
