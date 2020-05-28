@@ -1,0 +1,15 @@
+name: 'SemVer - Generate version based on tag, commit id'
+description: 'Generate a version based on latest release tag (v*.*.*) and short commit id or just return pushed tag (*.*.*)'
+author: 'ibiqlik'
+
+outputs:
+  version:
+    description: 'Returns SemVer format *.*.* or *.*.*-shortCommitID'
+
+runs:
+  using: 'node12'
+  main: 'main.js'
+
+branding:
+  color: green
+  icon: hash
