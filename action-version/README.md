@@ -19,11 +19,25 @@ jobs:
       - name: Get Version
         id: version
         uses: qlik-oss/ci-tools/action-version@master
+```
 
-      # Example on how to use the variable (otherwise not needed in workflow)
+If only environment variable is used, the action can be called using oneline only
+
+```yaml
+jobs:
+  somejob:
+    steps:
+      - uses: qlik-oss/ci-tools/action-version@master
+```
+
+Example on how to use the variable (otherwise not needed in workflow)
+
+```yaml
+...
       - name: Print version
         run: |
           # Version will be available as output and environment variable
           echo "From output ${{ steps.version.outputs.version }}"
           echo "From env $VERSION"
+...
 ```
