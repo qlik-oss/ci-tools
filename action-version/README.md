@@ -2,12 +2,14 @@
 
 Sets output and environment variable that can be used in subsequent GitHub Action steps in the same Job.
 
-*`v` (version) prefix is omitted in all cases*
 
 - `1.2.3-<short-commit-sha>` - Returns a version based on latest tag matching exactly `v*.*.*` suffixed with short commit ID
 - `0.0.0-<short-commit-sha>` - When no tags available returns version `0.0.0`
 - `1.2.3` - If a tag `v*.*.*` is pushed (a release) it returns the same tag
 
+*`v` (version) prefix is omitted in all cases*
+
+**Note: `1.2.3-<short-commit-sha>` is only returned on `push` and `pull_request` GitHub events/triggers. On other types of triggers, it will return the latest release tag `1.2.3`**
 
 ## Use in GitHub Actions - workflow
 
