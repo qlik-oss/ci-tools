@@ -9,7 +9,3 @@ outputs:
 runs:
   using: 'node12'
   main: 'main.js'
-
-branding:
-  color: green
-  icon: hash
