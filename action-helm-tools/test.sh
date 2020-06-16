@@ -14,8 +14,8 @@ kubectl create namespace $CHART_NAME
 
 if [[ -n "$DOCKER_REGISTRY_SECRET" ]]; then
     kubectl create secret docker-registry --namespace $CHART_NAME $DOCKER_REGISTRY_SECRET \
-        --docker-server=$DOCKER_REGISTRY --docker-username=$RT_USERNAME \
-        --docker-password=$RT_APIKEY --docker-email=$DOCKER_EMAIL
+        --docker-server=$DOCKER_REGISTRY --docker-username=$ARTIFACTORY_USERNAME \
+        --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$DOCKER_EMAIL
 fi
 
 helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $EXTRA_HELM_CMD
