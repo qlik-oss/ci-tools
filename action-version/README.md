@@ -18,6 +18,7 @@ Sets output and environment variable that can be used in subsequent GitHub Actio
 jobs:
   somejob:
     steps:
+      - uses: actions/checkout@v2
       - name: Get Version
         id: version
         uses: qlik-oss/ci-tools/action-version@master
@@ -29,6 +30,7 @@ If only environment variable is used, the action can be called using oneline onl
 jobs:
   somejob:
     steps:
+      - uses: actions/checkout@v2
       - uses: qlik-oss/ci-tools/action-version@master
 ```
 

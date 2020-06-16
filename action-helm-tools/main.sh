@@ -21,7 +21,10 @@ set -x
 
 export SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
-source $SCRIPT_DIR/versioning.sh
+if [ -z "$VERSION" ]; then
+    echo "ERROR: environment variable VERSION is not set"
+    exit 1
+fi
 
 main() {
 
