@@ -67,3 +67,6 @@ if [[ $deployed -ne 1 ]]; then
   kubectl get pods --all-namespaces
   exit 1
 fi
+
+echo "==> Pods"
+kubectl get pods -n $NAMESPACE
