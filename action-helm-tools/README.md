@@ -14,6 +14,18 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 - `publish` - Uses jfrog cli to check for existing package with same version and uploads if new chart is built
 - `package_and_test` - Run `package` and `test` in one step
 
+## Version
+
+`VERSION` set as environment variable is required
+
+_Use action-version to set VERSION variable_
+
+```yaml
+steps:
+  - uses: actions/checkout@v2
+  - uses: qlik-oss/ci-tools/action-version@master
+```
+
 
 ## Required Environment variables
 
@@ -56,6 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: qlik-oss/ci-tools/action-version@master
 
     # - name: myOtherJob1
     #   run:
