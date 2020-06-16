@@ -14,6 +14,18 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 - `publish` - Uses jfrog cli to check for existing package with same version and uploads if new chart is built
 - `package_and_test` - Run `package` and `test` in one step
 
+## Version
+
+`VERSION` set as environment variable is required
+
+_Use action-version to set VERSION variable_
+
+```yaml
+steps:
+  - uses: actions/checkout@v2
+  - uses: qlik-oss/ci-tools/action-version@master
+```
+
 
 ## Required Environment variables
 
@@ -27,8 +39,8 @@ HELM_REPO: # Artifactory virtual helm repo that holds dependencies
 DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
 DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
 DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
-RT_USERNAME: ${{ secrets.RT_USERNAME }} # RT_USERNAME (Artifactory username) must be set in GitHub Repo secrets
-RT_APIKEY: ${{ secrets.RT_APIKEY }} # RT_APIKEY (Artifactory api key) must be set in GitHub Repo secrets
+ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
+ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
 ```
 
 ## Optional Environment variables
@@ -56,9 +68,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: qlik-oss/ci-tools/action-version@master
 
     # - name: myOtherJob1
-    #   run: 
+    #   run:
 
     - name: Package & Test Helm chart
       uses: ibiqlik/action-helm-tools@master
@@ -74,8 +87,8 @@ jobs:
         DOCKER_REGISTRY: xyz-docker.jfrog.io
         DOCKER_REGISTRY_SECRET: xyz-docker-secret
         DOCKER_EMAIL: xyx@tld.com
-        RT_USERNAME: ${{ secrets.RT_USERNAME }}
-        RT_APIKEY: ${{ secrets.RT_APIKEY }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         EXTRA_HELM_CMD: "-f ./test/charts/values.yaml"
 
     - name: Publish Helm chart
@@ -86,10 +99,10 @@ jobs:
         CHART_NAME: componentA
         HELM_PUSH_REPO: helm
         REGISTRY: https://xyz.jfrog.io/xyz
-        RT_USERNAME: ${{ secrets.RT_USERNAME }}
-        RT_APIKEY: ${{ secrets.RT_APIKEY }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
 ```
 
 ---
 TODO:
-- Test - If failure export pod logs
+- Export pod logs if test(s) fail

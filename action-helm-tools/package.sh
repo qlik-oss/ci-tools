@@ -7,7 +7,7 @@ install_helm
 
 helm init --client-only
 echo "==> Helm add repo"
-helm repo add $HELM_PULL_REPO $REGISTRY/$HELM_REPO --username $RT_USERNAME --password $RT_APIKEY
+helm repo add $HELM_PULL_REPO $REGISTRY/$HELM_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
 helm repo update
 
 echo "==> Helm dependency build"
