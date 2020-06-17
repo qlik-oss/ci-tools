@@ -1,0 +1,39 @@
+name: "Run_command_and_create_PR"
+description: "Clone a github repo, run shell command to change repo, commit and push change, create PR"
+author: "mtk7801"
+
+inputs:
+  gh_token:
+    description: "Github token"
+    required: true
+  group:
+    description: "Github group"
+    required: true
+  repository:
+    description: "Repository"
+    required: true
+  branch:
+    description: "Branch"
+    required: true
+  command:
+    description: "Command"
+    required: true
+  commit_msg:
+    description: "Commit message"
+    required: true
+  draft:
+    description: "PR draft status"
+    required: true
+  user:
+    description: "Github user"
+    required: true
+  email:
+    description: "User email"
+    required: true
+  label:
+    description: "Label to add"
+    required: false
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
