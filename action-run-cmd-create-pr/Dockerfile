@@ -1,12 +1,12 @@
-FROM ubuntu:18.04
+FROM alpine:3
 
 ENV YQ_VERSION="3.3.2"
 
-RUN apt-get update && \
-    apt-get install -y \
+RUN apk add --update --no-cache \
     git \
     curl \
     wget \
+    bash \
     jq
 
 RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 -o /usr/local/bin/yq && \
