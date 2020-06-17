@@ -2,6 +2,10 @@
 
 A GitHub action for running a command to change a remote repository, make a commit and create a PR
 
+## Available tools
+
+[see DockerFile](/action-run-cmd-create-pr/Dockerfile)
+
 ## Example workflow
 
 ```yaml
@@ -9,7 +13,7 @@ A GitHub action for running a command to change a remote repository, make a comm
   uses: qlik-oss/ci-tools/action-run-cmd-create-pr@master
   with:
       gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      group: qlik-oss
+      owner: qlik-oss
       repository: ci-tools
       branch: update_version_to_${{ env.LATEST_VERSION }}
       command: "command_to_run"

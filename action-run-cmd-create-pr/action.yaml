@@ -1,4 +1,4 @@
-name: "Run_command_and_create_PR"
+name: "Run command and create_PR"
 description: "Clone a github repo, run shell command to change repo, commit and push change, create PR"
 author: "mtk7801"
 
@@ -6,8 +6,8 @@ inputs:
   gh_token:
     description: "Github token"
     required: true
-  group:
-    description: "Github group"
+  owner:
+    description: "Github owner"
     required: true
   repository:
     description: "Repository"

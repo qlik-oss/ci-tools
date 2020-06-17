@@ -6,7 +6,7 @@
 
 echo "--- Environment variables used by entrypoint.sh ---"
 echo "INPUT_GH_TOKEN: ************"
-echo "INPUT_GROUP: ${INPUT_GROUP}"
+echo "INPUT_OWNER: ${INPUT_OWNER}"
 echo "INPUT_REPOSITORY: ${INPUT_REPOSITORY}"
 echo "INPUT_BRANCH: ${INPUT_BRANCH}"
 echo "INPUT_COMMAND: ${INPUT_COMMAND}"
@@ -18,7 +18,7 @@ echo "INPUT_LABEL: ${INPUT_LABEL}"
 echo "---------------------------------------------------"
 
 # Clone repository and run command
-git clone https://${INPUT_GH_TOKEN}@github.com/${INPUT_GROUP}/${INPUT_REPOSITORY}.git
+git clone https://${INPUT_GH_TOKEN}@github.com/${INPUT_OWNER}/${INPUT_REPOSITORY}.git
 cd ${INPUT_REPOSITORY}
 git config user.email "${INPUT_EMAIL}"
 git config user.name "${INPUT_USER}"
@@ -52,7 +52,7 @@ else
   AUTH_HEADER="Authorization: token ${INPUT_GH_TOKEN}"
   HEADER="Accept: application/vnd.github.${API_VERSION}+json"
   HEADER="${HEADER}; application/vnd.github.antiope-preview+json; application/vnd.github.shadow-cat-preview+json"
-  REPO_URL="${BASE}/repos/${INPUT_GROUP}/${INPUT_REPOSITORY}"
+  REPO_URL="${BASE}/repos/${INPUT_OWNER}/${INPUT_REPOSITORY}"
   PULLS_URL=${REPO_URL}/pulls
   TARGET="master"
   SOURCE="${INPUT_BRANCH}"
