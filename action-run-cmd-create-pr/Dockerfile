@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM node:lts-alpine
 
 ENV YQ_VERSION="3.3.2"
 
