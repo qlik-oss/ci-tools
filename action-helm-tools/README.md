@@ -31,13 +31,13 @@ steps:
 ```yaml
 CHART_NAME: mycomponent # name of the chart
 CHART_DIR: manifests/charts/mycomponent # chart path
-REGISTRY: # Artifactory registry https://<company>.jfrog.io/<company>
-HELM_REPO: # Artifactory helm repository to push chart
+REGISTRY: # Artifactory registry URL https://<company>.jfrog.io/<company>
+HELM_REPO: # Artifactory helm repository to push chart to
 HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for pulling dependencies
 HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
-DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
-DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
-DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
+K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
+K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
+K8S_DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
 ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
 ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
 ```
@@ -82,9 +82,9 @@ jobs:
         HELM_REPO: helm
         REGISTRY: https://xyz.jfrog.io/xyz
         HELM_VIRTUAL_REPO: helmvirtual
-        DOCKER_REGISTRY: xyz-docker.jfrog.io
-        DOCKER_REGISTRY_SECRET: xyz-docker-secret
-        DOCKER_EMAIL: xyx@tld.com
+        K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io
+        K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret
+        K8S_DOCKER_EMAIL: xyx@tld.com
         ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         EXTRA_HELM_CMD: "-f ./test/charts/values.yaml"
@@ -115,9 +115,9 @@ env:
   HELM_REPO: helm
   REGISTRY: https://xyz.jfrog.io/xyz
   HELM_VIRTUAL_REPO: helmvirtual
-  DOCKER_REGISTRY: xyz-docker.jfrog.io
-  DOCKER_REGISTRY_SECRET: xyz-docker-secret
-  DOCKER_EMAIL: xyx@tld.com
+  K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io
+  K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret
+  K8S_DOCKER_EMAIL: xyx@tld.com
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
   EXTRA_HELM_CMD: "-f ./test/charts/values.yaml"
