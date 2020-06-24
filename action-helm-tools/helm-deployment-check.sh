@@ -33,8 +33,7 @@ process_args "$@"
 [[ -z "$RELEASE" ]] && echo "--release not provided" && exit 1
 
 while [[ $SECONDS -lt $((SECONDS+60)) ]]; do
-  helm get manifest $RELEASE
-  if [[ $? -eq 0 ]]; then
+  if helm get manifest $RELEASE; then
     break
   fi
 done
