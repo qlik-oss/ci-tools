@@ -1,9 +1,17 @@
 name: Linting
+
 on: [pull_request]
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@v1
+
+    - name: shellcheck
+      uses: ibiqlik/action-shellcheck@master
+      with:
+        severity: error
