@@ -65,3 +65,9 @@ create_k3d_cluster() {
     k3d create --name $K3D_NAME --image rancher/k3s:$K3S_VERSION --wait $K3D_WAIT
     export KUBECONFIG="$(k3d get-kubeconfig --name=$K3D_NAME)"
 }
+
+echorun() {
+    # Print cmd before running it
+    echo "$@"
+    eval "$@"
+}

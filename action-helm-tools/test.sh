@@ -18,7 +18,7 @@ if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
         --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
 fi
 
-helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $EXTRA_HELM_CMD
+echorun "helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $EXTRA_HELM_CMD"
 
 sleep 30
 check_helm_deployment
