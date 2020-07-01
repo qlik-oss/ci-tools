@@ -3,8 +3,8 @@ description: 'Install YQ and add it to the PATH'
 author: 'ibiqlik'
 
 inputs:
-  version:
-    description: 'YQ version to install'
+  yq_version:
+    description: 'The YQ version to install'
     required: false
     default: '3.3.2'
 

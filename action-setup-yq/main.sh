@@ -10,7 +10,8 @@ else
     exit 1
 fi
 
-sudo curl -L https://github.com/mikefarah/yq/releases/download/${INPUT_VERSION}/yq_${PLATFORM}_amd64 -o /usr/local/bin/yq && \
+echo "Installing YQ ${INPUT_YQ_VERSION}"
+sudo curl -L https://github.com/mikefarah/yq/releases/download/${INPUT_YQ_VERSION}/yq_${PLATFORM}_amd64 -o /usr/local/bin/yq && \
     sudo chmod +x /usr/local/bin/yq
 
 yq --version

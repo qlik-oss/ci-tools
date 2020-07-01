@@ -16,7 +16,7 @@ jobs:
       - uses: qlik-oss/ci-tools/action-setup-yq@master
 ```
 
-With version:
+With specific version:
 
 ```yaml
 ...
@@ -25,5 +25,5 @@ jobs:
     steps:
       - uses: qlik-oss/ci-tools/action-setup-yq@master
         with:
-          version: 3.3.1
+          yq_version: 3.3.1
 ```
