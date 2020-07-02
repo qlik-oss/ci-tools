@@ -14,10 +14,16 @@ latest_release_tag=$(git tag -l --sort=-v:refname | egrep '^v[0-9]+\.[0-9]+\.[0-
 git_rev=${latest_release_tag#v}
 
 # On push event
-[ "$GITHUB_EVENT_NAME" == "push" ] && _sha=$GITHUB_SHA
+if [ "$GITHUB_EVENT_NAME" == "push" ]; then
+    _sha=$GITHUB_SHA
+    BRANCH_NAME=${GITHUB_REF##*/}
+fi
 
 # On pull_request event
-[ "$GITHUB_EVENT_NAME" == "pull_request" ] && _sha=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+    _sha=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+    BRANCH_NAME=${GITHUB_HEAD_REF}
+fi
 
 # If _sha is set, create Version var
 [ -n "$_sha" ] && git_rev="${latest_release_tag}-${_sha:0:7}"
@@ -34,5 +40,15 @@ fi
 echo "Set version: ${VERSION}"
 
 # Set GitHub Action environment and output variable
+# VERSION
 echo "::set-env name=VERSION::${VERSION}"
 echo "::set-output name=VERSION::${VERSION}"
+
+# COMMIT_SHA
+echo "::set-env name=COMMIT_SHA::${_sha}"
+echo "::set-output name=COMMIT_SHA::${_sha}"
+
+# BRANCH_NAME
+echo "::set-env name=BRANCH_NAME::${BRANCH_NAME}"
+echo "::set-output name=BRANCH_NAME::${BRANCH_NAME}"
+
