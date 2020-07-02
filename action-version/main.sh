@@ -38,6 +38,8 @@ fi
 
 [ -z "$VERSION" ] && exit 1
 echo "Set version: ${VERSION}"
+echo "Set commit_sha: ${_sha}"
+echo "Set branch_name: ${BRANCH_NAME}"
 
 # Set GitHub Action environment and output variable
 # VERSION
@@ -51,4 +53,3 @@ echo "::set-output name=COMMIT_SHA::${_sha}"
 # BRANCH_NAME
 echo "::set-env name=BRANCH_NAME::${BRANCH_NAME}"
 echo "::set-output name=BRANCH_NAME::${BRANCH_NAME}"
-
