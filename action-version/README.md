@@ -26,7 +26,7 @@ _`GITHUB_SHA` in pull_request refers to the pull request object ID not the commi
 
 ### BRANCH_NAME
 
-Returns only branch name on `push` and `pull_request` events
+Returns only branch name on `push` and `pull_request` events. If used on tag push then BRANCH_NAME is returned empty
 
 ### RELEASE_TAG
 

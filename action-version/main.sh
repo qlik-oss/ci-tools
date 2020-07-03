@@ -2,6 +2,7 @@
 set -o pipefail
 
 RELEASE_TAG="0"
+BRANCH_NAME=""
 
 # Get tags, latest release and its commit sha
 git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
@@ -18,7 +19,7 @@ git_rev=${latest_release_tag#v}
 # On push event
 if [ "$GITHUB_EVENT_NAME" == "push" ]; then
     _sha=$GITHUB_SHA
-    BRANCH_NAME=${GITHUB_REF##*/}
+    echo "${GITHUB_REF}" | grep -E '^refs/heads/' && BRANCH_NAME=${GITHUB_REF##*/}
 fi
 
 # On pull_request event
