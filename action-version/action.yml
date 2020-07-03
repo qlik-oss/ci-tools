@@ -5,6 +5,10 @@ author: 'ibiqlik'
 outputs:
   version:
     description: 'Returns SemVer format *.*.* or *.*.*-shortCommitID'
+  commit_sha:
+    description: 'Returns commit sha ID'
+  branch_name:
+    description: 'Returns Branch Name'
 
 runs:
   using: 'node12'
