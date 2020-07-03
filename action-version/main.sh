@@ -1,11 +1,13 @@
 #!/bin/bash -l
 set -o pipefail
 
+RELEASE_TAG="0"
+
 # Get tags, latest release and its commit sha
 git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
 
 # Try to get latest v*.*.* tag
-latest_release_tag=$(git tag -l --sort=-v:refname | egrep '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1) &>/dev/null
+latest_release_tag=$(git tag -l --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1) &>/dev/null
 
 # Return v0.0.0 if no tags found
 [ -z "$latest_release_tag" ] && latest_release_tag="v0.0.0"
@@ -21,7 +23,7 @@ fi
 
 # On pull_request event
 if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-    _sha=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+    _sha=$(jq -r .pull_request.head.sha "$GITHUB_EVENT_PATH")
     BRANCH_NAME=${GITHUB_HEAD_REF}
 fi
 
@@ -31,9 +33,9 @@ fi
 VERSION=${git_rev#v}
 
 # On tag push that matches refs/tags/v*.*.*, use that version
-if [[ $GITHUB_REF == refs/tags/v* ]]; then
-    # Verify that version is semver; starts with refs/tags/v and ends at patch version
-    echo $GITHUB_REF | egrep 'refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' && VERSION=${GITHUB_REF#*/v}
+if echo "$GITHUB_REF" | grep -E 'refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'; then
+    VERSION=${GITHUB_REF#*/v}
+    RELEASE_TAG="1"
 fi
 
 [ -z "$VERSION" ] && exit 1
@@ -53,3 +55,7 @@ echo "::set-output name=COMMIT_SHA::${_sha}"
 # BRANCH_NAME
 echo "::set-env name=BRANCH_NAME::${BRANCH_NAME}"
 echo "::set-output name=BRANCH_NAME::${BRANCH_NAME}"
+
+# RELEASE TAG
+echo "::set-env name=RELEASE_TAG::${RELEASE_TAG}"
+echo "::set-output name=RELEASE_TAG::${RELEASE_TAG}"

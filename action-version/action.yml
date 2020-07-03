@@ -9,6 +9,8 @@ outputs:
     description: 'Returns commit sha ID'
   branch_name:
     description: 'Returns Branch Name'
+  release_tag:
+    description: 'Returns [1|0]; If semver vX.Y.Z is pushed RELEASE_TAG is set to 1'
 
 runs:
   using: 'node12'

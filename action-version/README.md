@@ -28,6 +28,19 @@ _`GITHUB_SHA` in pull_request refers to the pull request object ID not the commi
 
 Returns only branch name on `push` and `pull_request` events
 
+### RELEASE_TAG
+
+Return `1` if workflow is triggered using:
+
+```yaml
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+```
+
+Otherwise, return `0`
+
 ## Use in GitHub Actions - workflow
 
 ```yaml
