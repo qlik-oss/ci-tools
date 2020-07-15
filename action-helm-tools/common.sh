@@ -9,7 +9,7 @@ export K3D_NAME=${K3D_NAME:="test"}
 
 install_k3d(){
     echo "==> Get k3d"
-    curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+    curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 }
 
 install_kubectl() {
