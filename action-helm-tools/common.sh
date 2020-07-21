@@ -4,7 +4,7 @@ set -eo pipefail
 export HELM_VERSION=${HELM_VERSION:="2.14.3"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
 export K3S_VERSION=${K3S_VERSION:="v0.9.1"}
-export K3D_WAIT=${K3D_WAIT:="90"}
+export K3D_WAIT=${K3D_WAIT:="90s"}
 export K3D_NAME=${K3D_NAME:="test"}
 
 install_k3d(){
