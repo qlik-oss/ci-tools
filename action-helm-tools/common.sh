@@ -63,5 +63,5 @@ install_jfrog() {
 create_k3d_cluster() {
     echo "==> Create K3s cluster"
     k3d cluster create $K3D_NAME --image rancher/k3s:$K3S_VERSION --wait --timeout $K3D_WAIT
-    export KUBECONFIG="$(k3d get-kubeconfig --name=$K3D_NAME)"
+    export KUBECONFIG="$(k3d kubeconfig get $K3D_NAME)"
 }
