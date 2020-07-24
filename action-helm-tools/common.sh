@@ -40,6 +40,11 @@ setup_tiller() {
     echo "==> Instal tiller"
     install_helm
 
+    echo "KUBECONFIG previously:"
+    echo "$(k3d get-kubeconfig --name=$K3D_NAME)"
+    echo "KUBECONFIG now:"
+    echo "$(k3d kubeconfig get $K3D_NAME)"
+
     echo "==> creating serviceaccount..."
     kubectl create serviceaccount tiller --namespace kube-system --save-config --dry-run --output=yaml | kubectl apply -f -
     echo "==> creating serviceaccount done"
