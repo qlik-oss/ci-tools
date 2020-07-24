@@ -39,10 +39,19 @@ install_helm() {
 setup_tiller() {
     echo "==> Instal tiller"
     install_helm
+
+    echo "==> creating serviceaccount..."
     kubectl create serviceaccount tiller --namespace kube-system --save-config --dry-run --output=yaml | kubectl apply -f -
+    echo "==> creating serviceaccount done"
+
+    echo "==> creating clusterrolebinding..."
     kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin \
         --serviceaccount=kube-system:tiller --save-config --dry-run --output=yaml | kubectl apply -f -
+    echo "==> creating clusterrolebinding done"
+
+    echo "==> helm init..."
     helm init --service-account tiller --upgrade --wait
+    echo "==> helm init done"
 }
 
 check_helm_deployment() {
