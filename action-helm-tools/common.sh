@@ -3,17 +3,9 @@ set -eo pipefail
 
 export HELM_VERSION=${HELM_VERSION:="2.14.3"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
-export K3S_VERSION=${K3S_VERSION:="v0.9.1"}
-export K3D_WAIT=${K3D_WAIT:="90s"}
-export K3D_NAME=${K3D_NAME:="test"}
 export KIND_VERSION=${KIND_VERSION:="v0.8.1"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.15.11@sha256:6cc31f3533deb138792db2c7d1ffc36f7456a06f1db5556ad3b6927641016f50"}
-
-install_k3d(){
-    echo "==> Get k3d"
-    curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
-}
 
 install_kubectl() {
     echo "==> Get kubectl:${KUBECTL_VERSION}"
@@ -61,12 +53,6 @@ install_jfrog() {
         chmod +x ./jfrog
         sudo mv ./jfrog /usr/local/bin/jfrog
     fi
-}
-
-create_k3d_cluster() {
-    echo "==> Create K3s cluster"
-    k3d cluster create $K3D_NAME --image rancher/k3s:$K3S_VERSION --wait --timeout $K3D_WAIT
-    k3d kubeconfig merge $K3D_NAME --switch-context
 }
 
 install_kind() {
