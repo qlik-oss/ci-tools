@@ -3,10 +3,9 @@ set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
 
-install_k3d
 install_kubectl
 install_helm
-create_k3d_cluster
+setup_kind
 setup_tiller
 
 echo "==> Deploy chart $CHART_NAME"

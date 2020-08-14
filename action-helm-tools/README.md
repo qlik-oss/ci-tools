@@ -10,7 +10,7 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 `action` - `[package, test, publish]`
 
 - `package` - Involves helm client only and does dependency build, lint and package chart
-- `test` - Creates K3d cluster, sets up helm, install chart in a namespace and waits for all pods to be up and running
+- `test` - Creates K8s cluster (in Docker), sets up helm, install chart in a namespace and waits for all pods to be up and running
 - `publish` - Uses jfrog cli to check for existing package with same version and uploads if new chart is built
 - `package_and_test` - Run `package` and `test` in one step
 
@@ -45,12 +45,11 @@ ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD
 ## Optional Environment variables
 
 ```yaml
-EXTRA_HELM_CMD: # Extra helm command(s) to use when installing chart in K3d cluster
+EXTRA_HELM_CMD: # Extra helm command(s) to use when installing chart in K8s cluster
 HELM_VERSION: # Override helm version. Default "2.14.3"
 KUBECTL_VERSION: # Override kubectl version. Default "1.15.4"
-K3D_NAME: # Override K3D cluster name. Default "test"
-K3S_VERSION: # Override K3s version. Default "v0.9.1"
-K3D_WAIT: # Wait timeout for k3d cluster in seconds. Default 90
+KIND_VERSION: Override KIND version. Default version - look in common.sh
+KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
 DEPLOY_TIMEOUT: # Timeout on waiting for pods to get to running state. Default 300 seconds
 ```
 
