@@ -6,7 +6,8 @@ export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
 export K3S_VERSION=${K3S_VERSION:="v0.9.1"}
 export K3D_WAIT=${K3D_WAIT:="90s"}
 export K3D_NAME=${K3D_NAME:="test"}
-export KIND_IMAGE=${KIND_IMAGE:="v1.16.9@sha256:7175872357bc85847ec4b1aba46ed1d12fa054c83ac7a8a11f5c268957fd5765"}
+# Get version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
+export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.15.11@sha256:6cc31f3533deb138792db2c7d1ffc36f7456a06f1db5556ad3b6927641016f50"}
 
 install_k3d(){
     echo "==> Get k3d"
@@ -68,5 +69,5 @@ create_k3d_cluster() {
 }
 
 setup_kind() {
-    kind create cluster --image kindest/node:${KIND_IMAGE}
+    kind create cluster --image ${KIND_IMAGE}
 }
