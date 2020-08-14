@@ -6,6 +6,7 @@ export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
 export K3S_VERSION=${K3S_VERSION:="v0.9.1"}
 export K3D_WAIT=${K3D_WAIT:="90s"}
 export K3D_NAME=${K3D_NAME:="test"}
+export KIND_IMAGE=${KIND_IMAGE:="v1.16.9@sha256:7175872357bc85847ec4b1aba46ed1d12fa054c83ac7a8a11f5c268957fd5765"}
 
 install_k3d(){
     echo "==> Get k3d"
@@ -64,4 +65,8 @@ create_k3d_cluster() {
     echo "==> Create K3s cluster"
     k3d cluster create $K3D_NAME --image rancher/k3s:$K3S_VERSION --wait --timeout $K3D_WAIT
     k3d kubeconfig merge $K3D_NAME --switch-context
+}
+
+setup_kind() {
+    kind create cluster --image kindest/node:${KIND_IMAGE}
 }
