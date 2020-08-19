@@ -5,15 +5,20 @@ author: 'ibiqlik'
 outputs:
   version:
     description: 'Returns SemVer format *.*.* or *.*.*-shortCommitID'
+    value: ${{ steps.version-info.outputs.VERSION }}
   commit_sha:
     description: 'Returns commit sha ID'
+    value: ${{ steps.version-info.outputs.COMMIT_SHA }}
   branch_name:
     description: 'Returns Branch Name'
+    value: ${{ steps.version-info.outputs.BRANCH_NAME }}
   release_tag:
     description: 'Returns [1|0]; If semver vX.Y.Z is pushed RELEASE_TAG is set to 1'
+    value: ${{ steps.version-info.outputs.RELEASE_TAG }}
 
 runs:
   using: 'composite'
   steps:
-    - run: ${{ github.action_path }}/main.sh
+    - id: version-info
+      run: ${{ github.action_path }}/main.sh
       shell: bash
