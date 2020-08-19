@@ -3,5 +3,8 @@ description: 'Used to trigger release processes'
 author: 'ibiqlik'
 
 runs:
-  using: 'node12'
-  main: 'main.js'
+  using: 'composite'
+  steps:
+    - id: releaser-dispatch
+      run: ${{ github.action_path }}/main.sh
+      shell: bash
