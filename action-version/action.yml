@@ -13,5 +13,7 @@ outputs:
     description: 'Returns [1|0]; If semver vX.Y.Z is pushed RELEASE_TAG is set to 1'
 
 runs:
-  using: 'node12'
-  main: 'main.js'
+  using: 'composite'
+  steps:
+    - run: ${{ github.action_path }}/main.sh
+      shell: bash
