@@ -1,7 +1,16 @@
 name: 'Check deployment'
-description: 'GitHub Action for checking if pods, containers, deployments and statefulsets are up and running'
+description: 'GitHub Action for checking if pods and containers are up and running'
 author: 'ibiqlik'
 
+inputs:
+  namespace:
+    description: 'The namespace to run action in'
+    required: false
+    default: 'default'
+
 runs:
-  using: 'node12'
-  main: 'main.js'
+  using: 'composite'
+  steps:
+    - id: setup_yq
+      run: ${{ github.action_path }}/main.sh
+      shell: bash

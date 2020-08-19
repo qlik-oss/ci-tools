@@ -2,6 +2,9 @@ set -euo pipefail
 
 SECONDS=0
 
+# Switch to specified namespace
+kubectl config set-context --current --namespace=${INPUT_NAMESPACE}
+
 while :
 do
   # Check for pods that have containers which are not in the 'Ready' status
