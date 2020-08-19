@@ -1,6 +1,6 @@
 name: 'Check deployment'
 description: 'GitHub Action for checking if pods and containers are up and running'
-author: 'ibiqlik'
+author: 'abuokoene'
 
 inputs:
   namespace:
