@@ -1,3 +1,4 @@
+#!/bin/bash -l
 set -euo pipefail
 
 SECONDS=0
