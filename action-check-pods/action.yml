@@ -11,6 +11,5 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - id: setup_yq
-      run: ${{ github.action_path }}/main.sh
+    - run: ${{ github.action_path }}/main.sh
       shell: bash
