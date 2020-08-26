@@ -8,8 +8,13 @@ inputs:
     description: 'Options: package, test, publish, package_and_test'
 
 runs:
-  using: 'node12'
-  main: 'main.js'
+  using: 'composite'
+  steps:
+    - id: helm-tools
+      run: ${{ github.action_path }}/main.sh
+      shell: bash
+      env:
+        INPUT_ACTION: ${{ inputs.action }}
 
 branding:
   color: blue

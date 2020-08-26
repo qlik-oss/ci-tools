@@ -9,5 +9,10 @@ inputs:
     default: '3.3.2'
 
 runs:
-  using: 'node12'
-  main: 'main.js'
+  using: 'composite'
+  steps:
+    - id: setup_yq
+      run: ${{ github.action_path }}/main.sh
+      shell: bash
+      env:
+        INPUT_YQ_VERSION: ${{ inputs.yq_version }}
