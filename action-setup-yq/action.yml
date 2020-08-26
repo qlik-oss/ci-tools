@@ -14,3 +14,5 @@ runs:
     - id: setup_yq
       run: ${{ github.action_path }}/main.sh
       shell: bash
+      env:
+        INPUT_YQ_VERSION: ${{ inputs.yq_version }}
