@@ -13,3 +13,5 @@ runs:
   steps:
     - run: ${{ github.action_path }}/main.sh
       shell: bash
+      env:
+        INPUT_NAMESPACE: ${{ inputs.namespace }}
