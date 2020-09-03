@@ -1,0 +1,37 @@
+version: 2.1
+
+description: >
+  Sets github version info in a text file.
+display:
+  source_url: https://github.com/qlik-oss/ci-tools/orb/github-version
+
+commands:
+  set-version:
+    description: Generate SemVer format *.*.* or *.*.*-x-g<shortCommitID>
+    parameters:
+      path:
+        default: 'workspace'
+        description: >
+          Path to folder where version info file will be stored.
+        type: string
+      file:
+        default: 'version.txt'
+        description: >
+          Name of the file, where Github version info will be stored.
+        type: string
+    steps:
+      - run:
+          name: Generate version info
+          command: |
+            mkdir -p <<parameters.path>>
+            if [ -n "${CIRCLE_TAG}" ]; then
+              version=${CIRCLE_TAG#v}
+            else
+              version=$(git describe --tags --abbrev=7 --match "v*")
+              version=${version#v}
+            fi
+            echo ${version} >> <<parameters.path>>/<<parameters.file>>
+      - persist_to_workspace:
+          root: <<parameters.path>>
+          paths:
+            - <<parameters.file>>
