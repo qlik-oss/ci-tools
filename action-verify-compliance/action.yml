@@ -51,7 +51,7 @@ runs:
         REPOSITORY: ${{ inputs.repository }}
         TAG_NAME: ${{ inputs.tag-name }}
         VERIFICATION_TYPE: ${{ inputs.verification-type }}
-        GH_ACCESS_TOKEN: ${{ inputs.gh-access-token }}
+        GITHUB_TOKEN: ${{ inputs.gh-access-token }}
         ARTIFACTORY_PUBLISH_USER: ${{ inputs.artifactory-username }}
         ARTIFACTORY_PUBLISH_PASS: ${{ inputs.artifactory-password }}
         TWISTLOCK_USER: ${{ inputs.twistlock-username }}
