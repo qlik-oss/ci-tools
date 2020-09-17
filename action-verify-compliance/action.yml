@@ -67,5 +67,6 @@ runs:
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
         echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
+        if [ "${VERIFICATION_STATUS}" = "failure" ] || [ "${VERIFICATION_STATUS}" = "error" ]; then exit 1; fi
       shell: bash
 
