@@ -10,6 +10,30 @@ inputs:
   verification-type:
     description: 'The type of verification to perform, e.g. twistlock'
     required: true
+  verification-command-repo:
+    description: 'A repository with verification commands'
+    required: true
+  gh-access-token:
+    description: 'A github token with access to the repository with verification commands'
+    required: true
+  artifactory-username:
+    required: false
+    default: ''
+  artifactory-password:
+    required: false
+    default: ''
+  twistlock-username:
+    required: false
+    default: ''
+  twistlock-password:
+    required: false
+    default: ''
+  blackduck-username:
+    required: false
+    default: ''
+  blackduck-password:
+    required: false
+    default: ''
 outputs:
   verification-status:
     description: "Verification status"
@@ -19,23 +43,22 @@ runs:
   steps:
     - id: clone-repo-with-verification-commands
       run: |
-        export VERIFICATION_COMMAND_REPO=${{ secrets.VERIFICATION_COMMAND_REPO }}
-        echo VERIFICATION_COMMAND_REPO: ${VERIFICATION_COMMAND_REPO}
-        echo ${{ secrets.GH_ACCESS_TOKEN }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+        export VERIFICATION_COMMAND_REPO=${{ inputs.VERIFICATION_COMMAND_REPO }}
+        echo ${{ inputs.gh-access-token }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
       shell: bash
     - id: run-verification-command
       env:
         REPOSITORY: ${{ inputs.repository }}
         TAG: ${{ inputs.tag }}
         VERIFICATION_TYPE: ${{ inputs.verification-type }}
-        ARTIFACTORY_PUBLISH_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
-        ARTIFACTORY_PUBLISH_PASS: ${{ secrets.ARTIFACTORY_PASSWORD }}
-        TWISTLOCK_USER: ${{ secrets.TWISTLOCK_USERNAME }}
-        TWISTLOCK_PASS: ${{ secrets.TWISTLOCK_PASSWORD }}
-        BLACKDUCK_USER: ${{ secrets.BLACKDUCK_USERNAME }}
-        BLACKDUCK_PASS: ${{ secrets.BLACKDUCK_PASSWORD }}
+        ARTIFACTORY_PUBLISH_USER: ${{ inputs.artifactory-username }}
+        ARTIFACTORY_PUBLISH_PASS: ${{ inputs.artifactory-password }}
+        TWISTLOCK_USER: ${{ inputs.twistlock-username }}
+        TWISTLOCK_PASS: ${{ inputs.twistlock-password }}
+        BLACKDUCK_USER: ${{ inputs.blackduck-username }}
+        BLACKDUCK_PASS: ${{ inputs.blackduck-password }}
       run: |
-        export VERIFICATION_COMMAND_REPO=${{ secrets.VERIFICATION_COMMAND_REPO }}
+        export VERIFICATION_COMMAND_REPO=${{ inputs.VERIFICATION_COMMAND_REPO }}
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
         echo VERIFICATION_COMMAND_REPO_NAME: ${VERIFICATION_COMMAND_REPO_NAME}
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE}
