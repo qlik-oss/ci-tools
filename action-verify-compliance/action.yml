@@ -61,7 +61,6 @@ runs:
       run: |
         export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
-        echo VERIFICATION_COMMAND_REPO_NAME: ${VERIFICATION_COMMAND_REPO_NAME}
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE}
         go run main.go ${REPOSITORY} refs/tags/${TAG_NAME}
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
@@ -69,4 +68,3 @@ runs:
         echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
         if [ "${VERIFICATION_STATUS}" = "failure" ] || [ "${VERIFICATION_STATUS}" = "error" ]; then exit 1; fi
       shell: bash
-
