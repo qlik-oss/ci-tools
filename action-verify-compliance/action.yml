@@ -43,7 +43,7 @@ runs:
   steps:
     - id: clone-repo-with-verification-commands
       run: |
-        export VERIFICATION_COMMAND_REPO=${{ inputs.VERIFICATION_COMMAND_REPO }}
+        export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         echo ${{ inputs.gh-access-token }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
       shell: bash
     - id: run-verification-command
