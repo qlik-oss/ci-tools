@@ -58,7 +58,7 @@ runs:
         BLACKDUCK_USER: ${{ inputs.blackduck-username }}
         BLACKDUCK_PASS: ${{ inputs.blackduck-password }}
       run: |
-        export VERIFICATION_COMMAND_REPO=${{ inputs.VERIFICATION_COMMAND_REPO }}
+        export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
         echo VERIFICATION_COMMAND_REPO_NAME: ${VERIFICATION_COMMAND_REPO_NAME}
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE}
