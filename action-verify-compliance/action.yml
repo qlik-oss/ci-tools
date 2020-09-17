@@ -42,6 +42,13 @@ runs:
   using: "composite"
   steps:
     - id: clone-repo-with-verification-commands
+      env:
+        ARTIFACTORY_PUBLISH_USER: ${{ inputs.artifactory-username }}
+        ARTIFACTORY_PUBLISH_PASS: ${{ inputs.artifactory-password }}
+        TWISTLOCK_USER: ${{ inputs.twistlock-username }}
+        TWISTLOCK_PASS: ${{ inputs.twistlock-password }}
+        BLACKDUCK_USER: ${{ inputs.blackduck-username }}
+        BLACKDUCK_PASS: ${{ inputs.blackduck-password }}
       run: |
         export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         echo ${{ inputs.gh-access-token }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
