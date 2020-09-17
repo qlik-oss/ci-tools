@@ -1,0 +1,43 @@
+name: Verify compliance
+description: 'Performs a specific type of verification'
+inputs:
+  repository:
+    description: 'The repository to verify'
+    required: true
+  tag:
+    description: 'The tag to verify'
+    required: true
+  verification-type:
+    description: 'The type of verification to perform, e.g. twistlock'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - id: Clone repo with verification commands
+      run: |
+        export VERIFICATION_COMMAND_REPO=${{ secrets.VERIFICATION_COMMAND_REPO }}
+        echo VERIFICATION_COMMAND_REPO: ${VERIFICATION_COMMAND_REPO}
+        echo ${{ secrets.GH_ACCESS_TOKEN }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+      shell: bash
+    - id: Run verification
+      env:
+        REPOSITORY: ${{ inputs.repository }}
+        TAG: ${{ inputs.tag }}
+        VERIFICATION_TYPE: ${{ inputs.verification-type }}
+        ARTIFACTORY_PUBLISH_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PUBLISH_PASS: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        TWISTLOCK_USER: ${{ secrets.TWISTLOCK_USERNAME }}
+        TWISTLOCK_PASS: ${{ secrets.TWISTLOCK_PASSWORD }}
+        BLACKDUCK_USER: ${{ secrets.BLACKDUCK_USERNAME }}
+        BLACKDUCK_PASS: ${{ secrets.BLACKDUCK_PASSWORD }}
+      run: |
+        export VERIFICATION_COMMAND_REPO=${{ secrets.VERIFICATION_COMMAND_REPO }}
+        export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
+        echo VERIFICATION_COMMAND_REPO_NAME: ${VERIFICATION_COMMAND_REPO_NAME}
+        cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE}
+        go run main.go ${REPOSITORY} refs/tags/${TAG_NAME}
+        export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
+        echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
+        echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
+      shell: bash
+
