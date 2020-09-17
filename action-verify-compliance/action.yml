@@ -4,7 +4,7 @@ inputs:
   repository:
     description: 'The repository to verify'
     required: true
-  tag:
+  tag-name:
     description: 'The tag to verify'
     required: true
   verification-type:
@@ -49,7 +49,7 @@ runs:
     - id: run-verification-command
       env:
         REPOSITORY: ${{ inputs.repository }}
-        TAG: ${{ inputs.tag }}
+        TAG_NAME: ${{ inputs.tag-name }}
         VERIFICATION_TYPE: ${{ inputs.verification-type }}
         ARTIFACTORY_PUBLISH_USER: ${{ inputs.artifactory-username }}
         ARTIFACTORY_PUBLISH_PASS: ${{ inputs.artifactory-password }}
