@@ -10,6 +10,10 @@ inputs:
   verification-type:
     description: 'The type of verification to perform, e.g. twistlock'
     required: true
+outputs:
+  verification-status:
+    description: "Verification status"
+    value: ${{ steps.run-verification-command.outputs.verification-status }}
 runs:
   using: "composite"
   steps:
@@ -21,9 +25,9 @@ runs:
       shell: bash
     - id: run-verification-command
       env:
-        REPOSITORY: ${{ github.event.inputs.repository }}
-        TAG: ${{ github.event.inputs.tag }}
-        VERIFICATION_TYPE: ${{ github.event.inputs.verification-type }}
+        REPOSITORY: ${{ inputs.repository }}
+        TAG: ${{ inputs.tag }}
+        VERIFICATION_TYPE: ${{ inputs.verification-type }}
         ARTIFACTORY_PUBLISH_USER: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PUBLISH_PASS: ${{ secrets.ARTIFACTORY_PASSWORD }}
         TWISTLOCK_USER: ${{ secrets.TWISTLOCK_USERNAME }}
