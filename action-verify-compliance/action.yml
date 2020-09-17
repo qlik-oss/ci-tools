@@ -13,13 +13,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: Clone repo with verification commands
+    - id: clone-repo-with-verification-commands
       run: |
         export VERIFICATION_COMMAND_REPO=${{ secrets.VERIFICATION_COMMAND_REPO }}
         echo VERIFICATION_COMMAND_REPO: ${VERIFICATION_COMMAND_REPO}
         echo ${{ secrets.GH_ACCESS_TOKEN }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
       shell: bash
-    - id: Run verification
+    - id: run-verification-command
       env:
         REPOSITORY: ${{ github.event.inputs.repository }}
         TAG: ${{ github.event.inputs.tag }}
