@@ -1,0 +1,36 @@
+version: 2.1
+description: >
+  Helm tools for performing package.
+display:
+  source_url: https://github.com/qlik-oss/ci-tools/orb-helm-tools
+
+executors:
+  default:
+    docker:
+      - image: circleci/golang:1.15
+      
+jobs:
+  package:
+    executor: default
+    parameters:
+      version:
+        description: "Path to a version file, if other than /workspace/version.txt"
+        type: string
+        default: "/workspace/version.txt"
+    steps:
+      - package:
+          version: <<parameters.version>>
+
+commands:
+  package:
+    parameters:
+      version:
+        description: "Path to a version file, if other than /workspace/version.txt"
+        type: string
+        default: "/workspace/version.txt"
+    steps:
+      - checkout
+      - run: |
+          #export VERSION_FILE=<<parameters.version>>
+          curl -s "https://raw.githubusercontent.com/qlik-oss/ci-tools/ibi/circlescripts/scripts-circleci/github-package-helm-dispatch.sh" | bash
+
