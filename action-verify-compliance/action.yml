@@ -61,7 +61,8 @@ runs:
       run: |
         export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
-        cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE}
+        export VERIFICATION_TYPE_WITH_UNDERSCORES=$(echo ${VERIFICATION_TYPE} | tr '-' '_')
+        cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE_WITH_UNDERSCORES}
         go run main.go ${TARGET_NAME} ${TARGET_VERSION}
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
