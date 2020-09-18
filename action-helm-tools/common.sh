@@ -69,3 +69,12 @@ setup_kind() {
     fi
     kind create cluster --image ${KIND_IMAGE}
 }
+
+yaml_lint() {
+    echo "==> YAML lint"
+     if ! command -v yamllint; then
+      pip install yamllint   
+    fi
+
+    yamllint -c "$SCRIPT_DIR/default.yamllint" $CHART_DIR
+}
