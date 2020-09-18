@@ -1,11 +1,11 @@
 name: Verify compliance
 description: 'Performs a specific type of verification'
 inputs:
-  repository:
-    description: 'The repository to verify'
+  target-name:
+    description: 'The name of the verification target, e.g. a repository name'
     required: true
-  tag-name:
-    description: 'The tag to verify'
+  target-version:
+    description: 'The version of the verification target, e.g. a repository tag'
     required: true
   verification-type:
     description: 'The type of verification to perform, e.g. twistlock'
@@ -48,8 +48,8 @@ runs:
       shell: bash
     - id: run-verification-command
       env:
-        REPOSITORY: ${{ inputs.repository }}
-        TAG_NAME: ${{ inputs.tag-name }}
+        TARGET_NAME: ${{ inputs.target-name }}
+        TARGET_VERSION: ${{ inputs.target-version }}
         VERIFICATION_TYPE: ${{ inputs.verification-type }}
         GITHUB_TOKEN: ${{ inputs.gh-access-token }}
         ARTIFACTORY_PUBLISH_USER: ${{ inputs.artifactory-username }}
@@ -62,7 +62,7 @@ runs:
         export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE}
-        go run main.go ${REPOSITORY} refs/tags/${TAG_NAME}
+        go run main.go ${TARGET_NAME} ${TARGET_VERSION}
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
         echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
