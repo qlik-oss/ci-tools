@@ -1,39 +1,5 @@
 name: Verify compliance
 description: 'Performs a specific type of verification'
-inputs:
-  target-name:
-    description: 'The name of the verification target, e.g. a repository name'
-    required: true
-  target-version:
-    description: 'The version of the verification target, e.g. a repository tag'
-    required: true
-  verification-type:
-    description: 'The type of verification to perform, e.g. twistlock'
-    required: true
-  verification-command-repo:
-    description: 'A repository with verification commands'
-    required: true
-  gh-access-token:
-    description: 'A github token with access to the repository with verification commands'
-    required: true
-  artifactory-username:
-    required: false
-    default: ''
-  artifactory-password:
-    required: false
-    default: ''
-  twistlock-username:
-    required: false
-    default: ''
-  twistlock-password:
-    required: false
-    default: ''
-  blackduck-username:
-    required: false
-    default: ''
-  blackduck-password:
-    required: false
-    default: ''
 outputs:
   verification-status:
     description: "Verification status"
@@ -43,27 +9,14 @@ runs:
   steps:
     - id: clone-repo-with-verification-commands
       run: |
-        export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
-        echo ${{ inputs.gh-access-token }} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+        echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
       shell: bash
     - id: run-verification-command
-      env:
-        TARGET_NAME: ${{ inputs.target-name }}
-        TARGET_VERSION: ${{ inputs.target-version }}
-        VERIFICATION_TYPE: ${{ inputs.verification-type }}
-        GITHUB_TOKEN: ${{ inputs.gh-access-token }}
-        ARTIFACTORY_PUBLISH_USER: ${{ inputs.artifactory-username }}
-        ARTIFACTORY_PUBLISH_PASS: ${{ inputs.artifactory-password }}
-        TWISTLOCK_USER: ${{ inputs.twistlock-username }}
-        TWISTLOCK_PASS: ${{ inputs.twistlock-password }}
-        BLACKDUCK_USER: ${{ inputs.blackduck-username }}
-        BLACKDUCK_PASS: ${{ inputs.blackduck-password }}
       run: |
-        export VERIFICATION_COMMAND_REPO=${{ inputs.verification-command-repo }}
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
         export VERIFICATION_TYPE_WITH_UNDERSCORES=$(echo ${VERIFICATION_TYPE} | tr '-' '_')
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE_WITH_UNDERSCORES}
-        go run main.go ${TARGET_NAME} ${TARGET_VERSION}
+        go run main.go ${TARGET_NAME} ${TARGET_REF}
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
         echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
