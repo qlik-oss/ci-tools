@@ -9,7 +9,8 @@ runs:
   steps:
     - id: clone-repo-with-verification-commands
       run: |
-        echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+        export BRANCH_ARG=$(if [ -z ${VERIFICATION_COMMAND_REPO_BRANCH} ]; then echo ""; else echo "-b ${VERIFICATION_COMMAND_REPO_BRANCH}"; fi)
+        echo ${GITHUB_TOKEN} | xargs -I % git clone ${BRANCH_ARG} https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
       shell: bash
     - id: run-verification-command
       run: |
