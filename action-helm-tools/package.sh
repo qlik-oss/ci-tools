@@ -3,6 +3,8 @@ set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
 
+yaml_lint
+
 install_helm
 
 helm init --client-only
