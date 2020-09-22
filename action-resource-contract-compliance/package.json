@@ -19,6 +19,7 @@
   "devDependencies": {},
   "dependencies": {
     "@actions/core": "^1.2.5",
-    "@actions/github": "^4.0.0"
+    "@actions/github": "^4.0.0",
+    "js-yaml": "^3.14.0"
   }
 }

@@ -3,12 +3,12 @@ description: 'Runs resource contract compliance tests'
 author: 'qlikmats'
 
 inputs:
-  artifactory_user:
-    description: 'Artifactory user'
+  chart_dir:
+    description: 'Chart dir'
     required: true
-outputs:
-  time:
-    description: 'The time we greeted you'
+  required_qlikcommon_version:
+    description: 'Latest qlikcommon version'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
