@@ -1,0 +1,14 @@
+name: 'resource contract compliance'
+description: 'Runs resource contract compliance tests'
+author: 'qlikmats'
+
+inputs:
+  artifactory_user:
+    description: 'Artifactory user'
+    required: true
+outputs:
+  time:
+    description: 'The time we greeted you'
+runs:
+  using: 'node12'
+  main: 'index.js'
