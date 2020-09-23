@@ -81,7 +81,7 @@ yaml_lint() {
 
 check_resource_contract_compliance () {
 
-  qlikcommon_version=$(yq r $chart_dir/requirements.yaml 'dependencies.(name==qlikcommon).version') || echo "ERROR: $chart_dir/requirements.yaml not found" | exit 1
+  qlikcommon_version=$(yq r $CHART_DIR/requirements.yaml 'dependencies.(name==qlikcommon).version') || echo "ERROR: $CHART_DIR/requirements.yaml not found" | exit 1
 
   if [[ -z "$qlikcommon_version" ]]; then
     echo "ERROR: Chart is not using qlikcommon base chart (resource contract)"
