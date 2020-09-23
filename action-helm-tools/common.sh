@@ -78,3 +78,25 @@ yaml_lint() {
 
     yamllint -c "$SCRIPT_DIR/default.yamllint" $CHART_DIR
 }
+
+check_resource_contract_compliance () {
+  using_rsc_contract=0
+
+  [[ -f "$chart_dir/requirements.yaml" ]] && chart_dependencies=$(yq r $CHART_DIR/requirements.yaml 'dependencies[*].name')
+
+  if [[ -z "$chart_dependencies" ]] || [[ `echo ${chart_dependencies} | grep -wv "qlikcommon"` ]]; then
+    using_rsc_contract=1
+    echo "ERROR: Chart is not using qlikcommon base chart (resource contract)" >> ~/.errors
+    echo "INFO: Please convert chart to use resource contract as per the standards set here: https://github.com/qlik-trial/resource-contract" >> ~/.errors
+    echo "" >> ~/.errors
+  fi
+
+  if [ $using_rsc_contract -eq 0 ]; then
+    chart_qlikcommon_version=$(yq r $CHART_DIR/requirements.yaml 'dependencies[0].version')
+    if [[ ! -z "$chart_qlikcommon_version" ]] && [[ "$chart_qlikcommon_version" != "$LATEST_QLIKCOMMON_VERSION" ]]; then
+      echo "ERROR: $chart_name chart is not using the latest qlikcommon chart version"  >> ~/.errors
+      echo "INFO: Please update qlikcommon version in requirements.yaml to $LATEST_QLIKCOMMON_VERSION" >> ~/.errors
+      echo "" >> ~/.errors
+    fi
+  fi
+}
