@@ -81,14 +81,12 @@ yaml_lint() {
 
 check_resource_contract_compliance () {
     echo "==> Resource contract compliance test"
-    
-    qlikcommon_version=$(yq r $CHART_DIR/requirements.yaml 'dependencies.(name==qlikcommon).version') || echo "ERROR: $CHART_DIR/requirements.yaml not found" | exit 1
+
+    qlikcommon_version=$(yq r $CHART_DIR/requirements.yaml 'dependencies.(name==qlikcommon).version') || echo "::warning $CHART_DIR/requirements.yaml not found" | exit 0
 
     if [[ -z "$qlikcommon_version" ]]; then
-        echo "ERROR: Please convert chart to use resource contract as per the standards set here: https://github.com/qlik-trial/resource-contract"
-        exit 1
+        echo "::warning Please convert chart to use resource contract as per the standards set here: https://github.com/qlik-trial/resource-contract"
     elif [[ "$qlikcommon_version" != "$LATEST_QLIKCOMMON_VERSION" ]]; then
-        echo "ERROR: Please update to latest qlikcommon version in requirements.yaml to $LATEST_QLIKCOMMON_VERSION"
-        exit 1
+        echo "::warning Please update to latest qlikcommon version in requirements.yaml to $LATEST_QLIKCOMMON_VERSION"
     fi
 }
