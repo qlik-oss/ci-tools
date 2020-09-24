@@ -12,6 +12,9 @@ echo "==> Helm add repo"
 helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
 helm repo update
 
+export LATEST_QLIKCOMMON_VERSION=$(helm inspect chart qlik/qlikcommon | yq r - 'version')
+$SCRIPT_DIR/resource-contract/dist/check-compliance.js
+
 echo "==> Helm dependency build"
 helm dependency build $CHART_DIR
 

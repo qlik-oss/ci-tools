@@ -1,0 +1,23 @@
+{
+  "name": "resource-contract-compliance",
+  "version": "1.0.0",
+  "description": "Script for checking Resource Contract compliance.",
+  "main": "check-compliance.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qlik-oss/ci-tools.git"
+  },
+  "author": "mats.jacobsson@qlik.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qlik-oss/ci-tools/issues"
+  },
+  "homepage": "https://github.com/qlik-oss/ci-tools#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "js-yaml": "^3.14.0"
+  }
+}
