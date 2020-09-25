@@ -21,5 +21,9 @@ helm dependency build $CHART_DIR
 echo "==> Linting"
 helm lint $CHART_DIR
 
+echo "==> Update image tag"
+install_yq
+yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
+
 echo "==> Helm package"
 helm package $CHART_DIR --version $VERSION --app-version $VERSION
