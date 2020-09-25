@@ -4,7 +4,7 @@ set -euo pipefail
 SECONDS=0
 
 # Switch to specified namespace
-kubectl config set-context --current --namespace=${INPUT_NAMESPACE}
+# kubectl config set-context --current --namespace=${INPUT_NAMESPACE}
 
 while :
 do
