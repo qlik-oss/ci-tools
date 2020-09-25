@@ -28,8 +28,6 @@ fi
 
 main() {
 
-    export
-
     if [[ -z "${INPUT_ACTION}" ]]; then
         "$SCRIPT_DIR/package.sh"
         "$SCRIPT_DIR/test.sh"
