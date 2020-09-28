@@ -4,7 +4,7 @@ author: 'ibiqlik'
 
 inputs:
   action:
-    required: true
+    required: false
     description: 'Options: package, test, publish, package_and_test'
 
 runs:

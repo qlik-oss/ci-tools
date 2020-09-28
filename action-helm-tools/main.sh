@@ -17,7 +17,7 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-set -x
+# set -x
 
 export SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
@@ -28,9 +28,11 @@ fi
 
 main() {
 
-    export
-
-    if [[ "${INPUT_ACTION}" == "package_and_test" ]]; then
+    if [[ -z "${INPUT_ACTION}" ]]; then
+        "$SCRIPT_DIR/package.sh"
+        "$SCRIPT_DIR/test.sh"
+        "$SCRIPT_DIR/publish.sh"
+    elif [[ "${INPUT_ACTION}" == "package_and_test" ]]; then
         "$SCRIPT_DIR/package.sh"
         "$SCRIPT_DIR/test.sh"
     else
