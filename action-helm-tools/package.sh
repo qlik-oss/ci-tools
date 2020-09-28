@@ -3,8 +3,8 @@ set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
 
+install_yq
 yaml_lint
-
 install_helm
 
 helm init --client-only
@@ -20,6 +20,9 @@ helm dependency build $CHART_DIR
 
 echo "==> Linting"
 helm lint $CHART_DIR
+
+echo "==> Update image tag"
+yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
 
 echo "==> Helm package"
 helm package $CHART_DIR --version $VERSION --app-version $VERSION

@@ -1,22 +1,30 @@
 #!/bin/bash -l
 set -eo pipefail
 
+# Defaults
+export HELM_REPO=${HELM_REPO:="helm-dev"}
+export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
+export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
+export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
+
+# Tools
 export HELM_VERSION=${HELM_VERSION:="2.14.3"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
 export KIND_VERSION=${KIND_VERSION:="v0.8.1"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.15.11@sha256:6cc31f3533deb138792db2c7d1ffc36f7456a06f1db5556ad3b6927641016f50"}
+export YQ_VERSION="3.3.4"
 
 install_kubectl() {
     echo "==> Get kubectl:${KUBECTL_VERSION}"
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+    curl -LsO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
     chmod +x ./kubectl
     sudo mv ./kubectl /usr/local/bin/kubectl
 }
 
 get_helm() {
     echo "==> Get helm:${HELM_VERSION}"
-    curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" | tar xvz
+    curl -Ls "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" | tar xvz
     chmod +x linux-amd64/helm
     sudo mv linux-amd64/helm /usr/local/bin/helm
 }
@@ -49,7 +57,7 @@ check_helm_deployment() {
 install_jfrog() {
     if ! command -v jfrog; then
         echo "==> Installing jfrog cli"
-        curl -Lo ./jfrog https://api.bintray.com/content/jfrog/jfrog-cli-go/\$latest/jfrog-cli-linux-amd64/jfrog?bt_package=jfrog-cli-linux-amd64
+        curl -Lso ./jfrog https://api.bintray.com/content/jfrog/jfrog-cli-go/\$latest/jfrog-cli-linux-amd64/jfrog?bt_package=jfrog-cli-linux-amd64
         chmod +x ./jfrog
         sudo mv ./jfrog /usr/local/bin/jfrog
     fi
@@ -57,7 +65,7 @@ install_jfrog() {
 
 install_kind() {
     echo "==> Get KIND:${KIND_VERSION}"
-    curl -Lo ./kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64
+    curl -Lso ./kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64
     chmod +x ./kind
     sudo mv ./kind /usr/local/bin/kind
 }
@@ -72,9 +80,17 @@ setup_kind() {
 
 yaml_lint() {
     echo "==> YAML lint"
-     if ! command -v yamllint; then
-      pip install yamllint   
+    if ! command -v yamllint; then
+        sudo pip install yamllint
     fi
 
     yamllint -c "$SCRIPT_DIR/default.yamllint" $CHART_DIR
+}
+
+install_yq() {
+    if ! command -v yq || [[ $(yq --version 2>&1 | cut -d ' ' -f3) != "${YQ_VERSION}" ]] ; then
+        echo "==> Get yq:${YQ_VERSION}"
+        sudo curl -Ls https://github.com/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_amd64 -o /usr/local/bin/yq
+        sudo chmod +x /usr/local/bin/yq
+    fi
 }
