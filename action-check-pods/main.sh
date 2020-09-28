@@ -3,13 +3,10 @@ set -euo pipefail
 
 SECONDS=0
 
-# Switch to specified namespace
-kubectl config set-context --current --namespace=${INPUT_NAMESPACE}
-
 while :
 do
   # Check for pods that have containers which are not in the 'Ready' status
-  POD_STATUS=$(kubectl get pods --no-headers --field-selector=status.phase!=Running,status.phase!=Succeeded)
+  POD_STATUS=$(kubectl get pods -n ${INPUT_NAMESPACE} --no-headers --field-selector=status.phase!=Running,status.phase!=Succeeded)
 
   if  [[  -z "$POD_STATUS" ]]; then
     echo
@@ -24,8 +21,8 @@ do
     # Loop through each pod and display the events log for it
     while IFS= read -r PODS; do
       echo $PODS
-      kubectl get events --field-selector involvedObject.name=$PODS
-      kubectl logs --limit-bytes=0 --since=24h ${PODS}
+      kubectl get events -n ${INPUT_NAMESPACE} --field-selector involvedObject.name=$PODS
+      kubectl logs -n ${INPUT_NAMESPACE} --limit-bytes=0 --since=24h ${PODS}
       echo
     done <<< "$PODS"
     exit 1
@@ -41,7 +38,7 @@ echo "Checking if containers are ready..."
 SECONDS=0
 while :
 do
-  CONTAINER_STATUS=$(kubectl get pods -o json | jq -r '.items[] | select(.status.containerStatuses[].ready != true and .status.containerStatuses[].state.terminated.reason != "Completed") | .metadata.name' | uniq)
+  CONTAINER_STATUS=$(kubectl get pods -n ${INPUT_NAMESPACE} -o json | jq -r '.items[] | select(.status.containerStatuses[].ready != true and .status.containerStatuses[].state.terminated.reason != "Completed") | .metadata.name' | uniq)
 
   if  [[  -z "$CONTAINER_STATUS" ]]; then
     echo
