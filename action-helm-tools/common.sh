@@ -3,7 +3,7 @@ set -eo pipefail
 
 # Defaults
 export HELM_REPO=${HELM_REPO:="helm-dev"}
-export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:=$HELM_REPO}
+export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
 export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 
