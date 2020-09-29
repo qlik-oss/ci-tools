@@ -1,12 +1,18 @@
 # action-releaser-dispatch
 
-Make GitHub dispatch call with `pre-release` event to trigger release process
+Make GitHub dispatch call with `pre-release` event to trigger release process.
 
-## Requires
+The action will only trigger if the required environment variable `VERSION` is semantic version `vX.Y.Z`, if not then it will continue without error.
 
-- `- uses: qlik-oss/ci-tools/action-version@master` - Version
-- `GH_PAT` GitHub Personal Access Token
-- Workflow that is triggered on tag `v*.*.*` push
+## Required environment variables
+
+- `GH_PAT` - GitHub Personal Access Token
+- `VERSION` - Environment variable
+
+### If used in full Github action workflow
+
+- `- uses: qlik-oss/ci-tools/action-version@master` - This actions automatically set required Version variable as required by this action
+- Workflow is triggered on tag `v*.*.*` push
 
 ## Use in GitHub Actions - workflow
 
@@ -15,6 +21,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  pull_request:
 [...]
 jobs:
   somejob:
