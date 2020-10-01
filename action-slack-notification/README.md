@@ -1,4 +1,4 @@
-# action-check-pods
+# action-slack-notification
 
 A GitHub action for posting a Slack message upon dev cluster creation completion
 
@@ -19,4 +19,4 @@ A GitHub action for posting a Slack message upon dev cluster creation completion
         repository: ${{ github.event.inputs.repository }}
 ```
 
-**Note** The environment variable `MASTER_NODE` needs to be defined.
+**Note** The environment variable `MASTER_NODE` needs to be defined., since it is used to compose the Slack message.
