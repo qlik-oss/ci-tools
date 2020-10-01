@@ -1,0 +1,19 @@
+name: 'Slack Notification'
+description: 'Send Slack notification about dev cluster creation'
+inputs:
+  repository:
+    description: 'The team repository'
+    required: true
+  webhook:
+    description: 'Slack webhook'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+  - id: post_slack_notification
+    run: ${{ github.action_path }}/main.sh
+    shell: bash
+    env:
+      INPUT_SLACK_WEBHOOK: ${{ inputs.webhook }}
+      INPUT_REPOSITORY: ${{ inputs.repository }}
