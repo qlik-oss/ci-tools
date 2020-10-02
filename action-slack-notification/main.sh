@@ -9,18 +9,21 @@ echo "Message: $msg"
 
 # Try to read Slack channel from components.yaml
 if [[ -f "${INPUT_REPOSITORY}/components.yaml" ]]; then
+    echo "Try to read channel from ${INPUT_REPOSITORY}/components.yaml"
     channel=$(yq r ${INPUT_REPOSITORY}/components.yaml 'components[0].botSlackChannel')
     payload="{\"text\": \"$msg\", \"channel\": \"$channel\"}"
 fi
 
 # If channel is given as input, override the component.yaml setting
 if [[ -n "$INPUT_CHANNEL" ]]; then
+    echo "Using overridden input channel: ${INPUT_CHANNEL}"
     channel=$INPUT_CHANNEL
     payload="{\"text\": \"$msg\", \"channel\": \"$channel\"}"
 fi
 
 # Fall back to  default Slack channel
 if [[ -z $channel ]]; then
+    echo "Fall back to default channel"
     payload="{\"text\": \"$msg\"}"
 fi
 
