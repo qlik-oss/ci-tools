@@ -10,6 +10,10 @@ inputs:
   channel:
     description: 'Slack channel (or user) to notify (defaults to botSlackChannel in components.yaml)'
     required: false
+  message:
+    description: 'Message to post on Slack'
+    required: true
+    
 runs:
   using: 'composite'
   steps:
@@ -20,3 +24,4 @@ runs:
       INPUT_SLACK_WEBHOOK: ${{ inputs.webhook }}
       INPUT_REPOSITORY: ${{ inputs.repository }}
       INPUT_CHANNEL: ${{ inputs.channel }}
+      INPUT_MESSAGE: ${{ inputs.message }}
