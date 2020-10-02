@@ -26,4 +26,4 @@ fi
 
 
 
-curl --fail -H 'Content-Type: application/json' -d $payload $INPUT_SLACK_WEBHOOK
+curl --fail -H 'Content-Type: application/json' -d "$payload" $INPUT_SLACK_WEBHOOK
