@@ -13,7 +13,7 @@ inputs:
   message:
     description: 'Message to post on Slack'
     required: true
-    
+
 runs:
   using: 'composite'
   steps:
