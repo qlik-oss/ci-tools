@@ -7,9 +7,6 @@ BRANCH_NAME=""
 # Unshallow git repository. Do not fail in case the repository is already unshallowed.
 git fetch --prune --unshallow || true
 
-# git-describe - Give an object a human readable name based on an available ref
-git_rev=$(git describe --tags --abbrev=7)
-
 # On push event
 if [ "$GITHUB_EVENT_NAME" == "push" ]; then
     _sha=$GITHUB_SHA
@@ -21,6 +18,12 @@ if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     _sha=$(jq -r .pull_request.head.sha "$GITHUB_EVENT_PATH")
     BRANCH_NAME=${GITHUB_HEAD_REF}
 fi
+
+# git-describe - Give an object a human readable name based on an available ref
+# On PR actions/checkout checkouts a merge commit instead of commit sha, git describe
+# returns merge commit. To avoid this unpredictable commit sha, we will describe
+# the actual commit
+git_rev=$(git describe --tags --abbrev=7 ${_sha})
 
 # If no version is returned from git describe, generate one
 [ -z "$git_rev" ] && git_rev="v0.0.0-0-g${_sha:0:7}"
