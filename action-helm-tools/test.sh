@@ -17,7 +17,9 @@ if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
         --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
 fi
 
-helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $EXTRA_HELM_CMD
+[ -f "$CHART_DIR/tests/ci-values.yaml" ] && CI_VALUES="-f ${CHART_DIR}/tests/ci-values.yaml"
+
+runthis "helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $CI_VALUES $EXTRA_HELM_CMD"
 
 sleep 30
 check_helm_deployment
