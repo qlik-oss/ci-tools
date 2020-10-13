@@ -18,6 +18,12 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 
 `VERSION` set as environment variable is required
 
+## Failed pod logs/describe
+
+If a pod fails the logs and its describe will be put on directory `${GITHUB_WORKSPACE}/podlogs`.
+
+To get the path in other steps you can use `$POD_LOGS` environment variable or `${{ env.POD_LOGS }}`
+
 ### Use action-version to set VERSION variable
 
 ```yaml
@@ -80,6 +86,12 @@ jobs:
 
     - name: Package & Test Helm chart
       uses: qlik-oss/ci-tools/action-helm-tools@master
+
+    - uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: pod_logs
+        path: ${{ env.POD_LOGS }}
 ```
 
 Run package and test separate from publish, if a step in between is desired.
