@@ -59,11 +59,22 @@ while [[ $SECONDS -lt $_timeout ]]; do
   fi
 done
 
+POD_LOGS="${GITHUB_WORKSPACE}/podlogs/" && mkdir -p "${POD_LOGS}"
+echo "POD_LOGS=${POD_LOGS}" >> $GITHUB_ENV
+
 if [[ $deployed -ne 1 ]]; then
   echo "==> ERROR"
   echo "$RELEASE deployment failed, pods not started are: "
   echo "$pods"
   kubectl get pods --all-namespaces
+  echo "==> Get logs"
+  for pod in $pods; do
+    logfile="${POD_LOGS}/${pod}.log"
+    echo "==> Pod logs: $pod" | tee -a "$logfile"
+    kubectl logs -n $NAMESPACE -l "app=${pod}" --all-containers 2>&1 | tee -a "$logfile"
+    echo "==> Pod describe: $pod" | tee -a "$logfile"
+    kubectl describe pod -n $NAMESPACE -l "app=${pod}" 2>&1 | tee -a "$logfile"
+  done
   exit 1
 fi
 

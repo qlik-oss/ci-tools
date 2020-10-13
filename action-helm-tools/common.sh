@@ -94,3 +94,8 @@ install_yq() {
         sudo chmod +x /usr/local/bin/yq
     fi
 }
+
+runthis() {
+    echo "$@"
+    eval "$@"
+}

@@ -25,4 +25,4 @@ echo "==> Update image tag"
 yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
 
 echo "==> Helm package"
-helm package $CHART_DIR --version $VERSION --app-version $VERSION
+runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"
