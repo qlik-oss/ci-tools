@@ -24,6 +24,15 @@ If a pod fails the logs and its describe will be put on directory `${GITHUB_WORK
 
 Logs are printed in the console but can be saved as artifacts. Use `$POD_LOGS` environment variable or `${{ env.POD_LOGS }}` to get the directory where logs are stored. `actions/upload-artifact` can be used to save artifacts, see example in Example workflows.
 
+## Install values files
+
+If action finds `manifests/chart/<chart-name>/tests/ci-values.yaml` file it will automatically use it in Github actions to deploy test chart.
+
+To add `ci-values.yaml`
+
+- Create `ci-values.yaml` file in `manifests/chart/<chart-name>/tests` and add values that enables the chart to deploy
+- Add `tests/` in `.helmignore` file
+
 ### Use action-version to set VERSION variable
 
 ```yaml
@@ -110,7 +119,7 @@ env:
   K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-  EXTRA_HELM_CMD: "-f ./test/charts/values.yaml"
+  EXTRA_HELM_CMD: "-f ./test/charts/myValues.yaml"
 
 jobs:
   helm-suite:
@@ -132,8 +141,3 @@ jobs:
       with:
         action: "publish"
 ```
-
----
-TODO:
-
-- Export pod logs if test(s) fail
