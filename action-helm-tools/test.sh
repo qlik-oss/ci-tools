@@ -19,7 +19,7 @@ fi
 
 [ -f "$CHART_DIR/tests/ci-values.yaml" ] && CI_VALUES="-f ${CHART_DIR}/tests/ci-values.yaml"
 
-helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $CI_VALUES $EXTRA_HELM_CMD
+runthis "helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $CI_VALUES $EXTRA_HELM_CMD"
 
 sleep 30
 check_helm_deployment
