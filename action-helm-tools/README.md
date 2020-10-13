@@ -22,7 +22,7 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 
 If a pod fails the logs and its describe will be put on directory `${GITHUB_WORKSPACE}/podlogs`.
 
-To get the path in other steps you can use `$POD_LOGS` environment variable or `${{ env.POD_LOGS }}`
+Logs are printed in the console but can be saved as artifacts. Use `$POD_LOGS` environment variable or `${{ env.POD_LOGS }}` to get the directory where logs are stored. `actions/upload-artifact` can be used to save artifacts, see example in Example workflows.
 
 ### Use action-version to set VERSION variable
 
@@ -87,6 +87,7 @@ jobs:
     - name: Package & Test Helm chart
       uses: qlik-oss/ci-tools/action-helm-tools@master
 
+    # Optional
     - uses: actions/upload-artifact@v2
       if: failure()
       with:

@@ -69,8 +69,11 @@ if [[ $deployed -ne 1 ]]; then
   kubectl get pods --all-namespaces
   echo "==> Get logs"
   for pod in $pods; do
-    kubectl logs -n $NAMESPACE -l "app=${pod}" --all-containers > "${POD_LOGS}/pod_${pod}.log" 2>&1
-    kubectl describe pod -n $NAMESPACE -l "app=${pod}" > "${POD_LOGS}/describe_${pod}.log" 2>&1
+    logfile="${POD_LOGS}/${pod}.log"
+    echo "==> Pod logs: $pod" | tee -a "$logfile"
+    kubectl logs -n $NAMESPACE -l "app=${pod}" --all-containers 2>&1 | tee -a "$logfile"
+    echo "==> Pod describe: $pod" | tee -a "$logfile"
+    kubectl describe pod -n $NAMESPACE -l "app=${pod}" 2>&1 | tee -a "$logfile"
   done
   exit 1
 fi
