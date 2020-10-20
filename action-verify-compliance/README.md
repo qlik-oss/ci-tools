@@ -5,6 +5,7 @@ GitHub Action for verifying compliance of a given type (twistlock, blackduck etc
 ## Required Environment variables
 
 ```yaml
+TARGET_OWNER: # owner of the target for which a compliance verification should be performed; e.g. a repository owner
 TARGET_NAME: # name of the target for which a compliance verification should be performed; e.g. a repository name
 TARGET_REF: # ref for which a compliance verification should be performed; e.g. a fully qualified tag name (refs/tags/vX.Y.Z)
 VERIFICATION_TYPE: # type of verification to be performed, e.g "twistlock" or "blackduck"
