@@ -47,8 +47,6 @@ steps:
 CHART_NAME: mycomponent # name of the chart
 CHART_DIR: manifests/charts/mycomponent # chart path
 REGISTRY: # Artifactory registry URL https://<company>.jfrog.io/<company>
-K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
-K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
 ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
 ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
 ```
@@ -62,6 +60,8 @@ HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for p
 HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
 HELM_VERSION: # Override helm version. Default "2.14.3"
 K8S_DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
+K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
+K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
 KUBECTL_VERSION: # Override kubectl version. Default "1.15.4"
 KIND_VERSION: Override KIND version. Default version - look in common.sh
 KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
@@ -81,8 +81,6 @@ env:
   CHART_NAME: componentA
   CHART_DIR: manifests/charts/componentA
   REGISTRY: https://xyz.jfrog.io/xyz
-  K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io
-  K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
 
@@ -115,8 +113,6 @@ env:
   CHART_NAME: componentA
   CHART_DIR: manifests/charts/componentA
   REGISTRY: https://xyz.jfrog.io/xyz
-  K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io
-  K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
   EXTRA_HELM_CMD: "-f ./test/charts/myValues.yaml"
