@@ -44,17 +44,17 @@ steps:
 ## Required Environment variables
 
 ```yaml
-CHART_NAME: mycomponent # name of the chart
-CHART_DIR: manifests/charts/mycomponent # chart path
 REGISTRY: # Artifactory registry URL https://<company>.jfrog.io/<company>
 ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
 ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
 ```
 
-## Optional Environment variables
+## Optional Environment (override) variables
 
 ```yaml
-EXTRA_HELM_CMD: # Extra helm command(s) to use when installing chart in K8s cluster
+CHART_NAME: mycomponent # Chart name
+CHART_DIR: manifests/charts/mycomponent # Chart path
+EXTRA_HELM_CMD: # Extra helm command(s) (set or -f myValues.yaml) to use when installing chart in K8s cluster
 HELM_REPO: # Artifactory helm repository to push chart to
 HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for pulling dependencies
 HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
@@ -78,8 +78,6 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  CHART_NAME: componentA
-  CHART_DIR: manifests/charts/componentA
   REGISTRY: https://xyz.jfrog.io/xyz
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
@@ -110,12 +108,10 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  CHART_NAME: componentA
-  CHART_DIR: manifests/charts/componentA
   REGISTRY: https://xyz.jfrog.io/xyz
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-  EXTRA_HELM_CMD: "-f ./test/charts/myValues.yaml"
+  EXTRA_HELM_CMD: "-f ${CHART_DIR}/tests/myValues.yaml"
 
 jobs:
   helm-suite:
@@ -124,13 +120,13 @@ jobs:
     - uses: actions/checkout@v2
     - uses: qlik-oss/ci-tools/action-version@master
 
-    # - name: myOtherJob1
-    #   run:
-
     - name: Package & Test Helm chart
       uses: qlik-oss/ci-tools/action-helm-tools@master
       with:
         action: "package_and_test"
+
+    # - name: myOtherJob1
+    #   run: Some tests against deployed chart
 
     - name: Publish Helm chart
       uses: qlik-oss/ci-tools/action-helm-tools@master

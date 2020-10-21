@@ -6,20 +6,12 @@ source $SCRIPT_DIR/common.sh
 install_kubectl
 install_helm
 install_yq
+get_component_properties
 setup_kind
 setup_tiller
 
 echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
-
-if [ -z "$K8S_DOCKER_REGISTRY" ]; then
-    K8S_DOCKER_REGISTRY=$(yq r "${CHART_DIR}/values.yaml" 'image.registry')
-    [ -z "$K8S_DOCKER_REGISTRY" ] && echo "::error file=${CHART_DIR}/values.yaml::Cannot get image.registry"
-fi
-
-if [ -z "$K8S_DOCKER_REGISTRY_SECRET" ]; then
-    K8S_DOCKER_REGISTRY_SECRET=$(yq r "${CHART_DIR}/values.yaml" 'imagePullSecrets[0].name')
-fi
 
 if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
     kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \

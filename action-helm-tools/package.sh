@@ -4,6 +4,7 @@ set -eo pipefail
 source $SCRIPT_DIR/common.sh
 
 install_yq
+get_component_properties
 yaml_lint
 install_helm
 

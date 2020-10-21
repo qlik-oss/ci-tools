@@ -2,6 +2,7 @@
 set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
+get_component_properties
 
 export JFROG_CLI_OFFER_CONFIG=false
 
