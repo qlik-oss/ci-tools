@@ -17,7 +17,7 @@ runs:
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
         export VERIFICATION_TYPE_WITH_UNDERSCORES=$(echo ${VERIFICATION_TYPE} | tr '-' '_')
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE_WITH_UNDERSCORES}
-        go run main.go ${TARGET_NAME} ${TARGET_REF}
+        go run main.go ${TARGET_OWNER} ${TARGET_NAME} ${TARGET_REF}
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
         echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
