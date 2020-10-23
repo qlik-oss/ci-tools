@@ -5,6 +5,8 @@ source $SCRIPT_DIR/common.sh
 
 install_kubectl
 install_helm
+install_yq
+get_component_properties
 setup_kind
 setup_tiller
 

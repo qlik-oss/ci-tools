@@ -15,6 +15,40 @@ export KIND_VERSION=${KIND_VERSION:="v0.8.1"}
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.15.11@sha256:6cc31f3533deb138792db2c7d1ffc36f7456a06f1db5556ad3b6927641016f50"}
 export YQ_VERSION="3.3.4"
 
+get_component_properties() {
+    install_yq
+
+    # Get chartname
+    export CHART_NAME
+    if [ -z "$CHART_NAME" ]; then
+        CHART_NAME=$(yq r components.yaml 'components[0].componentId-helm')
+        if [ -z "$CHART_NAME" ]; then
+            echo "::error file=components.yaml::Cannot get componentId-helm from components.yaml"
+            exit 1
+        fi
+    fi
+
+    # Set chartpath
+    export CHART_DIR
+    [ -z "$CHART_DIR" ] && CHART_DIR="manifests/chart/${CHART_NAME}"
+
+    # Get K8S registry pull secret name and registry
+    export K8S_DOCKER_REGISTRY_SECRET
+    if [ -z "$K8S_DOCKER_REGISTRY_SECRET" ]; then
+        K8S_DOCKER_REGISTRY_SECRET=$(yq r "${CHART_DIR}/values.yaml" 'image.pullSecrets[0].name')
+        [ -z "$K8S_DOCKER_REGISTRY_SECRET" ] && K8S_DOCKER_REGISTRY_SECRET=$(yq r "${CHART_DIR}/values.yaml" 'imagePullSecrets[0].name')
+    fi
+
+    export K8S_DOCKER_REGISTRY
+    if [ -z "$K8S_DOCKER_REGISTRY" ]; then
+        K8S_DOCKER_REGISTRY=$(yq r "${CHART_DIR}/values.yaml" 'image.registry')
+        if [ -z "$K8S_DOCKER_REGISTRY" ]; then
+            echo "::error file=${CHART_DIR}/values.yaml::Cannot get image.registry from values.yaml"
+            exit 1
+        fi
+    fi
+}
+
 install_kubectl() {
     echo "==> Get kubectl:${KUBECTL_VERSION}"
     curl -LsO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
