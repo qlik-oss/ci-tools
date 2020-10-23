@@ -4,7 +4,7 @@ author: 'ibiqlik'
 
 outputs:
   version:
-    description: 'Returns SemVer format *.*.* or *.*.*-shortCommitID'
+    description: 'Returns SemVer format *.*.* or *.*.*-n-g<short-commit-sh>'
     value: ${{ steps.version-info.outputs.VERSION }}
   commit_sha:
     description: 'Returns commit sha ID'

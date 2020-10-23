@@ -4,17 +4,8 @@ set -o pipefail
 RELEASE_TAG="0"
 BRANCH_NAME=""
 
-# Get tags, latest release and its commit sha
-git fetch --depth=1 origin +refs/tags/*:refs/tags/* || true
-
-# Try to get latest v*.*.* tag
-latest_release_tag=$(git tag -l --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1) &>/dev/null
-
-# Return v0.0.0 if no tags found
-[ -z "$latest_release_tag" ] && latest_release_tag="v0.0.0"
-
-# Set preliminary version
-git_rev=${latest_release_tag#v}
+# Unshallow git repository. Do not fail in case the repository is already unshallowed.
+git fetch --prune --unshallow || true
 
 # On push event
 if [ "$GITHUB_EVENT_NAME" == "push" ]; then
@@ -28,12 +19,19 @@ if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     BRANCH_NAME=${GITHUB_HEAD_REF}
 fi
 
-# If _sha is set, create Version var
-[ -n "$_sha" ] && git_rev="${latest_release_tag}-${_sha:0:7}"
+# git-describe - Give an object a human readable name based on an available ref
+# On PR actions/checkout checkouts a merge commit instead of commit sha, git describe
+# returns merge commit. To avoid this unpredictable commit sha, we will describe
+# the actual commit
+git_rev=$(git describe --tags --abbrev=7 ${_sha})
 
+# If no version is returned from git describe, generate one
+[ -z "$git_rev" ] && git_rev="v0.0.0-0-g${_sha:0:7}"
+
+# Return Version without v prefix
 VERSION=${git_rev#v}
 
-# On tag push that matches refs/tags/v*.*.*, use that version
+# On tag push that matches refs/tags/v*.*.*, use that version regardless of git describe
 if echo "$GITHUB_REF" | grep -E 'refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'; then
     VERSION=${GITHUB_REF#*/v}
     RELEASE_TAG="1"
@@ -46,17 +44,17 @@ echo "Set branch_name: ${BRANCH_NAME}"
 
 # Set GitHub Action environment and output variable
 # VERSION
-echo "::set-env name=VERSION::${VERSION}"
+echo "VERSION=${VERSION}" >> $GITHUB_ENV
 echo "::set-output name=VERSION::${VERSION}"
 
 # COMMIT_SHA
-echo "::set-env name=COMMIT_SHA::${_sha}"
+echo "COMMIT_SHA=${_sha}" >> $GITHUB_ENV
 echo "::set-output name=COMMIT_SHA::${_sha}"
 
 # BRANCH_NAME
-echo "::set-env name=BRANCH_NAME::${BRANCH_NAME}"
+echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 echo "::set-output name=BRANCH_NAME::${BRANCH_NAME}"
 
 # RELEASE TAG
-echo "::set-env name=RELEASE_TAG::${RELEASE_TAG}"
+echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
 echo "::set-output name=RELEASE_TAG::${RELEASE_TAG}"
