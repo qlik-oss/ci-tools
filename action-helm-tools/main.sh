@@ -28,12 +28,13 @@ main() {
 set_commit_status() {
   STATUS=$1
 
-  if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ -n "$GITHUB_SHA" ]]; then
+  if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ -n "$GITHUB_SHA" ]] && [[ -n "$GITHUB_TOKEN" ]] && [[ -n "$GITHUB_REPOSITORY" ]]; then
     CONTEXT=${GITHUB_WORKFLOW:="Package Helm Chart"}
+    GITHUB_API_URL=${GITHUB_API_URL:="https://api.github.com"}
     APIURL="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}"
     TARGET_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
-    curl "$APIURL" \
+    curl --fail --silent "$APIURL" \
       -H "Content-Type: application/json" \
       -H "Authorization: token ${GITHUB_TOKEN}" \
       -X POST \
@@ -41,6 +42,6 @@ set_commit_status() {
   fi
 }
 
-set_commit_status "pending"
+set_commit_status "pending" # Indicate start of action on commit status
 main
-set_commit_status "success"
+set_commit_status "success" # Indicate successful action run
