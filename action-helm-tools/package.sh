@@ -19,11 +19,11 @@ $SCRIPT_DIR/resource-contract/dist/check-compliance.js
 echo "==> Helm dependency build"
 helm dependency build $CHART_DIR
 
-echo "==> Linting"
-helm lint $CHART_DIR
-
 echo "==> Update image tag"
 yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
 
 echo "==> Helm package"
 runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"
+
+echo "==> Linting"
+helm lint $CHART_DIR-$VERSION.tgz
