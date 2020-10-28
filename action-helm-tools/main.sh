@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 trap 'set_commit_status "error"' ERR
 
-set -Eeuo pipefail
+set -Eeo pipefail
 
 export SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
