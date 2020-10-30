@@ -5,6 +5,7 @@ source $SCRIPT_DIR/common.sh
 
 public_repos=(
     "bitnami https://charts.bitnami.com/bitnami"
+    "minio https://helm.min.io/"
 )
 
 install_yq
