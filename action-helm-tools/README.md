@@ -52,6 +52,7 @@ ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD
 ## Optional Environment (override) variables
 
 ```yaml
+GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # See NOTE below
 CHART_NAME: mycomponent # Chart name
 CHART_DIR: manifests/charts/mycomponent # Chart path
 EXTRA_HELM_CMD: # Extra helm command(s) (set or -f myValues.yaml) to use when installing chart in K8s cluster
@@ -66,6 +67,14 @@ KUBECTL_VERSION: # Override kubectl version. Default "1.15.4"
 KIND_VERSION: Override KIND version. Default version - look in common.sh
 KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
 DEPLOY_TIMEOUT: # Timeout on waiting for pods to get to running state. Default 300 seconds
+```
+
+**NOTE** If the action is used on a `workflow_dispatch`, the commit status (check) is not set automatically when workflow is ran. To set commit status, add the following environment variable:
+
+```yaml
+uses: qlik-oss/ci-tools/action-helm-tools@master
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Example workflow
