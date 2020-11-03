@@ -35,4 +35,4 @@ echo "==> Helm package"
 runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"
 
 echo "==> Linting"
-helm lint $CHART_NAME-$VERSION.tgz
+runthis "helm lint $CHART_NAME-$VERSION.tgz"
