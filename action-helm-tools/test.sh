@@ -8,7 +8,6 @@ install_helm
 install_yq
 get_component_properties
 setup_kind
-setup_tiller
 
 echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
@@ -21,7 +20,7 @@ fi
 
 [ -f "$CHART_DIR/tests/ci-values.yaml" ] && CI_VALUES="-f ${CHART_DIR}/tests/ci-values.yaml"
 
-runthis "helm install $CHART_NAME-$VERSION.tgz --name $CHART_NAME --namespace $CHART_NAME $CI_VALUES $EXTRA_HELM_CMD"
+runthis "helm install $CHART_NAME $CHART_NAME-$VERSION.tgz --namespace $CHART_NAME --create-namespace $CI_VALUES $EXTRA_HELM_CMD"
 
 sleep 30
 check_helm_deployment

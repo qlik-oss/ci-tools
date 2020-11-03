@@ -8,7 +8,7 @@ export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="2.16.12"}
+export HELM_VERSION=${HELM_VERSION:="3.4.0"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
 export KIND_VERSION=${KIND_VERSION:="v0.8.1"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
@@ -71,15 +71,6 @@ install_helm() {
         echo "Helm $(helm version --short -c) is not desired version"
         get_helm
     fi
-}
-
-setup_tiller() {
-    echo "==> Instal tiller"
-    install_helm
-    kubectl create serviceaccount tiller --namespace kube-system --save-config --dry-run --output=yaml | kubectl apply -f -
-    kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin \
-        --serviceaccount=kube-system:tiller --save-config --dry-run --output=yaml | kubectl apply -f -
-    helm init --service-account tiller --upgrade --wait
 }
 
 check_helm_deployment() {

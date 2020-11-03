@@ -33,13 +33,13 @@ process_args "$@"
 [[ -z "$RELEASE" ]] && echo "--release not provided" && exit 1
 
 while [[ $SECONDS -lt $((SECONDS+60)) ]]; do
-  if helm get manifest $RELEASE; then
+  if helm get manifest $RELEASE --namespace $RELEASE; then
     break
   fi
 done
 
 get_pods() {
-  pods=$(kubectl get pods -n $NAMESPACE -l "release=$RELEASE" -o "jsonpath={.items[*].status.containerStatuses[?(@.ready!=true)].name}")
+  pods=$(kubectl get pods -n $NAMESPACE -o "jsonpath={.items[*].status.containerStatuses[?(@.ready!=true)].name}")
   echo "Pods not ready: $pods"
 }
 
