@@ -14,11 +14,12 @@ try {
     const {dependencies} = yaml.safeLoadAll(fileContents)[0];
     const dependency = dependencies.find(dep => dep.name == 'qlikcommon');
     if (dependency == undefined) {
-        core.warning(`Component is not using resource contract`)
+        core.warning(`The chart must be converted to Resource Contract`)
     }
     else if (dependency.version != requiredVersion) {
-        core.warning(`Wrong version of qlikcommon: ${dependency.version} (required: ${requiredVersion})`);
+        core.warning(`qlikcommon: ${dependency.version} is outdated, upgrade to ${requiredVersion}`);
     }
 } catch (error) {
-    core.warning(error.message);
+    console.log(error.message);
+    core.warning("The chart must be converted to Resource Contract");
 }
