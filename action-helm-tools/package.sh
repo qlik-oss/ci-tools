@@ -34,5 +34,5 @@ yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
 echo "==> Helm package"
 runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"
 
-echo "==> Linting $CHART_NAME-$VERSION.tgz"
-helm lint $CHART_NAME-$VERSION.tgz
+echo "==> Linting"
+runthis "helm lint $CHART_NAME-$VERSION.tgz"
