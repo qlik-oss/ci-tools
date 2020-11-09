@@ -9,8 +9,14 @@ runs:
   steps:
     - id: clone-repo-with-verification-commands
       run: |
-        export BRANCH_ARG=$(if [ -z ${VERIFICATION_COMMAND_REPO_BRANCH} ]; then echo ""; else echo "-b ${VERIFICATION_COMMAND_REPO_BRANCH}"; fi)
-        echo ${GITHUB_TOKEN} | xargs -I % git clone ${BRANCH_ARG} https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+        echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+        # TODO: Rename VERIFICATION_COMMAND_REPO_BRANCH to VERIFICATION_COMMAND_REPO_REF
+        if [ -n "${VERIFICATION_COMMAND_REPO_BRANCH}" ]; then
+          cd ${VERIFICATION_COMMAND_REPO_NAME}
+          # If VERIFICATION_COMMAND_REPO_BRANCH has a "refs/heads/" prefix, the prefix (11 characters long)
+          # must be removed for the checkout command to work.
+          git checkout ${VERIFICATION_COMMAND_REPO_BRANCH} || git checkout ${VERIFICATION_COMMAND_REPO_BRANCH:11}
+        fi
       shell: bash
     - id: run-verification-command
       run: |
