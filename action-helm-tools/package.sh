@@ -13,7 +13,6 @@ get_component_properties
 yaml_lint
 install_helm
 
-helm init --client-only
 echo "==> Helm add repo"
 helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
 for repo in "${public_repos[@]}"; do
