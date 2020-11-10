@@ -14,9 +14,11 @@ runs:
         if [ -n "${VERIFICATION_COMMAND_REPO_BRANCH}" ]; then
           export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
           cd ${VERIFICATION_COMMAND_REPO_NAME}
-          # If VERIFICATION_COMMAND_REPO_BRANCH has a "refs/heads/" prefix, the prefix (11 characters long)
-          # must be removed for the checkout command to work.
-          git checkout ${VERIFICATION_COMMAND_REPO_BRANCH} || git checkout ${VERIFICATION_COMMAND_REPO_BRANCH:11}
+          if [[ $VERIFICATION_COMMAND_REPO_BRANCH == refs/heads/* ]]; then
+            git checkout ${VERIFICATION_COMMAND_REPO_BRANCH:11}
+          else
+            git checkout ${VERIFICATION_COMMAND_REPO_BRANCH}
+          fi
         fi
       shell: bash
     - id: run-verification-command
