@@ -80,4 +80,4 @@ if [[ $deployed -ne 1 ]]; then
 fi
 
 echo "==> Pods"
-kubectl get pods -n $NAMESPACE
+kubectl describe pods -n $NAMESPACE
