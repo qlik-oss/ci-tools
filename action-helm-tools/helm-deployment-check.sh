@@ -39,7 +39,7 @@ while [[ $SECONDS -lt $((SECONDS+60)) ]]; do
 done
 
 get_pods() {
-  pods=$(kubectl get pods -n $NAMESPACE -o "jsonpath={.items[*].status.containerStatuses[?(@.ready!=true)].name}")
+  pods=$(kubectl get pods -n $NAMESPACE -o json | jq -r '.items[] | select(.status.phase? != "Running" or .status.containerStatuses[]?.ready != true) | .metadata.name' )
   echo "Pods not ready: $pods"
 }
 
@@ -72,9 +72,9 @@ if [[ $deployed -ne 1 ]]; then
     set +e
     logfile="${POD_LOGS}/${pod}.log"
     echo "==> Pod logs: $pod" | tee -a "$logfile"
-    kubectl logs -n $NAMESPACE -l "app=${pod}" --all-containers 2>&1 | tee -a "$logfile"
+    kubectl logs -n "$NAMESPACE" "$pod" --all-containers 2>&1 | tee -a "$logfile"
     echo "==> Pod describe: $pod" | tee -a "$logfile"
-    kubectl describe pod -n $NAMESPACE -l "app=${pod}" 2>&1 | tee -a "$logfile"
+    kubectl describe pod -n "$NAMESPACE" "$pod" 2>&1 | tee -a "$logfile"
   done
   exit 1
 fi
