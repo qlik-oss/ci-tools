@@ -13,6 +13,8 @@ VERSION="v${VERSION}"
 
 GH_REPO=${GITHUB_REPOSITORY#*/}
 
+BRANCH_TO_RELEASE_FROM=${BRANCH_TO_RELEASE_FROM:=""}
+
 body_template='{"event_type":"pre-release","client_payload":{"repository":"%s","tag":"%s","branch_to_release_from":"%s"}}'
 body=$(printf $body_template "$GH_REPO" "$VERSION" "$BRANCH_TO_RELEASE_FROM")
 
