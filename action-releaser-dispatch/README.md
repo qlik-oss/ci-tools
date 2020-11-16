@@ -11,7 +11,7 @@ The action will only trigger if the required environment variable `VERSION` is s
 
 ## Optional environment variables
 
-- `BRANCH_TO_RELEASE_FROM` - Branch to release from in component repository; if this variable is not set, the default branch will be used as branch to release from
+- `BRANCH_TO_RELEASE_FROM` - Branch to release from in component repository; defaults to empty string, causing the release to be done from the default branch
 
 ### If used in full Github action workflow
 
