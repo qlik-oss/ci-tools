@@ -39,7 +39,7 @@ while [[ $SECONDS -lt $((SECONDS+60)) ]]; do
 done
 
 get_pods() {
-  pods=$(kubectl get pods -n $NAMESPACE -o "jsonpath={.items[*].status.containerStatuses[?(@.ready!=true)].name}")
+  pods=$(kubectl get pods -n $NAMESPACE -o json | jq -r '.items[] | select(.status.phase? != "Running" or .status.containerStatuses[]?.ready != true) | .metadata.name' )
   echo "Pods not ready: $pods"
 }
 
