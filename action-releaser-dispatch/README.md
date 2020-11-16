@@ -7,7 +7,11 @@ The action will only trigger if the required environment variable `VERSION` is s
 ## Required environment variables
 
 - `GH_PAT` - GitHub Personal Access Token
-- `VERSION` - Environment variable
+- `VERSION` - Component version to release
+
+## Optional environment variables
+
+- `BRANCH_TO_RELEASE_FROM` - Branch to release from in component repository; if this variable is not set, the default branch will be used as branch to release from
 
 ### If used in full Github action workflow
 
