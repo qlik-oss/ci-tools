@@ -72,9 +72,9 @@ if [[ $deployed -ne 1 ]]; then
     set +e
     logfile="${POD_LOGS}/${pod}.log"
     echo "==> Pod logs: $pod" | tee -a "$logfile"
-    kubectl logs -n $NAMESPACE -l "app=${pod}" --all-containers 2>&1 | tee -a "$logfile"
+    kubectl logs -n "$NAMESPACE" "$pod" --all-containers 2>&1 | tee -a "$logfile"
     echo "==> Pod describe: $pod" | tee -a "$logfile"
-    kubectl describe pod -n $NAMESPACE -l "app=${pod}" 2>&1 | tee -a "$logfile"
+    kubectl describe pod -n "$NAMESPACE" "$pod" 2>&1 | tee -a "$logfile"
   done
   exit 1
 fi
