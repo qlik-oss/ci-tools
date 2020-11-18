@@ -8,7 +8,7 @@ executors:
   default:
     docker:
       - image: circleci/golang:1.15
-      
+
 jobs:
   package:
     executor: default
@@ -33,4 +33,3 @@ commands:
       - run: |
           #export VERSION_FILE=<<parameters.version>>
           curl -s "https://raw.githubusercontent.com/qlik-oss/ci-tools/ibi/circlescripts/scripts-circleci/github-package-helm-dispatch.sh" | bash
-
