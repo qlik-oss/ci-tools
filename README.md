@@ -36,7 +36,6 @@ jobs:
       uses: qlik-oss/ci-tools/action-myAction@master
 ```
 
-
 ## Notes
 
-Add executable permissions to scripts so that they are runnable after checkout `git update-index --chmod=+x script.sh` 
+Add executable permissions to scripts so that they are runnable after checkout `git update-index --chmod=+x script.sh`
