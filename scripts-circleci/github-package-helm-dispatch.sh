@@ -3,9 +3,11 @@
 VERSION_FILE=${VERSION_FILE:="/workspace/version.txt"}
 GITHUB_WORKFLOW=${GITHUB_WORKFLOW:="package-helm.yaml"}
 
-if [ -z "${CIRCLE_BRANCH##*release*}" ]; then
-  echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${CIRCLE_BRANCH}"
-  exit 0
+if [ -z "${CIRCLE_TAG}" ]; then
+  if [ -z "${CIRCLE_BRANCH##*release*}" ]; then
+    echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${CIRCLE_BRANCH}"
+    exit 0
+  fi
 fi
 
 if [ -n "${CIRCLE_TAG}" ]; then
