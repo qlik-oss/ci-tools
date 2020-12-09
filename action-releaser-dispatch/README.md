@@ -6,7 +6,7 @@ The action will only trigger if the required environment variable `VERSION` is s
 
 ## Required environment variables
 
-- `GH_PAT` - GitHub Personal Access Token
+- `GITHUB_TOKEN` - GitHub Personal Access Token
 - `VERSION` - Component version to release
 
 ## Optional environment variables
@@ -34,5 +34,5 @@ jobs:
       - uses: qlik-oss/ci-tools/action-version@master
       - uses: qlik-oss/ci-tools/action-releaser-dispatch@master
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 ```
