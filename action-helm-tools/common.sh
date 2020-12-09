@@ -10,9 +10,9 @@ export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.4.0"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.15.4"}
-export KIND_VERSION=${KIND_VERSION:="v0.8.1"}
+export KIND_VERSION=${KIND_VERSION:="v0.9.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
-export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.15.11@sha256:6cc31f3533deb138792db2c7d1ffc36f7456a06f1db5556ad3b6927641016f50"}
+export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.15.12@sha256:d9b939055c1e852fe3d86955ee24976cab46cba518abcb8b13ba70917e6547a6"}
 export YQ_VERSION="3.3.4"
 
 get_component_properties() {
