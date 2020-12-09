@@ -76,6 +76,8 @@ if [[ $deployed -ne 1 ]]; then
     echo "==> Pod describe: $pod" | tee -a "$logfile"
     kubectl describe pod -n "$NAMESPACE" "$pod" 2>&1 | tee -a "$logfile"
   done
+  echo "==> Node spec"
+  kubectl get nodes -o json | jq '.items[].spec'
   exit 1
 fi
 
