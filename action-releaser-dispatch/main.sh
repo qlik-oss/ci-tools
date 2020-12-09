@@ -1,5 +1,5 @@
 #!/bin/bash -l
-set -euo pipefail
+set -eo pipefail
 
 # Strip v prefix
 VERSION=${VERSION#v}
@@ -19,7 +19,7 @@ body_template='{"event_type":"pre-release","client_payload":{"repository":"%s","
 body=$(printf $body_template "$GH_REPO" "$VERSION" "$BRANCH_TO_RELEASE_FROM")
 
 # This block should be removed when GH_PAT is no longer used by any client workflows
-if [ -z "$GITHUB_TOKEN" ]; then
+if [ -z "${GITHUB_TOKEN}" ]; then
   GITHUB_TOKEN=${GH_PAT}
 fi
 
