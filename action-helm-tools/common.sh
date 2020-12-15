@@ -8,7 +8,7 @@ export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="3.4.2"}
+export HELM_VERSION=${HELM_VERSION:="3.4.0"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.16.15"}
 export KIND_VERSION=${KIND_VERSION:="v0.9.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
