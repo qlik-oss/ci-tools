@@ -3,6 +3,8 @@ set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
 
+HELM_LINT_SUBCHARTS=${HELM_LINT_SUBCHARTS:="true"}
+
 public_repos=(
     "bitnami https://charts.bitnami.com/bitnami"
     "minio https://helm.min.io/"
@@ -33,5 +35,8 @@ yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
 echo "==> Helm package"
 runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"
 
+
+[ "$HELM_LINT_SUBCHARTS" == "true" ] && helmlintflags+=(--with-subcharts)
+
 echo "==> Linting"
-runthis "helm lint $CHART_NAME-$VERSION.tgz"
+runthis "helm lint $CHART_NAME-$VERSION.tgz" "${helmlintflags[@]}"

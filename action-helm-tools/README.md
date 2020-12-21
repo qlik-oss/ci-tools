@@ -60,6 +60,7 @@ HELM_REPO: # Artifactory helm repository to push chart to
 HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for pulling dependencies
 HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
 HELM_VERSION: # Override helm version. Default "2.14.3"
+HELM_LINT_SUBCHARTS: # Helm lint subcharts. Default empty
 K8S_DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
 K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
 K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
