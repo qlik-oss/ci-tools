@@ -9,7 +9,7 @@ fi
 # INPUT_EVENT_TYPE
 # INPUT_CLIENT_PAYLOAD
 
-body_template='{"event_type":"%s","client_payload":"%s"}'
+body_template='{"event_type":"%s","client_payload":%s}'
 body=$(printf $body_template "$INPUT_EVENT_TYPE" "$INPUT_CLIENT_PAYLOAD")
 echo "Using ${body}"
 

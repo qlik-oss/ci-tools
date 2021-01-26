@@ -10,7 +10,7 @@ if [ -z "$INPUT_REF" ]; then
   INPUT_REF=$(gh api "repos/${INPUT_OWNER}/${INPUT_REPOSITORY}" | jq -r .default_branch)
 fi
 
-body_template='{"ref":"%s","inputs":"%s"}'
+body_template='{"ref":"%s","inputs":%s}'
 body=$(printf $body_template "$INPUT_REF" "$INPUT_INPUTS")
 echo "Using ${body}"
 
