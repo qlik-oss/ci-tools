@@ -30,8 +30,8 @@ helm dependency build $CHART_DIR
 echo "==> Update image tag"
 yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
 
+echo "==> Linting"
+runthis "helm lint $CHART_DIR --with-subcharts"
+
 echo "==> Helm package"
 runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"
-
-echo "==> Linting"
-runthis "helm lint $CHART_NAME-$VERSION.tgz --with-subcharts"
