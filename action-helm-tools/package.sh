@@ -6,6 +6,7 @@ source $SCRIPT_DIR/common.sh
 public_repos=(
     "bitnami https://charts.bitnami.com/bitnami"
     "minio https://helm.min.io/"
+    "dandydev https://dandydeveloper.github.io/charts"
 )
 
 install_yq
