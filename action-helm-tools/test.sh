@@ -18,6 +18,10 @@ if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
         --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
 fi
 
+if [[ -n "$INIT_CHART" ]]; then
+  runthis "helm install init $INIT_CHART"
+fi
+
 [ -f "$CHART_DIR/tests/ci-values.yaml" ] && CI_VALUES="-f ${CHART_DIR}/tests/ci-values.yaml"
 
 runthis "helm install $CHART_NAME $CHART_NAME-$VERSION.tgz --namespace $CHART_NAME --create-namespace $CI_VALUES $EXTRA_HELM_CMD"
