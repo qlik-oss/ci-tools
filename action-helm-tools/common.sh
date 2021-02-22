@@ -100,7 +100,7 @@ setup_kind() {
     if ! command -v kind; then
         install_kind
     fi
-    kind create cluster --image ${KIND_IMAGE}
+    kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
 }
 
 yaml_lint() {
