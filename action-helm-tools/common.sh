@@ -135,7 +135,7 @@ yaml_lint() {
 install_yq() {
     if ! command -v yq || [[ $(yq --version 2>&1 | cut -d ' ' -f3) != "${YQ_VERSION}" ]] ; then
         echo "==> Get yq:${YQ_VERSION}"
-        sudo curl -Ls https://github.com/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_amd64 -o /usr/local/bin/yq
+        sudo curl -Ls https://github.com/mikefarah/yq/releases/download/v$YQ_VERSION/yq_linux_amd64 -o /usr/local/bin/yq
         sudo chmod +x /usr/local/bin/yq
     fi
 }
