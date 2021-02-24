@@ -50,6 +50,7 @@ commit_and_create_pullrequest() {
 }
 
 if [[ "${DEPENDENCY_UPDATE}" == "true" ]]; then
+  sudo npm i -g semver
   get_component_properties
   add_helm_repos
   helm_dependency_updater
