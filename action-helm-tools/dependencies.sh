@@ -27,8 +27,8 @@ commit_and_create_pullrequest() {
   BRANCH_NAME="ci-tools/helm-dependency-updater"
   COMMIT_MSG="chore(deps): Update helm requirements"
 
-  git config --user.name "bot"
-  git config --user.email "bot"
+  git config --global user.email "bot"
+  git config --global user.name "bot"
   git checkout "$BRANCH_NAME" 2>/dev/null || git checkout -b "$BRANCH_NAME"
 
   echo "Commit files to ${GITHUB_REPOSITORY} and create pull request"
