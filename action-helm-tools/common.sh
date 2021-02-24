@@ -23,7 +23,7 @@ get_component_properties() {
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
         CHART_NAME=$(yq e '.components[0].componentId-helm' components.yaml)
-        if [ -z "$CHART_NAME" ]; then
+        if [ "$CHART_NAME" = "null" ]; then
             echo "::error file=components.yaml::Cannot get componentId-helm from components.yaml"
             exit 1
         fi
@@ -37,13 +37,13 @@ get_component_properties() {
     export K8S_DOCKER_REGISTRY_SECRET
     if [ -z "$K8S_DOCKER_REGISTRY_SECRET" ]; then
         K8S_DOCKER_REGISTRY_SECRET=$(yq e '.image.pullSecrets[0].name' "${CHART_DIR}/values.yaml")
-        [ -z "$K8S_DOCKER_REGISTRY_SECRET" ] && K8S_DOCKER_REGISTRY_SECRET=$(yq e '.imagePullSecrets[0].name' "${CHART_DIR}/values.yaml" )
+        [ "$K8S_DOCKER_REGISTRY_SECRET" = "null" ] && K8S_DOCKER_REGISTRY_SECRET=$(yq e '.imagePullSecrets[0].name' "${CHART_DIR}/values.yaml")
     fi
 
     export K8S_DOCKER_REGISTRY
     if [ -z "$K8S_DOCKER_REGISTRY" ]; then
         K8S_DOCKER_REGISTRY=$(yq e '.image.registry' "${CHART_DIR}/values.yaml")
-        if [ -z "$K8S_DOCKER_REGISTRY" ]; then
+        if [ "$K8S_DOCKER_REGISTRY" = "null" ]; then
             echo "::error file=${CHART_DIR}/values.yaml::Cannot get image.registry from values.yaml"
             exit 1
         fi
