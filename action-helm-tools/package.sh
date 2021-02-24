@@ -3,33 +3,19 @@ set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
 
-public_repos=(
-    "bitnami https://charts.bitnami.com/bitnami"
-    "minio https://helm.min.io/"
-    "dandydev https://dandydeveloper.github.io/charts"
-)
-
 install_yq
 get_component_properties
 yaml_lint
-install_helm
+add_helm_repos
 
-echo "==> Helm add repo"
-helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
-for repo in "${public_repos[@]}"; do
-	IFS=" " read -r -a arr <<< "${repo}"
-    helm repo add "${arr[0]}" "${arr[1]}"
-done
-helm repo update
-
-export LATEST_QLIKCOMMON_VERSION=$(helm inspect chart qlik/qlikcommon | yq r - 'version')
+export LATEST_QLIKCOMMON_VERSION=$(helm inspect chart qlik/qlikcommon | yq e '.version' -)
 $SCRIPT_DIR/resource-contract/dist/check-compliance.js
 
 echo "==> Helm dependency build"
-helm dependency build $CHART_DIR
+helm dependency build "$CHART_DIR"
 
 echo "==> Update image tag"
-yq write --inplace $CHART_DIR/values.yaml image.tag $VERSION
+yq e --inplace '.image.tag |= env(VERSION)' "$CHART_DIR/values.yaml"
 
 echo "==> Linting"
 runthis "helm lint $CHART_DIR --with-subcharts"

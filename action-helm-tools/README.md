@@ -53,6 +53,7 @@ ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD
 
 ```yaml
 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # See NOTE below
+DEPENDENCY_UPDATE: "true|false" # Check for chart dependency updates and create PR with updates
 CHART_NAME: mycomponent # Chart name
 CHART_DIR: manifests/charts/mycomponent # Chart path
 EXTRA_HELM_CMD: # Extra helm command(s) (set or -f myValues.yaml) to use when installing chart in K8s cluster
