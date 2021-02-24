@@ -23,6 +23,8 @@ main() {
         "$SCRIPT_DIR/$INPUT_ACTION.sh"
     fi
 
+    "$SCRIPT_DIR/dependencies.sh"
+
 }
 
 set_commit_status() {

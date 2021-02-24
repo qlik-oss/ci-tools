@@ -3,9 +3,6 @@ set -eo pipefail
 
 source $SCRIPT_DIR/common.sh
 
-get_component_properties
-add_helm_repos
-
 helm_dependency_updater() {
   echo "==> Helm dependency update"
   # Get qlik dependencies
@@ -53,6 +50,8 @@ commit_and_create_pullrequest() {
 }
 
 if [[ "${DEPENDENCY_UPDATE}" == "true" ]]; then
+  get_component_properties
+  add_helm_repos
   helm_dependency_updater
   commit_and_create_pullrequest
 fi
