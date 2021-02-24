@@ -26,7 +26,14 @@ helm_dependency_updater() {
   echo "==> Helm dependency update"
 
   # Get qlik dependencies
+  if [ ! -f "$CHART_DIR/requirements.yaml" ]; then
+    echo "No requirements found, continue."
+    exit 0
+  fi
+
   deps=($(yq e '.dependencies[] | select(.repository == "@qlik") | .name + ";" + .version' $CHART_DIR/requirements.yaml))
+
+  [ ${#deps[@]} -eq 0 ] && exit 0
 
   for dep in "${deps[@]}"; do
     IFS=";" read -r -a d <<< "${dep}"
