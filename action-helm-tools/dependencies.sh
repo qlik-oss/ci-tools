@@ -50,6 +50,10 @@ commit_and_create_pullrequest() {
 }
 
 if [[ "${DEPENDENCY_UPDATE}" == "true" ]]; then
+  if [[ -z "$GITHUB_TOKEN" ]]; then
+    echo "GITHUB_TOKEN missing, cannot update dependencies"
+    exit 0
+  fi
   sudo npm i -g semver
   get_component_properties
   add_helm_repos
