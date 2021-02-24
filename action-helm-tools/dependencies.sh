@@ -1,7 +1,23 @@
 #!/bin/bash -l
 set -eo pipefail
+set -x
 
 source $SCRIPT_DIR/common.sh
+
+BRANCH_NAME="ci-tools/helm-dependency-updater"
+COMMIT_MSG="chore(deps): Update helm requirements"
+
+prep_git() {
+  git config user.name github-actions
+  git config user.email github-actions@github.com
+  git fetch --prune --unshallow || true
+  git fetch --all
+  git checkout -- .
+  DEFAULT_BRANCH=$(git ls-remote --symref "https://github.com/${GITHUB_REPOSITORY}.git" HEAD | grep refs/heads | awk '{split($2, a, "/"); print a[3] }')
+  git checkout "$DEFAULT_BRANCH"
+  git reset --hard "origin/$DEFAULT_BRANCH"
+  git checkout "$BRANCH_NAME" 2>/dev/null || git checkout -b "$BRANCH_NAME"
+}
 
 helm_dependency_updater() {
   echo "==> Helm dependency update"
@@ -24,13 +40,6 @@ helm_dependency_updater() {
 }
 
 commit_and_create_pullrequest() {
-  BRANCH_NAME="ci-tools/helm-dependency-updater"
-  COMMIT_MSG="chore(deps): Update helm requirements"
-
-  git config --global user.email "bot"
-  git config --global user.name "bot"
-  git checkout "$BRANCH_NAME" 2>/dev/null || git checkout -b "$BRANCH_NAME"
-
   echo "Commit files to ${GITHUB_REPOSITORY} and create pull request"
   git add "$CHART_DIR/requirements.yaml" "$CHART_DIR/requirements.lock"
 
@@ -54,6 +63,7 @@ if [[ "${DEPENDENCY_UPDATE}" == "true" ]]; then
     echo "GITHUB_TOKEN missing, cannot update dependencies"
     exit 0
   fi
+  prep_git
   sudo npm i -g semver
   get_component_properties
   add_helm_repos
