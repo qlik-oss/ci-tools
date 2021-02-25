@@ -40,8 +40,8 @@ helm_dependency_updater() {
   for dep in "${deps[@]}"; do
     IFS=";" read -r -a d <<< "${dep}"
       echo "Checking for new version of ${d[0]}:${d[1]}"
-      echo "Latest version ${d[0]}:" # Next line prints out the version
       latest_chart_version=$(helm search repo "qlik/${d[0]}" -o yaml | yq e '.[0].version' -)
+      echo "Latest available version ${d[0]}:$latest_chart_version"
       if semver -r ">${d[1]}" $latest_chart_version; then
         echo "Update ${d[0]}:${d[1]} to $latest_chart_version"
         yq e -i '(.dependencies.[] | select(.name == "'"${d[0]}"'") | .version ) |= "'$latest_chart_version'"' "$CHART_DIR/requirements.yaml"
