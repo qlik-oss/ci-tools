@@ -31,6 +31,8 @@ helm_dependency_updater() {
     exit 0
   fi
 
+  UPDATE_AVAILABLE=0
+
   deps=($(yq e '.dependencies[] | select(.repository == "@qlik") | .name + ";" + .version' $CHART_DIR/requirements.yaml))
 
   [ ${#deps[@]} -eq 0 ] && exit 0
@@ -43,12 +45,18 @@ helm_dependency_updater() {
       if semver -r ">${d[1]}" $latest_chart_version; then
         echo "Update ${d[0]}:${d[1]} to $latest_chart_version"
         yq e -i '(.dependencies.[] | select(.name == "'"${d[0]}"'") | .version ) |= "'$latest_chart_version'"' "$CHART_DIR/requirements.yaml"
+        UPDATE_AVAILABLE=1
       else
         echo "${d[0]}:${d[1]} already up to date, continue"
       fi
   done
 
-  helm dep update "$CHART_DIR"
+  if [ "$UPDATE_AVAILABLE" -eq "1" ]; then
+    helm dep update "$CHART_DIR"
+  else
+    echo "No updates available, continue"
+    exit 0
+  fi
 }
 
 commit_and_create_pullrequest() {
