@@ -6,6 +6,7 @@ export HELM_REPO=${HELM_REPO:="helm-dev"}
 export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
 export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
+export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.4.0"}
@@ -13,7 +14,7 @@ export KUBECTL_VERSION=${KUBECTL_VERSION:="1.16.15"}
 export KIND_VERSION=${KIND_VERSION:="v0.9.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.16.15@sha256:a89c771f7de234e6547d43695c7ab047809ffc71a0c3b65aa54eda051c45ed20"}
-export YQ_VERSION="3.3.4"
+export YQ_VERSION="4.6.0"
 
 get_component_properties() {
     install_yq
@@ -21,8 +22,8 @@ get_component_properties() {
     # Get chartname
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
-        CHART_NAME=$(yq r components.yaml 'components[0].componentId-helm')
-        if [ -z "$CHART_NAME" ]; then
+        CHART_NAME=$(yq e '.components[0].componentId-helm' components.yaml)
+        if [ "$CHART_NAME" = "null" ]; then
             echo "::error file=components.yaml::Cannot get componentId-helm from components.yaml"
             exit 1
         fi
@@ -35,14 +36,14 @@ get_component_properties() {
     # Get K8S registry pull secret name and registry
     export K8S_DOCKER_REGISTRY_SECRET
     if [ -z "$K8S_DOCKER_REGISTRY_SECRET" ]; then
-        K8S_DOCKER_REGISTRY_SECRET=$(yq r "${CHART_DIR}/values.yaml" 'image.pullSecrets[0].name')
-        [ -z "$K8S_DOCKER_REGISTRY_SECRET" ] && K8S_DOCKER_REGISTRY_SECRET=$(yq r "${CHART_DIR}/values.yaml" 'imagePullSecrets[0].name')
+        K8S_DOCKER_REGISTRY_SECRET=$(yq e '.image.pullSecrets[0].name' "${CHART_DIR}/values.yaml")
+        [ "$K8S_DOCKER_REGISTRY_SECRET" = "null" ] && K8S_DOCKER_REGISTRY_SECRET=$(yq e '.imagePullSecrets[0].name' "${CHART_DIR}/values.yaml")
     fi
 
     export K8S_DOCKER_REGISTRY
     if [ -z "$K8S_DOCKER_REGISTRY" ]; then
-        K8S_DOCKER_REGISTRY=$(yq r "${CHART_DIR}/values.yaml" 'image.registry')
-        if [ -z "$K8S_DOCKER_REGISTRY" ]; then
+        K8S_DOCKER_REGISTRY=$(yq e '.image.registry' "${CHART_DIR}/values.yaml")
+        if [ "$K8S_DOCKER_REGISTRY" = "null" ]; then
             echo "::error file=${CHART_DIR}/values.yaml::Cannot get image.registry from values.yaml"
             exit 1
         fi
@@ -71,6 +72,25 @@ install_helm() {
         echo "Helm $(helm version --short -c) is not desired version"
         get_helm
     fi
+}
+
+add_helm_repos() {
+  install_helm
+  get_component_properties
+
+  public_repos=(
+    "bitnami https://charts.bitnami.com/bitnami"
+    "minio https://helm.min.io/"
+    "dandydev https://dandydeveloper.github.io/charts"
+  )
+
+  echo "==> Helm add repo"
+  helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
+  for repo in "${public_repos[@]}"; do
+    IFS=" " read -r -a arr <<< "${repo}"
+      helm repo add "${arr[0]}" "${arr[1]}"
+  done
+  helm repo update
 }
 
 check_helm_deployment() {
@@ -115,7 +135,7 @@ yaml_lint() {
 install_yq() {
     if ! command -v yq || [[ $(yq --version 2>&1 | cut -d ' ' -f3) != "${YQ_VERSION}" ]] ; then
         echo "==> Get yq:${YQ_VERSION}"
-        sudo curl -Ls https://github.com/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_amd64 -o /usr/local/bin/yq
+        sudo curl -Ls https://github.com/mikefarah/yq/releases/download/v$YQ_VERSION/yq_linux_amd64 -o /usr/local/bin/yq
         sudo chmod +x /usr/local/bin/yq
     fi
 }
