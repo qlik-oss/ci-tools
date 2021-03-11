@@ -10,10 +10,10 @@ export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.4.0"}
-export KUBECTL_VERSION=${KUBECTL_VERSION:="1.16.15"}
-export KIND_VERSION=${KIND_VERSION:="v0.9.0"}
+export KUBECTL_VERSION=${KUBECTL_VERSION:="1.17.17"}
+export KIND_VERSION=${KIND_VERSION:="v0.10.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
-export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.16.15@sha256:a89c771f7de234e6547d43695c7ab047809ffc71a0c3b65aa54eda051c45ed20"}
+export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.17.17@sha256:7b6369d27eee99c7a85c48ffd60e11412dc3f373658bc59b7f4d530b7056823e"}
 export YQ_VERSION="4.6.0"
 
 get_component_properties() {
