@@ -82,6 +82,7 @@ add_helm_repos() {
     "bitnami https://charts.bitnami.com/bitnami"
     "minio https://helm.min.io/"
     "dandydev https://dandydeveloper.github.io/charts"
+    "stable https://charts.helm.sh/stable"
   )
 
   echo "==> Helm add repo"
