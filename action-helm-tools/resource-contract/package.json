@@ -19,6 +19,6 @@
   "homepage": "https://github.com/qlik-oss/ci-tools#readme",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "js-yaml": "^3.14.0"
+    "js-yaml": "^4.0.0"
   }
 }
