@@ -69,6 +69,7 @@ KIND_VERSION: Override KIND version. Default version - look in common.sh
 KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
 DEPLOY_TIMEOUT: # Timeout on waiting for pods to get to running state. Default 300 seconds
 INIT_CHART: repo/chartName # If another chart's deployment is required prior to deploying the packaged chart
+IMAGE_TAG_UPDATE: "true|false" # DEFAULT true; Update image.tag based on VERSION env variable
 ```
 
 **NOTE** If the action is used on a `workflow_dispatch`, the commit status (check) is not set automatically when workflow is ran. To set commit status, add the following environment variable:

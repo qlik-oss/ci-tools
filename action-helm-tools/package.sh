@@ -14,8 +14,12 @@ $SCRIPT_DIR/resource-contract/dist/check-compliance.js
 echo "==> Helm dependency build"
 helm dependency build "$CHART_DIR"
 
-echo "==> Update image tag"
-yq e --inplace '.image.tag |= env(VERSION)' "$CHART_DIR/values.yaml"
+if [ "$IMAGE_TAG_UPDATE" = "false" ]; then
+  echo "==> Skip updating image.tag due to IMAGE_TAG_UPDATE=$IMAGE_TAG_UPDATE"
+else
+  echo "==> Update image.tag"
+  yq e --inplace '.image.tag |= env(VERSION)' "$CHART_DIR/values.yaml"
+fi
 
 echo "==> Linting"
 runthis "helm lint $CHART_DIR --with-subcharts"
