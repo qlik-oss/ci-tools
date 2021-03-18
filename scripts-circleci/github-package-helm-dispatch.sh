@@ -18,17 +18,27 @@ if [ -z "${VERSION}" ]; then
   exit 1
 fi
 
-if [ -z "${CIRCLE_TAG}" ]; then
-  if [ -z "${CIRCLE_BRANCH##*released*}" ]; then
-    echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${CIRCLE_BRANCH}"
+TAG_TO_USE=CIRCLE_TAG  # Circle CI
+if [ -z "${TAG_TO_USE}" ]; then
+  TAG_TO_USE=${TAG_NAME}  # Jenkins
+fi
+
+BRANCH_TO_USE=CIRCLE_BRANCH  # Circle CI
+if [ -z "${BRANCH_TO_USE}" ]; then
+  BRANCH_TO_USE=${GIT_BRANCH}  # Jenkins
+fi
+
+if [ -z "${TAG_TO_USE}" ]; then
+  if [ -z "${BRANCH_TO_USE##*released*}" ]; then
+    echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${BRANCH_TO_USE}"
     exit 0
   fi
 fi
 
-if [ -n "${CIRCLE_TAG}" ]; then
-  REF=${CIRCLE_TAG}
+if [ -n "${TAG_TO_USE}" ]; then
+  REF=${TAG_TO_USE}
 else
-  REF=${CIRCLE_BRANCH}
+  REF=${BRANCH_TO_USE}
 fi
 
 body_template='{"ref":"%s","inputs":{"version":"%s"}}'
