@@ -18,12 +18,12 @@ if [ -z "${VERSION}" ]; then
   exit 1
 fi
 
-TAG_TO_USE=CIRCLE_TAG  # Circle CI
+TAG_TO_USE=${CIRCLE_TAG}  # Circle CI
 if [ -z "${TAG_TO_USE}" ]; then
   TAG_TO_USE=${TAG_NAME}  # Jenkins
 fi
 
-BRANCH_TO_USE=CIRCLE_BRANCH  # Circle CI
+BRANCH_TO_USE=${CIRCLE_BRANCH}  # Circle CI
 if [ -z "${BRANCH_TO_USE}" ]; then
   BRANCH_TO_USE=${GIT_BRANCH}  # Jenkins
 fi
