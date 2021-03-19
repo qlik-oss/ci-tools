@@ -8,5 +8,5 @@ And make sure that the environment variable **GH_ACCESS_TOKEN** is defined
 
 ```Jenkinsfile
       // Package Helm chart
-      sh 'export VERSION_FILE=./docker-version.txt ; curl -s "https://raw.githubusercontent.com/qlik-oss/ci-tools/master/scripts-circleci/github-package-helm-dispatch.sh" | bash'
+      sh 'export VERSION_FILE=./docker-version.txt ; curl -s "https://raw.githubusercontent.com/qlik-oss/ci-tools/master/scripts-jenkins/github-package-helm-dispatch.sh" | bash'
 ```
