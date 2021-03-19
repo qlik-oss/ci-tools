@@ -2,7 +2,10 @@
 
 Place the following snippet in your Jenkinsfile to call `package-helm` Github Actions workflow in your repository
 
-And make sure that the environment variable **GH_ACCESS_TOKEN** is defined
+And make sure that these environment variables are defined
+* **GITHUB_OWNER** - typically `qlik-trial`
+* **GITHUB_REPONAME** - repo name
+* **GH_ACCESS_TOKEN** - token with repo scope
 
 **NOTE:** VERSION_FILE variable is optional if version.txt is located in `/workspace/version.txt`, if located elsewhere comment out the export command and set the correct path.
 
