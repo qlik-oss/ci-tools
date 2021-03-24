@@ -23,7 +23,7 @@ if [ -z "${GITHUB_TOKEN}" ]; then
   GITHUB_TOKEN=${GH_PAT}
 fi
 
-curl --fail --location --request POST "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/dispatches" \
+curl -i --fail --location --request POST "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/dispatches" \
     --header "Authorization: token ${GITHUB_TOKEN}" \
     --header "Content-Type: application/json" \
-    --data ${body}
+    --data "${body}"

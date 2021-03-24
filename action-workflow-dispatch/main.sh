@@ -16,7 +16,7 @@ echo "Using ${body}"
 
 URL="${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPOSITORY}/actions/workflows/${INPUT_WORKFLOW}/dispatches"
 
-curl --fail --location --request POST "$URL" \
+curl -i --fail --location --request POST "$URL" \
   --header "Authorization: token ${GITHUB_TOKEN}" \
   --header "Content-Type: application/json" \
   --header "Accept: application/vnd.github.v3+json" \
