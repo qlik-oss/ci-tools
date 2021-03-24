@@ -35,7 +35,7 @@ body_template='{"ref":"%s","inputs":{"version":"%s"}}'
 body=$(printf $body_template "$REF" "$VERSION")
 echo "Using ${body}"
 
-curl --fail --location --request POST "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
+curl -i --fail --location --request POST "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
   --header "Authorization: token ${GH_ACCESS_TOKEN}" \
   --header "Content-Type: application/json" \
   --header "Accept: application/vnd.github.v3+json" \
