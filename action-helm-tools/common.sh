@@ -130,7 +130,7 @@ yaml_lint() {
         sudo pip install yamllint
     fi
 
-    yamllint -c "$SCRIPT_DIR/default.yamllint" $CHART_DIR
+    yamllint -c "$SCRIPT_DIR/default.yamllint" $CHART_DIR -f parsable
 }
 
 install_yq() {
