@@ -121,7 +121,21 @@ setup_kind() {
     if ! command -v kind; then
         install_kind
     fi
-    kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
+
+    clusters=( $(kind get clusters -q) )
+
+    exists=0
+    for cluster in "${clusters[@]}"; do
+      if [[ "${cluster}" = "${CHART_NAME}" ]]; then
+        echo "KIND cluster ${CHART_NAME} exist, continue"
+        exists=1
+        break
+      fi
+    done
+
+    if [[ "$exists" = 0 ]]; then
+      kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
+    fi
 }
 
 yaml_lint() {
