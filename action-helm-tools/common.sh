@@ -130,7 +130,7 @@ setup_kind() {
     if [ -z "$clusters" ]; then
       kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
     else
-        echo "KIND cluster already exist, continue"
+      echo "KIND cluster already exist, continue"
     fi
 }
 

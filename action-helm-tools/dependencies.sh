@@ -38,7 +38,7 @@ helm_dependency_updater() {
     DEPENDENCIES_FILE="$CHART_DIR/Chart.yaml"
     DEPENDENCIES_LOCK_FILE="$CHART_DIR/Chart.lock"
   else
-    echo "::warning ::Could not determine help apiVersion from $CHART_DIR/Chart.yaml"
+    echo "::warning ::Could not determine helm apiVersion from $CHART_DIR/Chart.yaml"
     exit 0
   fi
 
