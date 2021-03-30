@@ -48,6 +48,9 @@ get_component_properties() {
             exit 1
         fi
     fi
+
+    export CHART_APIVERSION
+    CHART_APIVERSION="$(helm inspect chart "$CHART_DIR" | yq e '.apiVersion' -)"
 }
 
 install_kubectl() {
