@@ -48,6 +48,9 @@ get_component_properties() {
             exit 1
         fi
     fi
+
+    export CHART_APIVERSION
+    CHART_APIVERSION="$(helm inspect chart "$CHART_DIR" | yq e '.apiVersion' -)"
 }
 
 install_kubectl() {
@@ -121,7 +124,14 @@ setup_kind() {
     if ! command -v kind; then
         install_kind
     fi
-    kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
+
+    clusters=$(kind get clusters -q)
+
+    if [ -z "$clusters" ]; then
+      kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
+    else
+      echo "KIND cluster already exist, continue"
+    fi
 }
 
 yaml_lint() {

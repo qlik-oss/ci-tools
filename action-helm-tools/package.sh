@@ -8,8 +8,7 @@ get_component_properties
 yaml_lint
 add_helm_repos
 
-export LATEST_QLIKCOMMON_VERSION=$(helm inspect chart qlik/qlikcommon | yq e '.version' -)
-$SCRIPT_DIR/resource-contract/dist/check-compliance.js
+$SCRIPT_DIR/qlikcommon-check.sh
 
 echo "==> Helm dependency build"
 helm dependency build "$CHART_DIR"

@@ -25,15 +25,26 @@ prep_git() {
 helm_dependency_updater() {
   echo "==> Helm dependency update"
 
-  # Get qlik dependencies
-  if [ ! -f "$CHART_DIR/requirements.yaml" ]; then
-    echo "No requirements found, continue."
+  export DEPENDENCIES_FILE
+  export DEPENDENCIES_LOCK_FILE
+  if [[ "$CHART_APIVERSION" = "v1" ]]; then
+    DEPENDENCIES_FILE="$CHART_DIR/requirements.yaml"
+    DEPENDENCIES_LOCK_FILE="$CHART_DIR/requirements.lock"
+    if [ ! -f "$CHART_DIR/requirements.yaml" ]; then
+      echo "No requirements found, continue."
+      exit 0
+    fi
+  elif [[ "$CHART_APIVERSION" = "v2" ]]; then
+    DEPENDENCIES_FILE="$CHART_DIR/Chart.yaml"
+    DEPENDENCIES_LOCK_FILE="$CHART_DIR/Chart.lock"
+  else
+    echo "::warning ::Could not determine helm apiVersion from $CHART_DIR/Chart.yaml"
     exit 0
   fi
 
   UPDATE_AVAILABLE=0
 
-  deps=($(yq e '.dependencies[] | select(.repository == "@qlik") | .name + ";" + .version' $CHART_DIR/requirements.yaml))
+  deps=($(yq e '.dependencies[] | select(.repository == "@qlik") | .name + ";" + .version' $DEPENDENCIES_FILE))
 
   [ ${#deps[@]} -eq 0 ] && exit 0
 
@@ -44,7 +55,7 @@ helm_dependency_updater() {
       echo "Latest available version ${d[0]}:$latest_chart_version"
       if semver -r ">${d[1]}" $latest_chart_version; then
         echo "Update ${d[0]}:${d[1]} to $latest_chart_version"
-        yq e -i '(.dependencies.[] | select(.name == "'"${d[0]}"'") | .version ) |= "'$latest_chart_version'"' "$CHART_DIR/requirements.yaml"
+        yq e -i '(.dependencies.[] | select(.name == "'"${d[0]}"'") | .version ) |= "'$latest_chart_version'"' "$DEPENDENCIES_FILE"
         UPDATE_AVAILABLE=1
       else
         echo "${d[0]}:${d[1]} already up to date, continue"
@@ -61,7 +72,7 @@ helm_dependency_updater() {
 
 commit_and_create_pullrequest() {
   echo "Commit files to ${GITHUB_REPOSITORY} and create pull request"
-  git add "$CHART_DIR/requirements.yaml" "$CHART_DIR/requirements.lock"
+  git add "$DEPENDENCIES_FILE" "$DEPENDENCIES_LOCK_FILE"
 
   if [ -n "$(git status --porcelain)" ]; then # If there are staged changes
     echo "Commit and push changes"
