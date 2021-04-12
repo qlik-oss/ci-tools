@@ -1,5 +1,6 @@
 #!/bin/bash -l
 set -eo pipefail
+set -x
 
 source $SCRIPT_DIR/common.sh
 
