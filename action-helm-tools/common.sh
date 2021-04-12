@@ -106,7 +106,7 @@ check_helm_deployment() {
 install_jfrog() {
     if ! command -v jfrog; then
         echo "==> Installing jfrog cli"
-        curl -Lso ./jfrog https://api.bintray.com/content/jfrog/jfrog-cli-go/\$latest/jfrog-cli-linux-amd64/jfrog?bt_package=jfrog-cli-linux-amd64
+        curl -fL https://getcli.jfrog.io | sh
         chmod +x ./jfrog
         sudo mv ./jfrog /usr/local/bin/jfrog
     fi
