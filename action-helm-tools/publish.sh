@@ -10,6 +10,7 @@ install_jfrog
 
 echo "==> Check published version of $CHART_NAME"
 
+echo "==> Searching for existing chart $HELM_REPO/$CHART_NAME-$VERSION.tgz in $REGISTRY"
 if jfrog rt s "$HELM_REPO/$CHART_NAME-$VERSION.tgz" --url $REGISTRY --apikey $ARTIFACTORY_PASSWORD --fail-no-op; then
     printf "$CHART_NAME-$VERSION already exist in artifactory $HELM_REPO, exit\n"
     exit 0
