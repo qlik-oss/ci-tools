@@ -18,6 +18,14 @@ if [ -z "${VERSION}" ]; then
   exit 1
 fi
 
+# If VERSION is SEMVER set TAG_REF for workflow_dispatch
+if echo ${VERSION#v} | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "TAG_REF=v${VERSION#v}"
+    TAG_REF="v${VERSION#v}"
+fi
+
+VERSION="v${VERSION}"
+
 if [ -z "${CIRCLE_TAG}" ]; then
   if [ -z "${CIRCLE_BRANCH##*released*}" ]; then
     echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${CIRCLE_BRANCH}"
@@ -27,6 +35,8 @@ fi
 
 if [ -n "${CIRCLE_TAG}" ]; then
   REF=${CIRCLE_TAG}
+elif [ -n "${TAG_REF}" ]; then
+  REF=${TAG_REF}
 else
   REF=${CIRCLE_BRANCH}
 fi
