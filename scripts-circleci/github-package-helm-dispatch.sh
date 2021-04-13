@@ -24,8 +24,6 @@ if echo ${VERSION#v} | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
     TAG_REF="v${VERSION#v}"
 fi
 
-VERSION="v${VERSION}"
-
 if [ -z "${CIRCLE_TAG}" ]; then
   if [ -z "${CIRCLE_BRANCH##*released*}" ]; then
     echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${CIRCLE_BRANCH}"
