@@ -43,10 +43,10 @@ generate_post_data()
 {
   cat <<EOF
 {
-  "ref": $REF
+  "ref": "${REF}"
   "inputs": {
-    "version": $VERSION,
-    "commitsha": $COMMITSHA
+    "version": "${VERSION}",
+    "commitsha": "${CIRCLE_SHA1}"
   }
 }
 EOF
