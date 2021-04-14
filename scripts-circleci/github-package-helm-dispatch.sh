@@ -18,6 +18,12 @@ if [ -z "${VERSION}" ]; then
   exit 1
 fi
 
+# If VERSION is SEMVER set TAG_REF for workflow_dispatch
+if echo "${VERSION#v}" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "TAG_REF=v${VERSION#v}"
+    TAG_REF="v${VERSION#v}"
+fi
+
 if [ -z "${CIRCLE_TAG}" ]; then
   if [ -z "${CIRCLE_BRANCH##*released*}" ]; then
     echo "Skipping ${GITHUB_WORKFLOW} on release branches: ${CIRCLE_BRANCH}"
@@ -27,16 +33,30 @@ fi
 
 if [ -n "${CIRCLE_TAG}" ]; then
   REF=${CIRCLE_TAG}
+elif [ -n "${TAG_REF}" ]; then
+  REF=${TAG_REF}
 else
   REF=${CIRCLE_BRANCH}
 fi
 
-body_template='{"ref":"%s","inputs":{"version":"%s"}}'
-body=$(printf $body_template "$REF" "$VERSION")
-echo "Using ${body}"
+generate_post_data()
+{
+  cat <<EOF
+{
+  "ref": "${REF}",
+  "inputs": {
+    "version": "${VERSION}",
+    "commitsha": "${CIRCLE_SHA1}"
+  }
+}
+EOF
+}
+
+echo "Data:"
+generate_post_data
 
 curl -i --fail --location --request POST "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
   --header "Authorization: token ${GH_ACCESS_TOKEN}" \
   --header "Content-Type: application/json" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data "${body}"
+  --data "$(generate_post_data)"

@@ -31,9 +31,16 @@ set_commit_status() {
   STATUS=$1
 
   if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ -n "$GITHUB_SHA" ]] && [[ -n "$GITHUB_TOKEN" ]] && [[ -n "$GITHUB_REPOSITORY" ]]; then
+
+    if [ -n "$COMMITSHA" ]; then
+      SHA=$COMMITSHA
+    else
+      SHA=$GITHUB_SHA
+    fi
+
     CONTEXT=${GITHUB_WORKFLOW:="Package Helm Chart"}
     GITHUB_API_URL=${GITHUB_API_URL:="https://api.github.com"}
-    APIURL="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}"
+    APIURL="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/statuses/${SHA}"
     TARGET_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
     curl --fail --silent "$APIURL" \
