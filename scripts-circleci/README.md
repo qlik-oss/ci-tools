@@ -38,6 +38,9 @@ jobs:
     name: Package Helm chart
     runs-on: ubuntu-latest
     steps:
+      # Prints Action envrionment information useful for debugging
+      - uses: qlik-oss/ci-tools/action-print-event-info@master
+
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.inputs.commitsha }}
