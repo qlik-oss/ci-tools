@@ -13,9 +13,17 @@ echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
 
 if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
-    kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
-        --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$ARTIFACTORY_USERNAME \
-        --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
+    if [[ -n "$GHCR_DOCKER_DEV_REGISTRY" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$GHCR_DOCKER_DEV_REGISTRY" ]]; then
+        echo "====> GHCR docker registry"
+        kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
+            --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$GHCR_DOCKER_DEV_USERNAME \
+            --docker-password=$GHCR_DOCKER_DEV_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
+    else
+        echo "====> Artifactory docker registry"
+        kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
+            --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$ARTIFACTORY_USERNAME \
+            --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
+    fi
 fi
 
 if [[ -n "$INIT_CHART" ]]; then

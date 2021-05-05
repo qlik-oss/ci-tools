@@ -9,7 +9,7 @@ export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="3.4.0"}
+export HELM_VERSION=${HELM_VERSION:="3.5.4"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.18.15"}
 export KIND_VERSION=${KIND_VERSION:="v0.10.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
@@ -78,6 +78,7 @@ install_helm() {
 }
 
 add_helm_repos() {
+  export HELM_EXPERIMENTAL_OCI=1
   install_helm
   get_component_properties
 
@@ -88,7 +89,12 @@ add_helm_repos() {
     "stable https://charts.helm.sh/stable"
   )
 
+  if [ -n "$GHCR_HELM_DEV_REGISTRY" ]; then
+    echo "==> Helm registry login"
+    echo $GHCR_HELM_DEV_PASSWORD | helm registry login --username $GHCR_HELM_DEV_USERNAME --password-stdin https://$GHCR_HELM_DEV_REGISTRY
+  fi
   echo "==> Helm add repo"
+  echo "helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD"
   helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
