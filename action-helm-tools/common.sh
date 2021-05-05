@@ -7,6 +7,7 @@ export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
 export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
+export HELM_EXPERIMENTAL_OCI=1
 
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.4.0"}
