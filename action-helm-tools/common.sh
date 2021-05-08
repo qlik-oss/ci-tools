@@ -23,7 +23,10 @@ get_component_properties() {
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
         CHART_NAME=$(yq e '.components[0].componentId-helm' components.yaml)
-        if [ "$CHART_NAME" = "null" ]; then
+        if [[ "$CHART_NAME" == "null" ]]; then
+            CHART_NAME=$(yq e '.components[0].componentId' components.yaml)  # Default is componentId
+        fi
+        if [[ "$CHART_NAME" == "null" ]]; then
             echo "::error file=components.yaml::Cannot get componentId-helm from components.yaml"
             exit 1
         fi
