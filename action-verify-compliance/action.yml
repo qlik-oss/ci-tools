@@ -9,6 +9,9 @@ runs:
   steps:
     - id: clone-repo-with-verification-commands
       run: |
+        echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+        pwd
+        ls -la
         echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
         # TODO: Rename VERIFICATION_COMMAND_REPO_BRANCH to VERIFICATION_COMMAND_REPO_REF
         if [ -n "${VERIFICATION_COMMAND_REPO_BRANCH}" ]; then
