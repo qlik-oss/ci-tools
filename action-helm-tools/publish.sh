@@ -4,10 +4,6 @@ set -eo pipefail
 source $SCRIPT_DIR/common.sh
 get_component_properties
 
-export JFROG_CLI_OFFER_CONFIG=false
-
-install_jfrog
-
 if [[ -n "$PUBLISH_TO_REGISTRY" ]] && [[ "$PUBLISH_TO_REGISTRY" == "$GHCR_HELM_DEV_REGISTRY" ]]; then
   export HELM_EXPERIMENTAL_OCI=1
 
@@ -20,6 +16,9 @@ if [[ -n "$PUBLISH_TO_REGISTRY" ]] && [[ "$PUBLISH_TO_REGISTRY" == "$GHCR_HELM_D
 	helm chart push $GHCR_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
   echo "====> Chart $CHART_NAME:$VERSION pushed to GHCR"
 else
+  export JFROG_CLI_OFFER_CONFIG=false
+  install_jfrog
+
   echo "==> Publish to Artifactory"
   echo "====> Check published version of $CHART_NAME"
 
