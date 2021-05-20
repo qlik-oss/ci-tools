@@ -44,14 +44,14 @@ helm_dependency_updater() {
 
   UPDATE_AVAILABLE=0
 
-  deps=($(yq e '.dependencies[] | select(.repository == "@qlik") | .name + ";" + .version' $DEPENDENCIES_FILE))
+  deps=($(yq e '.dependencies[] | select(.repository == "oci://ghcr.io/qlik-trial/helm") | .name + ";" + .version' $DEPENDENCIES_FILE))
 
   [ ${#deps[@]} -eq 0 ] && exit 0
 
   for dep in "${deps[@]}"; do
     IFS=";" read -r -a d <<< "${dep}"
       echo "Checking for new version of ${d[0]}:${d[1]}"
-      latest_chart_version=$(helm search repo "qlik/${d[0]}" -o yaml | yq e '.[0].version' -)
+      latest_chart_version=$(curl -s -X GET -H "Authorization: Bearer $(echo $GITHUB_API_TOKEN | base64)" https://ghcr.io/v2/qlik-trial/helm/${d[0]}/tags/list | jq -r ".tags|sort|.[-1]")
       echo "Latest available version ${d[0]}:$latest_chart_version"
       if semver -r ">${d[1]}" $latest_chart_version; then
         echo "Update ${d[0]}:${d[1]} to $latest_chart_version"
