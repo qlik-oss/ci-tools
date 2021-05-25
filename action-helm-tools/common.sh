@@ -10,7 +10,7 @@ export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.5.4"}
-export KUBECTL_VERSION=${KUBECTL_VERSION:="1.18.15"}
+export KUBECTL_VERSION=${KUBECTL_VERSION:="1.19.0"}
 export KIND_VERSION=${KIND_VERSION:="v0.10.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.18.15@sha256:5c1b980c4d0e0e8e7eb9f36f7df525d079a96169c8a8f20d8bd108c0d0889cc4"}
