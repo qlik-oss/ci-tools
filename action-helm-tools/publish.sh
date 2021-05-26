@@ -10,7 +10,7 @@ if [[ -n "$PUBLISH_TO_REGISTRY" ]] && [[ "$PUBLISH_TO_REGISTRY" == "$GHCR_HELM_D
   echo "==> Publish to GHCR"
 
   echo "====> Saving chart $CHART_NAME:$VERSION"
-	helm chart save $CHART_DIR $GHCR_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
+	helm chart save $CHART_NAME-$VERSION.tgz $GHCR_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
 
   echo "====> Pushing chart $CHART_NAME:$VERSION to GHCR"
 	helm chart push $GHCR_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
