@@ -17,6 +17,12 @@ export KIND_VERSION=${KIND_VERSION:="v0.11.0"}
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.19.11@sha256:7664f21f9cb6ba2264437de0eb3fe99f201db7a3ac72329547ec4373ba5f5911"}
 export YQ_VERSION="4.6.0"
 
+if [[ -n "$PUBLISH_TO_REGISTRY" ]] && [[ "$PUBLISH_TO_REGISTRY" == "$GHCR_HELM_DEV_REGISTRY" ]]; then
+  export PUBLISH_TO_GHCR=true
+else
+  export PUBLISH_TO_GHCR=false
+fi
+
 get_component_properties() {
     install_yq
 
@@ -95,15 +101,11 @@ add_helm_repos() {
     "prometheus-community https://prometheus-community.github.io/helm-charts"
   )
 
-  echo "==> Helm add repo"
   if [ -n "$GHCR_HELM_DEV_REGISTRY" ]; then
     echo "==> Helm registry login"
     echo $GHCR_HELM_DEV_PASSWORD | helm registry login --username $GHCR_HELM_DEV_USERNAME --password-stdin https://$GHCR_HELM_DEV_REGISTRY
   fi
-  # if [ -n "$REGISTRY" ]; then
-  #   echo "helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD"
-  #   helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
-  # fi
+
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
       helm repo add "${arr[0]}" "${arr[1]}"

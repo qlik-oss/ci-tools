@@ -4,7 +4,7 @@ set -eo pipefail
 source $SCRIPT_DIR/common.sh
 get_component_properties
 
-if [[ -n "$PUBLISH_TO_REGISTRY" ]] && [[ "$PUBLISH_TO_REGISTRY" == "$GHCR_HELM_DEV_REGISTRY" ]]; then
+if [[ "$PUBLISH_TO_GHCR" == "true" ]]; then
   export HELM_EXPERIMENTAL_OCI=1
 
   echo "==> Publish to GHCR"
