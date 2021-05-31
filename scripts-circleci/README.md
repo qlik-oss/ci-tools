@@ -30,9 +30,13 @@ env:
   VERSION: ${{ github.event.inputs.version }}
   COMMITSHA: ${{ github.event.inputs.commitsha }}
   # Constants
-  REGISTRY:
-  ARTIFACTORY_USERNAME:
-  ARTIFACTORY_PASSWORD:
+  PUBLISH_TO_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+  GHCR_DOCKER_DEV_REGISTRY: ${{ secrets.GHCR_DOCKER_DEV_REGISTRY }}
+  GHCR_DOCKER_DEV_USERNAME: ${{ secrets.GHCR_DOCKER_DEV_USERNAME }}
+  GHCR_DOCKER_DEV_PASSWORD: ${{ secrets.GHCR_DOCKER_DEV_PASSWORD }}
+  GHCR_HELM_DEV_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+  GHCR_HELM_DEV_USERNAME: ${{ secrets.GHCR_HELM_DEV_USERNAME }}
+  GHCR_HELM_DEV_PASSWORD: ${{ secrets.GHCR_HELM_DEV_PASSWORD }}
 jobs:
   package-chart:
     name: Package Helm chart

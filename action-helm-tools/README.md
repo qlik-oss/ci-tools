@@ -1,8 +1,6 @@
 # action-helm-tools
 
-GitHub Action for packaging, testing helm charts and publishing to Artifactory helm repo
-
-_Note this action is written to specifically work with Helm repos in Artifactory_
+GitHub Action for packaging, testing helm charts and publishing to a helm repo
 
 ## Optional input
 
@@ -11,7 +9,7 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 - Leave empty to run `package, test and publish`
 - `package` - Involves helm client only and does dependency build, lint and package chart
 - `test` - Creates K8s cluster (in Docker), sets up helm, install chart in a namespace and waits for all pods to be up and running
-- `publish` - Uses jfrog cli to check for existing package with same version and uploads if new chart is built
+- `publish` - Uploads chart to helm repo
 - `package_and_test` - Run `package` and `test` in one step
 
 ## Version
@@ -44,9 +42,13 @@ steps:
 ## Required Environment variables
 
 ```yaml
-REGISTRY: # Artifactory registry URL https://<company>.jfrog.io/<company>
-ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
-ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
+PUBLISH_TO_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+GHCR_DOCKER_DEV_REGISTRY: ${{ secrets.GHCR_DOCKER_DEV_REGISTRY }}
+GHCR_DOCKER_DEV_USERNAME: ${{ secrets.GHCR_DOCKER_DEV_USERNAME }}
+GHCR_DOCKER_DEV_PASSWORD: ${{ secrets.GHCR_DOCKER_DEV_PASSWORD }}
+GHCR_HELM_DEV_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+GHCR_HELM_DEV_USERNAME: ${{ secrets.GHCR_HELM_DEV_USERNAME }}
+GHCR_HELM_DEV_PASSWORD: ${{ secrets.GHCR_HELM_DEV_PASSWORD }}
 ```
 
 ## Optional Environment (override) variables
@@ -57,13 +59,10 @@ DEPENDENCY_UPDATE: "true|false" # REQUIRES GITHUB_TOKEN; Check for chart depende
 CHART_NAME: mycomponent # Chart name
 CHART_DIR: manifests/charts/mycomponent # Chart path
 EXTRA_HELM_CMD: # Extra helm command(s) (set or -f myValues.yaml) to use when installing chart in K8s cluster
-HELM_REPO: # Artifactory helm repository to push chart to
-HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for pulling dependencies
-HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
 HELM_VERSION: # Override helm version. Default "2.14.3"
 K8S_DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
-K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
-K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
+K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Docker registry (as specified in chart image.registry)
+K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Pull secret (as specified in chart image.pullSecrets)
 KUBECTL_VERSION: # Override kubectl version. Default "1.15.4"
 KIND_VERSION: Override KIND version. Default version - look in common.sh
 KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
@@ -92,9 +91,13 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  REGISTRY: https://xyz.jfrog.io/xyz
-  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  PUBLISH_TO_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+  GHCR_DOCKER_DEV_REGISTRY: ${{ secrets.GHCR_DOCKER_DEV_REGISTRY }}
+  GHCR_DOCKER_DEV_USERNAME: ${{ secrets.GHCR_DOCKER_DEV_USERNAME }}
+  GHCR_DOCKER_DEV_PASSWORD: ${{ secrets.GHCR_DOCKER_DEV_PASSWORD }}
+  GHCR_HELM_DEV_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+  GHCR_HELM_DEV_USERNAME: ${{ secrets.GHCR_HELM_DEV_USERNAME }}
+  GHCR_HELM_DEV_PASSWORD: ${{ secrets.GHCR_HELM_DEV_PASSWORD }}
 
 jobs:
   helm-suite:
@@ -122,9 +125,13 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  REGISTRY: https://xyz.jfrog.io/xyz
-  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  PUBLISH_TO_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+  GHCR_DOCKER_DEV_REGISTRY: ${{ secrets.GHCR_DOCKER_DEV_REGISTRY }}
+  GHCR_DOCKER_DEV_USERNAME: ${{ secrets.GHCR_DOCKER_DEV_USERNAME }}
+  GHCR_DOCKER_DEV_PASSWORD: ${{ secrets.GHCR_DOCKER_DEV_PASSWORD }}
+  GHCR_HELM_DEV_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+  GHCR_HELM_DEV_USERNAME: ${{ secrets.GHCR_HELM_DEV_USERNAME }}
+  GHCR_HELM_DEV_PASSWORD: ${{ secrets.GHCR_HELM_DEV_PASSWORD }}
   EXTRA_HELM_CMD: "-f ${CHART_DIR}/tests/myValues.yaml"
 
 jobs:

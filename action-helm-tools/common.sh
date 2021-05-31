@@ -2,10 +2,6 @@
 set -eo pipefail
 
 # Defaults
-export HELM_EXPERIMENTAL_OCI=1
-export HELM_REPO=${HELM_REPO:="helm-dev"}
-export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
-export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
@@ -16,12 +12,6 @@ export KIND_VERSION=${KIND_VERSION:="v0.11.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.19.11@sha256:7664f21f9cb6ba2264437de0eb3fe99f201db7a3ac72329547ec4373ba5f5911"}
 export YQ_VERSION="4.6.0"
-
-if [[ -n "$PUBLISH_TO_REGISTRY" ]] && [[ "$PUBLISH_TO_REGISTRY" == "$GHCR_HELM_DEV_REGISTRY" ]]; then
-  export PUBLISH_TO_GHCR=true
-else
-  export PUBLISH_TO_GHCR=false
-fi
 
 get_component_properties() {
     install_yq
@@ -106,6 +96,7 @@ add_helm_repos() {
     echo $GHCR_HELM_DEV_PASSWORD | helm registry login --username $GHCR_HELM_DEV_USERNAME --password-stdin https://$GHCR_HELM_DEV_REGISTRY
   fi
 
+  echo "==> Helm add repo"
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
       helm repo add "${arr[0]}" "${arr[1]}"
@@ -117,15 +108,6 @@ check_helm_deployment() {
     echo "==> Check helm deployment"
     DEPLOY_TIMEOUT=${DEPLOY_TIMEOUT:-300}
     "$SCRIPT_DIR/helm-deployment-check.sh" --release $CHART_NAME --namespace $CHART_NAME -t $DEPLOY_TIMEOUT
-}
-
-install_jfrog() {
-    if ! command -v jfrog; then
-        echo "==> Installing jfrog cli"
-        curl -fL https://getcli.jfrog.io | sh
-        chmod +x ./jfrog
-        sudo mv ./jfrog /usr/local/bin/jfrog
-    fi
 }
 
 install_kind() {
