@@ -26,6 +26,12 @@ if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
     fi
 fi
 
+if [[ -n "$CUSTOM_ACTIONS" ]]; then
+  echo "==> Running custom actions"
+  echo "${CUSTOM_ACTIONS}"
+  eval "${CUSTOM_ACTIONS}"
+fi
+
 if [[ -n "$INIT_CHART" ]]; then
   runthis "helm install init $INIT_CHART"
 fi
