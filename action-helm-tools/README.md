@@ -70,6 +70,7 @@ KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.
 DEPLOY_TIMEOUT: # Timeout on waiting for pods to get to running state. Default 300 seconds
 INIT_CHART: repo/chartName # If another chart's deployment is required prior to deploying the packaged chart
 IMAGE_TAG_UPDATE: "true|false" # DEFAULT true; Update image.tag based on VERSION env variable
+CUSTOM_ACTIONS: # During test phase, run shell commands before deploying the chart. See CUSTOM_ACTIONS below for examples.
 ```
 
 **NOTE** If the action is used on a `workflow_dispatch`, the commit status (check) is not set automatically when workflow is ran. To set commit status, add the following environment variable:
@@ -144,4 +145,21 @@ jobs:
       uses: qlik-oss/ci-tools/action-helm-tools@master
       with:
         action: "publish"
+```
+
+## CUSTOM_ACTIONS
+
+Run one or more commands after K8s (KIND) cluster is up and before deploying the chart, for example if some or multiple prerequisites are required for the chart to come up healthy.
+
+The commands are run after the Chart is packaged and K8s cluster is created, and before the main chart is installed and tested.
+
+``` yaml
+    - name: Package & Test Helm chart
+      uses: qlik-oss/ci-tools/action-helm-tools@master
+      env:
+        CUSTOM_ACTIONS: |
+          helm install some/chart
+          kubectl create clusterrolebinding
+          kubectl patch ...
+          ...
 ```
