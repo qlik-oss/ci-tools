@@ -2,6 +2,7 @@
 set -eo pipefail
 
 # Defaults
+export HELM_EXPERIMENTAL_OCI=1
 export HELM_REPO=${HELM_REPO:="helm-dev"}
 export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
 export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
@@ -81,7 +82,6 @@ install_helm() {
 }
 
 add_helm_repos() {
-  export HELM_EXPERIMENTAL_OCI=1
   install_helm
   get_component_properties
 
