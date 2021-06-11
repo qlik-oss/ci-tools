@@ -90,6 +90,9 @@ add_helm_repos() {
     "minio https://helm.min.io/"
     "dandydev https://dandydeveloper.github.io/charts"
     "stable https://charts.helm.sh/stable"
+    "ingress-nginx https://kubernetes.github.io/ingress-nginx" 
+    "grafana https://grafana.github.io/helm-charts"
+    "prometheus-community https://prometheus-community.github.io/helm-charts"
   )
 
   echo "==> Helm add repo"
