@@ -71,6 +71,7 @@ DEPLOY_TIMEOUT: # Timeout on waiting for pods to get to running state. Default 3
 INIT_CHART: repo/chartName # If another chart's deployment is required prior to deploying the packaged chart
 IMAGE_TAG_UPDATE: "true|false" # DEFAULT true; Update image.tag based on VERSION env variable
 CUSTOM_ACTIONS: # During test phase, run shell commands before deploying the chart. See CUSTOM_ACTIONS below for examples.
+SINGLE_NATS_STREAMING: "true|flase" # DEFAULT true; Do not deploy clustered nats-streaming when testing chart
 ```
 
 **NOTE** If the action is used on a `workflow_dispatch`, the commit status (check) is not set automatically when workflow is ran. To set commit status, add the following environment variable:
