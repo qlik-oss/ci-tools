@@ -32,13 +32,27 @@ if [[ -n "$CUSTOM_ACTIONS" ]]; then
   eval "${CUSTOM_ACTIONS}"
 fi
 
+# Install a dependency chart (e.g. CRDs) before installing the main chart
 if [[ -n "$INIT_CHART" ]]; then
   runthis "helm install init $INIT_CHART"
 fi
 
-[ -f "$CHART_DIR/tests/ci-values.yaml" ] && CI_VALUES="-f ${CHART_DIR}/tests/ci-values.yaml"
+# Add any helm cli arguments when installing chart
+if [[ -n "$EXTRA_HELM_CMD" ]]; then
+  options+=("$EXTRA_HELM_CMD")
+fi
 
-runthis "helm install $CHART_NAME $CHART_NAME-$VERSION.tgz --namespace $CHART_NAME --create-namespace $CI_VALUES $EXTRA_HELM_CMD"
+# If tests/ci-values.yaml exits in the same folder as chart use that values file
+if [[ -f "$CHART_DIR/tests/ci-values.yaml" ]]; then
+  options+=(-f "${CHART_DIR}/tests/ci-values.yaml")
+fi
+
+# For CI testing, clustered nats-streaming is not required and this saves ~1 min of runner time
+if [[ "${SINGLE_NATS_STREAMING:=true}" == "true" ]]; then
+  options+=(-f "${SCRIPT_DIR}/helmvalues/messaging-non-clustered.yaml")
+fi
+
+runthis "helm install $CHART_NAME $CHART_NAME-$VERSION.tgz --namespace $CHART_NAME --create-namespace $EXTRA_HELM_CMD" "${options[@]}"
 
 sleep 30
 check_helm_deployment
