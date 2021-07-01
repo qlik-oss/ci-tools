@@ -100,10 +100,7 @@ add_helm_repos() {
     echo "==> Helm registry login"
     echo $GHCR_HELM_DEV_PASSWORD | helm registry login --username $GHCR_HELM_DEV_USERNAME --password-stdin https://$GHCR_HELM_DEV_REGISTRY
   fi
-  # if [ -n "$REGISTRY" ]; then
-  #   echo "helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD"
-  #   helm repo add $HELM_LOCAL_REPO $REGISTRY/$HELM_VIRTUAL_REPO --username $ARTIFACTORY_USERNAME --password $ARTIFACTORY_PASSWORD
-  # fi
+  
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
       helm repo add "${arr[0]}" "${arr[1]}"
