@@ -44,7 +44,6 @@ steps:
 ## Required Environment variables
 
 ```yaml
-REGISTRY: # Artifactory registry URL https://<company>.jfrog.io/<company>
 ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
 ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
 ```
@@ -69,6 +68,7 @@ KIND_VERSION: Override KIND version. Default version - look in common.sh
 KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
 DEPLOY_TIMEOUT: # Timeout on waiting for pods to get to running state. Default 300 seconds
 INIT_CHART: repo/chartName # If another chart's deployment is required prior to deploying the packaged chart
+INIT_CHART_VERSION: n.m.o # Explicit init chart version, required if INIT_CHART is given
 IMAGE_TAG_UPDATE: "true|false" # DEFAULT true; Update image.tag based on VERSION env variable
 CUSTOM_ACTIONS: # During test phase, run shell commands before deploying the chart. See CUSTOM_ACTIONS below for examples.
 SINGLE_NATS_STREAMING: "true|flase" # DEFAULT true; Do not deploy clustered nats-streaming when testing chart
@@ -92,7 +92,6 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  REGISTRY: https://xyz.jfrog.io/xyz
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
 
@@ -122,7 +121,6 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  REGISTRY: https://xyz.jfrog.io/xyz
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
   EXTRA_HELM_CMD: "-f ${CHART_DIR}/tests/myValues.yaml"

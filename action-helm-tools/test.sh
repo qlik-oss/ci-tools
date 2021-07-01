@@ -8,6 +8,7 @@ install_helm
 install_yq
 get_component_properties
 setup_kind
+add_helm_repos
 
 echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
@@ -34,7 +35,8 @@ fi
 
 # Install a dependency chart (e.g. CRDs) before installing the main chart
 if [[ -n "$INIT_CHART" ]]; then
-  runthis "helm install init $INIT_CHART"
+  runthis "helm pull oci://ghcr.io/qlik-trial/helm/$INIT_CHART --version $INIT_CHART_VERSION"
+  runthis "helm install init ${INIT_CHART}-${INIT_CHART_VERSION}.tgz"
 fi
 
 # Add any helm cli arguments when installing chart
