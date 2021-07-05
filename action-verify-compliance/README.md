@@ -11,8 +11,8 @@ TARGET_REF: # ref for which a compliance verification should be performed; e.g. 
 VERIFICATION_TYPE: # type of verification to be performed, e.g "twistlock" or "blackduck"
 VERIFICATION_COMMAND_REPO: # the repository containing verification commands
 GITHUB_TOKEN: # github token with read access to the verification command repo
-ARTIFACTORY_PUBLISH_USER: # Artifactory username; required only for verification commands which need access to Artifactory
-ARTIFACTORY_PUBLISH_PASS: # Artifactory password; required only for verification commands which need access to Artifactory
+ARTIFACTORY_USER: # Artifactory username; required only for verification commands which need access to Artifactory
+ARTIFACTORY_PASS: # Artifactory password; required only for verification commands which need access to Artifactory
 TWISTLOCK_USER: # Twistlock username; required only for twistlock verification
 TWISTLOCK_PASS: # Twistlock password; required only for twistlock verification
 BLACKDUCK_USER: # Blackduck username; required only for blackduck verification
