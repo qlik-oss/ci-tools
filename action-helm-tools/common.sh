@@ -10,11 +10,11 @@ export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="3.5.4"}
-export KUBECTL_VERSION=${KUBECTL_VERSION:="1.19.11"}
-export KIND_VERSION=${KIND_VERSION:="v0.11.0"}
+export HELM_VERSION=${HELM_VERSION:="3.6.3"}
+export KUBECTL_VERSION=${KUBECTL_VERSION:="1.20.7"}
+export KIND_VERSION=${KIND_VERSION:="v0.11.1"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
-export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.19.11@sha256:7664f21f9cb6ba2264437de0eb3fe99f201db7a3ac72329547ec4373ba5f5911"}
+export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.20.7@sha256:cbeaf907fc78ac97ce7b625e4bf0de16e3ea725daf6b04f930bd14c67c671ff9"}
 export YQ_VERSION="4.6.0"
 
 get_component_properties() {
@@ -100,7 +100,7 @@ add_helm_repos() {
     echo "==> Helm registry login"
     echo $GHCR_HELM_DEV_PASSWORD | helm registry login --username $GHCR_HELM_DEV_USERNAME --password-stdin https://$GHCR_HELM_DEV_REGISTRY
   fi
-  
+
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
       helm repo add "${arr[0]}" "${arr[1]}"
