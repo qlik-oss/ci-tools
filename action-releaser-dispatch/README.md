@@ -1,6 +1,6 @@
 # action-releaser-dispatch
 
-Make GitHub dispatch call with `draft-release` event to trigger release process.
+Make GitHub dispatch call with `release` event to trigger release process.
 
 The action will only trigger if the required environment variable `VERSION` is semantic version `vX.Y.Z`, if not then it will continue without error.
 
