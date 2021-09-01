@@ -1,0 +1,8 @@
+name: Handle webhook
+on: repository_dispatch
+
+jobs:
+  print-event-info:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: qlik-oss/ci-tools/action-print-event-info@master
