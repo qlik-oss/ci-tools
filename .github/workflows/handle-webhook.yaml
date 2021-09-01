@@ -1,5 +1,7 @@
 name: Handle webhook
-on: repository_dispatch
+on:
+  - repository_dispatch
+  - workflow_dispatch
 
 jobs:
   print-event-info:
