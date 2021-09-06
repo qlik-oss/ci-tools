@@ -95,6 +95,12 @@ add_helm_repos() {
     "prometheus-community https://prometheus-community.github.io/helm-charts"
   )
 
+  if [ -z "$GHCR_HELM_DEV_REGISTRY" ]; then
+    GHCR_HELM_DEV_REGISTRY=$QLIK_HELM_DEV_REGISTRY
+    GHCR_HELM_DEV_PASSWORD=$QLIK_HELM_DEV_PASSWORD
+    GHCR_HELM_DEV_USERNAME=$QLIK_HELM_DEV_USERNAME
+  fi
+
   echo "==> Helm add repo"
   if [ -n "$GHCR_HELM_DEV_REGISTRY" ]; then
     echo "==> Helm registry login"

@@ -6,6 +6,10 @@ get_component_properties
 
 export HELM_EXPERIMENTAL_OCI=1
 
+if [ -z "$GHCR_HELM_DEV_REGISTRY" ]; then
+  GHCR_HELM_DEV_REGISTRY=$QLIK_HELM_DEV_REGISTRY
+fi
+
 echo "==> Publish to GHCR"
 
 echo "====> Saving chart $CHART_NAME:$VERSION"
