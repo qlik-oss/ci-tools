@@ -13,6 +13,12 @@ add_helm_repos
 echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
 
+if [ -z "$GHCR_DOCKER_DEV_REGISTRY" ]; then
+  GHCR_DOCKER_DEV_REGISTRY=$QLIK_DOCKER_DEV_REGISTRY
+  GHCR_DOCKER_DEV_PASSWORD=$QLIK_DOCKER_DEV_PASSWORD
+  GHCR_DOCKER_DEV_USERNAME=$QLIK_DOCKER_DEV_USERNAME
+fi
+
 if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
     if [[ -n "$GHCR_DOCKER_DEV_REGISTRY" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$GHCR_DOCKER_DEV_REGISTRY" ]]; then
         echo "====> GHCR docker registry"
