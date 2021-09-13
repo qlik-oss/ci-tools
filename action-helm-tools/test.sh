@@ -13,18 +13,12 @@ add_helm_repos
 echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
 
-if [ -z "$GHCR_DOCKER_DEV_REGISTRY" ]; then
-  GHCR_DOCKER_DEV_REGISTRY=$QLIK_DOCKER_DEV_REGISTRY
-  GHCR_DOCKER_DEV_PASSWORD=$QLIK_DOCKER_DEV_PASSWORD
-  GHCR_DOCKER_DEV_USERNAME=$QLIK_DOCKER_DEV_USERNAME
-fi
-
 if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
-    if [[ -n "$GHCR_DOCKER_DEV_REGISTRY" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$GHCR_DOCKER_DEV_REGISTRY" ]]; then
+    if [[ -n "$QLIK_DOCKER_DEV_REGISTRY" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$QLIK_DOCKER_DEV_REGISTRY" ]]; then
         echo "====> GHCR docker registry"
         kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
-            --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$GHCR_DOCKER_DEV_USERNAME \
-            --docker-password=$GHCR_DOCKER_DEV_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
+            --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$QLIK_DOCKER_DEV_USERNAME \
+            --docker-password=$QLIK_DOCKER_DEV_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
     else
         echo "====> Artifactory docker registry"
         kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
