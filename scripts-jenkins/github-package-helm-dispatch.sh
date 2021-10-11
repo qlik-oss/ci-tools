@@ -25,6 +25,11 @@ if [ -z "${TAG_NAME}" ]; then
   fi
 fi
 
+if [ "${GIT_BRANCH}" == "update_depConfig_yaml" ]; then
+  echo "Skipping ${GITHUB_WORKFLOW} on branch 'update_depConfig_yaml'"
+  exit 0
+fi
+
 if [ -n "${TAG_NAME}" ]; then
   REF=${TAG_NAME}
 else
