@@ -32,7 +32,7 @@ if [ -z "${CIRCLE_TAG}" ]; then
 fi
 
 if [ "${CIRCLE_BRANCH}" == "update_depConfig_yaml" ]; then
-  echo "Skipping ${GITHUB_WORKFLOW} on branch 'update_depConfig_yaml'
+  echo "Skipping ${GITHUB_WORKFLOW} on branch 'update_depConfig_yaml'"
   exit 0
 fi
 
