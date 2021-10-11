@@ -31,6 +31,11 @@ if [ -z "${CIRCLE_TAG}" ]; then
   fi
 fi
 
+if [ "${CIRCLE_BRANCH}" == "update_depConfig_yaml" ]; then
+  echo "Skipping ${GITHUB_WORKFLOW} on branch 'update_depConfig_yaml'
+  exit 0
+fi
+
 if [ -n "${CIRCLE_TAG}" ]; then
   REF=${CIRCLE_TAG}
 elif [ -n "${TAG_REF}" ]; then
