@@ -24,4 +24,5 @@ jobs:
     steps:
       - name: Print
         run: |
-          echo ${{ github.event.inputs.value }}
+          echo "A: ${{ inputs.value }}"
+          echo "B: ${{ github.event.inputs.value }}"
