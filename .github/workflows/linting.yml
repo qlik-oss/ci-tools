@@ -1,17 +1,27 @@
-name: Linting
+# This workflow is intended as a starting point for experimentation with GH workflows.
+name: Print string
 
-on: [pull_request]
+on:
+  workflow_call:
+    inputs:
+      value:
+        description: 'A string'
+        type: string
+        default: 'Hello World!'
+  workflow_dispatch:
+    inputs:
+      value:
+        description: 'A string'
+        default: 'Hello World!'
 
 jobs:
-  lint:
+  print-event-info:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - name: yaml-lint
-      uses: ibiqlik/action-yamllint@v1
-
-    - name: shellcheck
-      uses: ibiqlik/action-shellcheck@master
-      with:
-        severity: error
+      - uses: qlik-oss/ci-tools/action-print-event-info@master
+  print-string:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print
+        run: |
+          echo ${{ github.event.inputs.value }}
