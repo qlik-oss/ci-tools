@@ -7,12 +7,12 @@ on:
       value:
         description: 'A string'
         type: string
-        default: 'Hello World!'
+        default: 'Hello World A!'
   workflow_dispatch:
     inputs:
       value:
         description: 'A string'
-        default: 'Hello World!'
+        default: 'Hello World B!'
 
 jobs:
   print-event-info:
