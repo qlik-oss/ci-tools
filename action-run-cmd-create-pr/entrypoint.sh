@@ -13,6 +13,9 @@ echo "INPUT_BASE_BRANCH: ${INPUT_BASE_BRANCH}"
 echo "INPUT_COMMAND: ${INPUT_COMMAND}"
 echo "INPUT_COMMIT_MSG: ${INPUT_COMMIT_MSG}"
 echo "INPUT_DRAFT: ${INPUT_DRAFT}"
+echo "INPUT_PRE_APPROVE: ${INPUT_PRE_APPROVE}"
+echo "INPUT_APPROVE_GH_TOKEN: ${INPUT_APPROVE_GH_TOKEN}"
+echo "INPUT_APPROVE_USER: ${INPUT_APPROVE_USER}"
 echo "INPUT_USER: ${INPUT_USER}"
 echo "INPUT_EMAIL: ${INPUT_EMAIL}"
 echo "INPUT_LABEL: ${INPUT_LABEL}"
@@ -60,17 +63,30 @@ else
   TARGET="master"
   SOURCE="${INPUT_BRANCH}"
   BODY="---"
-  DATA="{\"title\":\"${INPUT_COMMIT_MSG}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":${INPUT_DRAFT}}"
+  PULL_DATA="{\"title\":\"${INPUT_COMMIT_MSG}\", \"body\":\"${BODY}\", \"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"draft\":${INPUT_DRAFT}}"
 
   # Create pull request
-  ISSUE_NUMBER=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" --user "${INPUT_USER}" -X POST --data "${DATA}" ${PULLS_URL} | jq -r '.number')
-
+  PULL_RESPONSE=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" --user "${INPUT_USER}" -X POST --data "${PULL_DATA}" ${PULLS_URL})
+  ISSUE_NUMBER=$(echo ${PULL_RESPONSE} | jq -r '.number')
+  echo "Creation of PR got this response ${PULL_RESPONSE}"
   REGEX_IS_NUMBER='^[0-9]+$'
   if ! [[ $ISSUE_NUMBER =~ $REGEX_IS_NUMBER ]] ; then
     echo "Could not create pull request. Exiting." >&2; exit 1
   fi
 
   echo "Pull request #${ISSUE_NUMBER} created successfully"
+
+
+  #Optionally approve it
+  if [ "${INPUT_PRE_APPROVE}" = true ]; then
+    AUTH_HEADER="Authorization: token ${INPUT_APPROVE_GH_TOKEN}"
+    REVIEW_URL=${REPO_URL}/pulls/${ISSUE_NUMBER}/reviews
+    REVIEW_DATA="{\"body\":\"Pre-approval\", \"event\":\"APPROVE\"}"
+    # Approve pull request
+    REVIEW_STATUS=$(curl -sSL -H "${AUTH_HEADER}" -H "${HEADER}" --user "${INPUT_APPROVE_USER}" -X POST --data "${REVIEW_DATA}" ${REVIEW_URL})
+  else
+    echo "No pre-approval requested"
+  fi
 
   if [ -z ${INPUT_LABEL+x} ]; then
     echo "No label set. Exiting."

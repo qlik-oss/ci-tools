@@ -18,6 +18,9 @@ A GitHub action for running a command to change a remote repository, make a comm
       command: "command/script to run"
       commit_msg: "Changed version to ${{ env.VERSION }}"
       draft: true
+      pre_approve: false
+      approve_gh_token: ${{ secrets.GH_ACCESS_TOKEN_2 }}
+      approve_user: bot2
       user: bot
       email: bot@example.com
 ```
