@@ -13,6 +13,7 @@ A GitHub action for running a command to change a remote repository, make a comm
       gh_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       owner: qlik-oss
       repository: ci-tools
+      base_branch: # optional, if branch-off should not be done from default branch
       branch: update_version_to_${{ env.VERSION }}
       command: "command/script to run"
       commit_msg: "Changed version to ${{ env.VERSION }}"

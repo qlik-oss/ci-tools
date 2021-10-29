@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # A script which clones a github repository, runs a command assumed to change the code in
 # the cloned repository, commits and uploads the change and finally creates a pull request
@@ -9,6 +9,7 @@ echo "INPUT_GH_TOKEN: ************"
 echo "INPUT_OWNER: ${INPUT_OWNER}"
 echo "INPUT_REPOSITORY: ${INPUT_REPOSITORY}"
 echo "INPUT_BRANCH: ${INPUT_BRANCH}"
+echo "INPUT_BASE_BRANCH: ${INPUT_BASE_BRANCH}"
 echo "INPUT_COMMAND: ${INPUT_COMMAND}"
 echo "INPUT_COMMIT_MSG: ${INPUT_COMMIT_MSG}"
 echo "INPUT_DRAFT: ${INPUT_DRAFT}"
@@ -17,8 +18,10 @@ echo "INPUT_EMAIL: ${INPUT_EMAIL}"
 echo "INPUT_LABEL: ${INPUT_LABEL}"
 echo "---------------------------------------------------"
 
+
+git branch -r
 # Clone repository and run command
-git clone https://${INPUT_GH_TOKEN}@github.com/${INPUT_OWNER}/${INPUT_REPOSITORY}.git
+git clone https://${INPUT_GH_TOKEN}@github.com/${INPUT_OWNER}/${INPUT_REPOSITORY}.git ${INPUT_BASE_BRANCH}
 cd ${INPUT_REPOSITORY}
 git config user.email "${INPUT_EMAIL}"
 git config user.name "${INPUT_USER}"
