@@ -13,8 +13,11 @@ inputs:
     description: "Repository"
     required: true
   branch:
-    description: "Branch"
+    description: "Target branch"
     required: true
+  base_branch:
+    description: "Base branch"
+    required: false
   command:
     description: "Command"
     required: true
