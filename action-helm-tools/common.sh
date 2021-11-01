@@ -144,7 +144,11 @@ setup_kind_internal() {
 
 setup_kind() {
   export -f setup_kind_internal
-  timeout 30s bash -c setup_kind_internal
+  timeout 180s bash -c setup_kind_internal || EXITCODE=$?
+  if [ $EXITCODE != 0 ]; then
+      echo "::error ::Kubernetes (in Docker) setup timed out. Usually intermittent, re-run the job to try again"
+      exit 1
+  fi
 }
 
 yaml_lint() {
