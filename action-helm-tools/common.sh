@@ -123,27 +123,28 @@ install_jfrog() {
     fi
 }
 
-setup_kind() {
+setup_kind_internal() {
     echo "==> Setting up KIND (Kubernetes in Docker)"
 
-    while [[ $SECONDS -lt $((SECONDS+30)) ]]; do
-      if ! command -v kind; then
-          echo "==> Get KIND:${KIND_VERSION}"
-          curl -Lso ./kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64
-          chmod +x ./kind
-          sudo mv ./kind /usr/local/bin/kind
-      fi
+    if ! command -v kind; then
+        echo "==> Get KIND:${KIND_VERSION}"
+        curl -Lso ./kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
+    fi
 
-      clusters=$(kind get clusters -q)
+    clusters=$(kind get clusters -q)
 
-      if [ -z "$clusters" ]; then
-          if kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}; then
-            break
-          fi
-      else
-          echo "KIND cluster already exist, continue"
-      fi
-    done
+    if [ -z "$clusters" ]; then
+        kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
+    else
+        echo "KIND cluster already exist, continue"
+    fi
+}
+
+setup_kind() {
+  export -f setup_kind_internal
+  timeout 30s bash -c setup_kind_internal
 }
 
 yaml_lint() {
