@@ -123,26 +123,32 @@ install_jfrog() {
     fi
 }
 
-install_kind() {
-    echo "==> Get KIND:${KIND_VERSION}"
-    curl -Lso ./kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64
-    chmod +x ./kind
-    sudo mv ./kind /usr/local/bin/kind
-}
-
-setup_kind() {
+setup_kind_internal() {
     echo "==> Setting up KIND (Kubernetes in Docker)"
+
     if ! command -v kind; then
-        install_kind
+        echo "==> Get KIND:${KIND_VERSION}"
+        curl -Lso ./kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
     fi
 
     clusters=$(kind get clusters -q)
 
     if [ -z "$clusters" ]; then
-      kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
+        kind create cluster --image ${KIND_IMAGE} --name ${CHART_NAME}
     else
-      echo "KIND cluster already exist, continue"
+        echo "KIND cluster already exist, continue"
     fi
+}
+
+setup_kind() {
+  export -f setup_kind_internal
+  timeout 180s bash -c setup_kind_internal || EXITCODE=$?
+  if [ $EXITCODE != 0 ]; then
+      echo "::error ::Kubernetes (in Docker) setup timed out. Usually intermittent, re-run the job to try again"
+      exit 1
+  fi
 }
 
 yaml_lint() {
