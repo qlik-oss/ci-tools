@@ -27,6 +27,15 @@ inputs:
   draft:
     description: "PR draft status"
     required: true
+  pre_approve:
+    description: "Approve PR"
+    required: false
+  approve_gh_token:
+    description: "Github token for approve user"
+    required: false
+  approve_user:
+    description: "Github approve user"
+    required: false
   user:
     description: "Github user"
     required: true
