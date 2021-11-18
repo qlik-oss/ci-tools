@@ -7,6 +7,7 @@ RUN apk add --update --no-cache \
     curl \
     wget \
     bash \
+    python3 \
     jq
 
 RUN curl -L https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 -o /usr/local/bin/yq && \
