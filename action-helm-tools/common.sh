@@ -87,7 +87,6 @@ add_helm_repos() {
 
   public_repos=(
     "bitnami https://charts.bitnami.com/bitnami"
-    "minio https://helm.min.io/"
     "dandydev https://dandydeveloper.github.io/charts"
     "stable https://charts.helm.sh/stable"
     "ingress-nginx https://kubernetes.github.io/ingress-nginx"
