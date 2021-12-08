@@ -13,7 +13,7 @@ prep_git() {
   git config user.email github-actions@github.com
   git fetch --prune --unshallow || true
   git fetch --all
-  git checkout -- .
+  git checkout -f -- .
   DEFAULT_BRANCH=$(git ls-remote --symref "https://github.com/${GITHUB_REPOSITORY}.git" HEAD | grep refs/heads | awk '{split($2, a, "/"); print a[3] }')
   git checkout "$DEFAULT_BRANCH"
   git reset --hard "origin/$DEFAULT_BRANCH"
