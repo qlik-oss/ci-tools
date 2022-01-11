@@ -3,9 +3,6 @@ set -eo pipefail
 
 # Defaults
 export HELM_EXPERIMENTAL_OCI=1
-export HELM_REPO=${HELM_REPO:="helm-dev"}
-export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
-export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
@@ -94,12 +91,13 @@ add_helm_repos() {
     "prometheus-community https://prometheus-community.github.io/helm-charts"
   )
 
-  echo "==> Helm add repo"
+  echo "==> Helm registry login"
   if [ -n "$QLIK_HELM_DEV_REGISTRY" ]; then
     echo "==> Helm registry login"
     echo $QLIK_HELM_DEV_PASSWORD | helm registry login --username $QLIK_HELM_DEV_USERNAME --password-stdin https://$QLIK_HELM_DEV_REGISTRY
   fi
 
+  echo "==> Helm add public repositories"
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
       helm repo add "${arr[0]}" "${arr[1]}"
@@ -134,7 +132,9 @@ setup_kind_internal() {
 
 setup_kind() {
   export -f setup_kind_internal
-  timeout 180s bash -c setup_kind_internal || EXITCODE=$?
+  timeout --preserve-status 180s bash -c setup_kind_internal
+  EXITCODE=$?
+  echo "exit code: $EXITCODE"
   if [ "$EXITCODE" != 0 ]; then
       echo "::error ::Kubernetes (in Docker) setup timed out. Usually intermittent, re-run the job to try again"
       exit 1

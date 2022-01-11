@@ -30,9 +30,13 @@ env:
   VERSION: ${{ github.event.inputs.version }}
   COMMITSHA: ${{ github.event.inputs.commitsha }}
   # Constants
-  REGISTRY:
-  ARTIFACTORY_USERNAME:
-  ARTIFACTORY_PASSWORD:
+  PUBLISH_TO_REGISTRY:
+  QLIK_DOCKER_DEV_REGISTRY:
+  QLIK_DOCKER_DEV_USERNAME:
+  QLIK_DOCKER_DEV_PASSWORD:
+  QLIK_HELM_DEV_REGISTRY:
+  QLIK_HELM_DEV_USERNAME:
+  QLIK_HELM_DEV_PASSWORD:
 jobs:
   package-chart:
     name: Package Helm chart

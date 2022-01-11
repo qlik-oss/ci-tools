@@ -42,26 +42,23 @@ steps:
 ## Required Environment variables
 
 ```yaml
-QLIK_DOCKER_DEV_REGISTRY: ${{ secrets.QLIK_DOCKER_DEV_REGISTRY }}
-QLIK_DOCKER_DEV_USERNAME: ${{ secrets.QLIK_DOCKER_DEV_USERNAME }}
-QLIK_DOCKER_DEV_PASSWORD: ${{ secrets.QLIK_DOCKER_DEV_PASSWORD }}
-QLIK_HELM_DEV_REGISTRY: ${{ secrets.QLIK_HELM_DEV_REGISTRY }}
-QLIK_HELM_DEV_USERNAME: ${{ secrets.QLIK_HELM_DEV_USERNAME }}
-QLIK_HELM_DEV_PASSWORD: ${{ secrets.QLIK_HELM_DEV_PASSWORD }}
+QLIK_DOCKER_DEV_REGISTRY:
+QLIK_DOCKER_DEV_USERNAME:
+QLIK_DOCKER_DEV_PASSWORD:
+QLIK_HELM_DEV_REGISTRY:
+QLIK_HELM_DEV_USERNAME:
+QLIK_HELM_DEV_PASSWORD:
 ```
 
 ## Optional Environment (override) variables
 
 ```yaml
-PUBLISH_TO_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
+PUBLISH_TO_REGISTRY:
 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # See NOTE below
 DEPENDENCY_UPDATE: "true|false" # REQUIRES GITHUB_TOKEN; Check for chart dependency updates and create PR with updates.
 CHART_NAME: mycomponent # Chart name
 CHART_DIR: manifests/charts/mycomponent # Chart path
 EXTRA_HELM_CMD: # Extra helm command(s) (set or -f myValues.yaml) to use when installing chart in K8s cluster
-HELM_REPO: # Artifactory helm repository to push chart to
-HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for pulling dependencies
-HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
 HELM_VERSION: # Override helm version. Default "2.14.3"
 K8S_DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
 K8S_DOCKER_REGISTRY: # Private docker registry as as specified in chart image.registry to add as K8s secret
@@ -95,12 +92,12 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  QLIK_DOCKER_DEV_REGISTRY: ${{ secrets.QLIK_DOCKER_DEV_REGISTRY }}
-  QLIK_DOCKER_DEV_USERNAME: ${{ secrets.QLIK_DOCKER_DEV_USERNAME }}
-  QLIK_DOCKER_DEV_PASSWORD: ${{ secrets.QLIK_DOCKER_DEV_PASSWORD }}
-  QLIK_HELM_DEV_REGISTRY: ${{ secrets.QLIK_HELM_DEV_REGISTRY }}
-  QLIK_HELM_DEV_USERNAME: ${{ secrets.QLIK_HELM_DEV_USERNAME }}
-  QLIK_HELM_DEV_PASSWORD: ${{ secrets.QLIK_HELM_DEV_PASSWORD }}
+  QLIK_DOCKER_DEV_REGISTRY:
+  QLIK_DOCKER_DEV_USERNAME:
+  QLIK_DOCKER_DEV_PASSWORD:
+  QLIK_HELM_DEV_REGISTRY:
+  QLIK_HELM_DEV_USERNAME:
+  QLIK_HELM_DEV_PASSWORD:
 
 jobs:
   helm-suite:
@@ -128,12 +125,12 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  QLIK_DOCKER_DEV_REGISTRY: ${{ secrets.QLIK_DOCKER_DEV_REGISTRY }}
-  QLIK_DOCKER_DEV_USERNAME: ${{ secrets.QLIK_DOCKER_DEV_USERNAME }}
-  QLIK_DOCKER_DEV_PASSWORD: ${{ secrets.QLIK_DOCKER_DEV_PASSWORD }}
-  QLIK_HELM_DEV_REGISTRY: ${{ secrets.QLIK_HELM_DEV_REGISTRY }}
-  QLIK_HELM_DEV_USERNAME: ${{ secrets.QLIK_HELM_DEV_USERNAME }}
-  QLIK_HELM_DEV_PASSWORD: ${{ secrets.QLIK_HELM_DEV_PASSWORD }}
+  QLIK_DOCKER_DEV_REGISTRY:
+  QLIK_DOCKER_DEV_USERNAME:
+  QLIK_DOCKER_DEV_PASSWORD:
+  QLIK_HELM_DEV_REGISTRY:
+  QLIK_HELM_DEV_USERNAME:
+  QLIK_HELM_DEV_PASSWORD:
   EXTRA_HELM_CMD: "-f ${CHART_DIR}/tests/myValues.yaml"
 
 jobs:
