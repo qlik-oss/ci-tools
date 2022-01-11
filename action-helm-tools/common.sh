@@ -113,15 +113,6 @@ check_helm_deployment() {
     "$SCRIPT_DIR/helm-deployment-check.sh" --release $CHART_NAME --namespace $CHART_NAME -t $DEPLOY_TIMEOUT
 }
 
-install_jfrog() {
-    if ! command -v jfrog; then
-        echo "==> Installing jfrog cli"
-        curl -fL https://getcli.jfrog.io | sh
-        chmod +x ./jfrog
-        sudo mv ./jfrog /usr/local/bin/jfrog
-    fi
-}
-
 setup_kind_internal() {
     echo "==> Setting up KIND (Kubernetes in Docker)"
 
@@ -144,7 +135,7 @@ setup_kind_internal() {
 setup_kind() {
   export -f setup_kind_internal
   timeout 180s bash -c setup_kind_internal || EXITCODE=$?
-  if [ $EXITCODE != 0 ]; then
+  if [ "$EXITCODE" != 0 ]; then
       echo "::error ::Kubernetes (in Docker) setup timed out. Usually intermittent, re-run the job to try again"
       exit 1
   fi

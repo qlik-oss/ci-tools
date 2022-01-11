@@ -1,8 +1,6 @@
 # action-helm-tools
 
-GitHub Action for packaging, testing helm charts and publishing to Artifactory helm repo
-
-_Note this action is written to specifically work with Helm repos in Artifactory_
+GitHub Action for packaging, testing helm charts and publishing to Helm OCI Registry
 
 ## Optional input
 
@@ -11,7 +9,7 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 - Leave empty to run `package, test and publish`
 - `package` - Involves helm client only and does dependency build, lint and package chart
 - `test` - Creates K8s cluster (in Docker), sets up helm, install chart in a namespace and waits for all pods to be up and running
-- `publish` - Uses jfrog cli to check for existing package with same version and uploads if new chart is built
+- `publish` - Pushes chart to Helm OCI registry
 - `package_and_test` - Run `package` and `test` in one step
 
 ## Version
@@ -44,13 +42,18 @@ steps:
 ## Required Environment variables
 
 ```yaml
-ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }} # ARTIFACTORY_USERNAME (Artifactory username) must be set in GitHub Repo secrets
-ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} # ARTIFACTORY_PASSWORD (Artifactory api key) must be set in GitHub Repo secrets
+QLIK_DOCKER_DEV_REGISTRY: ${{ secrets.QLIK_DOCKER_DEV_REGISTRY }}
+QLIK_DOCKER_DEV_USERNAME: ${{ secrets.QLIK_DOCKER_DEV_USERNAME }}
+QLIK_DOCKER_DEV_PASSWORD: ${{ secrets.QLIK_DOCKER_DEV_PASSWORD }}
+QLIK_HELM_DEV_REGISTRY: ${{ secrets.QLIK_HELM_DEV_REGISTRY }}
+QLIK_HELM_DEV_USERNAME: ${{ secrets.QLIK_HELM_DEV_USERNAME }}
+QLIK_HELM_DEV_PASSWORD: ${{ secrets.QLIK_HELM_DEV_PASSWORD }}
 ```
 
 ## Optional Environment (override) variables
 
 ```yaml
+PUBLISH_TO_REGISTRY: ${{ secrets.GHCR_HELM_DEV_REGISTRY }}
 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # See NOTE below
 DEPENDENCY_UPDATE: "true|false" # REQUIRES GITHUB_TOKEN; Check for chart dependency updates and create PR with updates.
 CHART_NAME: mycomponent # Chart name
@@ -61,8 +64,8 @@ HELM_LOCAL_REPO: # `helm repo add <name>` Artifactory helm chart repo name for p
 HELM_VIRTUAL_REPO: # Artifactory virtual helm repo that holds dependencies
 HELM_VERSION: # Override helm version. Default "2.14.3"
 K8S_DOCKER_EMAIL: xyx@tld.com # Docker email to use when creating k8s docker secret
-K8S_DOCKER_REGISTRY: xyz-docker.jfrog.io # Artifactory docker registry (as specified in chart image.registry)
-K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # Artifactory pull secret (as specified in chart image.pullSecrets)
+K8S_DOCKER_REGISTRY: # Private docker registry as as specified in chart image.registry to add as K8s secret
+K8S_DOCKER_REGISTRY_SECRET: xyz-docker-secret # K8s docker registry secret name as specified in chart image.pullSecrets
 KUBECTL_VERSION: # Override kubectl version. Default "1.15.4"
 KIND_VERSION: Override KIND version. Default version - look in common.sh
 KIND_IMAGE: Override KIND image (K8s version). Default version - look in common.sh
@@ -92,8 +95,12 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  QLIK_DOCKER_DEV_REGISTRY: ${{ secrets.QLIK_DOCKER_DEV_REGISTRY }}
+  QLIK_DOCKER_DEV_USERNAME: ${{ secrets.QLIK_DOCKER_DEV_USERNAME }}
+  QLIK_DOCKER_DEV_PASSWORD: ${{ secrets.QLIK_DOCKER_DEV_PASSWORD }}
+  QLIK_HELM_DEV_REGISTRY: ${{ secrets.QLIK_HELM_DEV_REGISTRY }}
+  QLIK_HELM_DEV_USERNAME: ${{ secrets.QLIK_HELM_DEV_USERNAME }}
+  QLIK_HELM_DEV_PASSWORD: ${{ secrets.QLIK_HELM_DEV_PASSWORD }}
 
 jobs:
   helm-suite:
@@ -121,8 +128,12 @@ name: Helm lint, test, package and publish
 on: pull_request
 
 env:
-  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  QLIK_DOCKER_DEV_REGISTRY: ${{ secrets.QLIK_DOCKER_DEV_REGISTRY }}
+  QLIK_DOCKER_DEV_USERNAME: ${{ secrets.QLIK_DOCKER_DEV_USERNAME }}
+  QLIK_DOCKER_DEV_PASSWORD: ${{ secrets.QLIK_DOCKER_DEV_PASSWORD }}
+  QLIK_HELM_DEV_REGISTRY: ${{ secrets.QLIK_HELM_DEV_REGISTRY }}
+  QLIK_HELM_DEV_USERNAME: ${{ secrets.QLIK_HELM_DEV_USERNAME }}
+  QLIK_HELM_DEV_PASSWORD: ${{ secrets.QLIK_HELM_DEV_PASSWORD }}
   EXTRA_HELM_CMD: "-f ${CHART_DIR}/tests/myValues.yaml"
 
 jobs:
