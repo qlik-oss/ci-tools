@@ -15,8 +15,6 @@ on:
       - 'v*.*.*'
 ```
 
-Otherwise, return `0`
-
 ## Use in GitHub Actions - workflow
 
 ```yaml
