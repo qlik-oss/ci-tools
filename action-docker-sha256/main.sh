@@ -11,7 +11,7 @@ fi
 IMAGE=${DOCKER_DEV_REGISTRY}/${INPUT_IMAGE_NAME}:${INPUT_IMAGE_TAG}
 echo calculating sha256 for $IMAGE
 docker pull $IMAGE
-docker inspect $IMAGE | jq '(.[].RepoDigests[0] | split(":"))[1]'
+DOCKER_SHA256=$(docker inspect $IMAGE | jq '(.[].RepoDigests[0] | split(":"))[1]')
 
 # Set GitHub Action environment and output variable
 # DOCKER_SHA256
