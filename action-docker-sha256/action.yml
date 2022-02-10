@@ -1,0 +1,27 @@
+name: 'Docker SHA256
+description: 'Calculates docker sha256 for given image"
+author: 'rlsf'
+
+inputs:
+  image_registry:
+    required: true
+    description: 'Image registry (e.g. hub.docker.com)'
+  image_name:
+    required: true
+    description: 'Image name (e.g. ci-tools)'
+  image_tag:
+    required: true
+    description: 'Image version to calculate sha256 for'
+  
+
+outputs:
+  docker-sha256:
+    description: 'Returns docker sha256'
+    value: ${{ steps.docker-sha256-info.outputs.DOCKER_SHA256 }}
+
+runs:
+  using: 'composite'
+  steps:
+    - id: docker-sha256-info
+      run: ${{ github.action_path }}/main.sh
+      shell: bash
