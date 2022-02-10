@@ -3,9 +3,6 @@ description: 'Calculates docker sha256 for given image'
 author: 'rlsf'
 
 inputs:
-  image_registry:
-    required: true
-    description: 'Image registry (e.g. hub.docker.com)'
   image_name:
     required: true
     description: 'Image name (e.g. ci-tools)'
