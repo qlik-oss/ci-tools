@@ -25,8 +25,8 @@ jobs:
   somejob:
     steps:
       - uses: actions/checkout@v2
-      - name: Get Version
-        id: version
+      - name: Calculate docker sha256
+        id: docker-sha256
         uses: qlik-oss/ci-tools/action-docker-sha256@master
 ```
 
