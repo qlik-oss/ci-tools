@@ -1,5 +1,5 @@
-name: 'Docker SHA256
-description: 'Calculates docker sha256 for given image"
+name: 'Docker SHA256'
+description: 'Calculates docker sha256 for given image'
 author: 'rlsf'
 
 inputs:
@@ -12,7 +12,7 @@ inputs:
   image_tag:
     required: true
     description: 'Image version to calculate sha256 for'
-  
+
 
 outputs:
   docker-sha256:
