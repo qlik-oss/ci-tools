@@ -1,5 +1,5 @@
 #!/bin/bash -l
-set -o pipefail
+set -euo pipefail
 
 DOCKER_DEV_REGISTRY=${DOCKER_DEV_REGISTRY:=hub.docker.com}
 

@@ -22,3 +22,6 @@ runs:
     - id: docker-sha256-info
       run: ${{ github.action_path }}/main.sh
       shell: bash
+      env:
+        INPUT_IMAGE_NAME: ${{ inputs.image_name }}
+        INPUT_IMAGE_TAG: ${{ inputs.image_tag }}
