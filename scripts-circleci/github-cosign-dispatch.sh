@@ -3,6 +3,7 @@
 VERSION_FILE=${VERSION_FILE:="/workspace/version.txt"}
 REGISTRY=${REGISTRY:="ghcr.io/qlik-trial"}
 OPERATION=${OPERATION:="sign"}
+IMAGE_NAME=${IMAGE_NAME:="$CIRCLE_PROJECT_REPONAME"}
 
 
 if [ -z "${VERSION}" ]; then
@@ -20,8 +21,13 @@ if [ -z "${VERSION}" ]; then
   exit 1
 fi
 
-IMAGE=${REGISTRY}/${CIRCLE_PROJECT_REPONAME}:${VERSION}
+IMAGE=${REGISTRY}/${IMAGE_NAME}:${VERSION}
 SHA256=$(docker inspect $IMAGE | jq -r '(.[].RepoDigests[0] | split(":"))[1]')
+
+if [ -z "$SHA256" ]; then
+  echo "Could not find image sha, aborting"
+  exit 1
+fi
 
 generate_post_data()
 {
@@ -31,7 +37,7 @@ generate_post_data()
   "client_payload": {
     "operation": "${OPERATION}",
     "registry": "${REGISTRY}",
-    "image_name": "${CIRCLE_PROJECT_REPONAME}",
+    "image_name": "${IMAGE_NAME}",
     "image_version": "${VERSION}",
     "sha256": "${SHA256}"
   }
