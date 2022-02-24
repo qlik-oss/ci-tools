@@ -23,7 +23,7 @@ fi
 # On PR actions/checkout checkouts a merge commit instead of commit sha, git describe
 # returns merge commit. To avoid this unpredictable commit sha, we will describe
 # the actual commit
-git_rev=$(git describe --tags --abbrev=7 ${_sha} --match "v[0-9]*.[0-9]*.[0-9]*"
+git_rev=$(git describe --tags --abbrev=7 ${_sha} --match "v[0-9]*.[0-9]*.[0-9]*")
 
 # If git revision is not an exact semver tag, then bump patch
 # An exact semver does not contain a '-'
