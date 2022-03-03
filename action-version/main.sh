@@ -7,9 +7,6 @@ BRANCH_NAME=""
 # Unshallow git repository. Do not fail in case the repository is already unshallowed.
 git fetch --prune --unshallow || true
 
-echo "EVENT NAME: $GITHUB_EVENT_NAME"
-set
-
 # On push event
 if [ "$GITHUB_EVENT_NAME" == "push" ]; then
     _sha=$GITHUB_SHA
@@ -21,6 +18,9 @@ if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     _sha=$(jq -r .pull_request.head.sha "$GITHUB_EVENT_PATH")
     BRANCH_NAME=${GITHUB_HEAD_REF}
 fi
+
+# failover - if no sha created so far, try rev-parse
+_sha=${_sha:=$(git rev-parse --short HEAD)}
 
 # git-describe - Give an object a human readable name based on an available ref
 # On PR actions/checkout checkouts a merge commit instead of commit sha, git describe
