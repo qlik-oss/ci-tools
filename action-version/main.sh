@@ -7,6 +7,8 @@ BRANCH_NAME=""
 # Unshallow git repository. Do not fail in case the repository is already unshallowed.
 git fetch --prune --unshallow || true
 
+echo "EVENT NAME: $GITHUB_EVENT_NAME"
+
 # On push event
 if [ "$GITHUB_EVENT_NAME" == "push" ]; then
     _sha=$GITHUB_SHA
