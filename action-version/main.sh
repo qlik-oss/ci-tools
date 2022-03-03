@@ -8,7 +8,7 @@ BRANCH_NAME=""
 git fetch --prune --unshallow || true
 
 # On push event
-if [[ "$GITHUB_EVENT_NAME" == "push" ]] || [[ "$GITHUB_EVENT_NAME" == "issue_comment" ]] ; then
+if [ "$GITHUB_EVENT_NAME" == "push" ]; then
     _sha=$GITHUB_SHA
     echo "${GITHUB_REF}" | grep -E '^refs/heads/' && BRANCH_NAME=${GITHUB_REF##*/}
 fi
@@ -18,6 +18,9 @@ if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     _sha=$(jq -r .pull_request.head.sha "$GITHUB_EVENT_PATH")
     BRANCH_NAME=${GITHUB_HEAD_REF}
 fi
+
+# fallback, if _sha isn't set, try to read from environment
+_sha=${_sha:=$SHA}
 
 # git-describe - Give an object a human readable name based on an available ref
 # On PR actions/checkout checkouts a merge commit instead of commit sha, git describe
