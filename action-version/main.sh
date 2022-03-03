@@ -8,6 +8,7 @@ BRANCH_NAME=""
 git fetch --prune --unshallow || true
 
 echo "EVENT NAME: $GITHUB_EVENT_NAME"
+set
 
 # On push event
 if [ "$GITHUB_EVENT_NAME" == "push" ]; then
