@@ -48,7 +48,7 @@ EOF
 echo "Data:"
 generate_post_data
 
-curl -i --fail --location --request POST https://api.github.com/repos/qlik-trial/mre/dispatches \
+curl -i --fail --location --request POST https://api.github.com/repos/qlik-trial/qlik-releaser/dispatches \
   --header "Authorization: token ${GH_ACCESS_TOKEN}" \
   --header "Content-Type: application/json" \
   --header "Accept: application/vnd.github.v3+json" \
