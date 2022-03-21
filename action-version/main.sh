@@ -31,11 +31,12 @@ git_rev=$(git describe --tags --abbrev=7 ${_sha} --match "v[0-9]*.[0-9]*.[0-9]*"
 # If git revision is not an exact semver tag, then bump patch
 # An exact semver does not contain a '-'
 if [[ "$git_rev" == *-* ]]; then
-  git_rev=$(echo $git_rev | perl -ne 'm/(^v)(\d+\.\d+\.)(\d+)(.*$)/ && print $1 . $2 . int(1+$3) . $4')
+  # Transforms 0.0.0-0-g1234abc to 0.0.1-0.g123abc
+  git_rev=$(echo $git_rev | perl -ne 'm/(^v\d+\.\d+\.)(\d+)(.*)(\-g)(.*$)/ && print $1 . int(1+$2) . $3 . ".g" . $5')
 fi
 
 # If no version is returned from git describe, generate one
-[ -z "$git_rev" ] && git_rev="v0.0.0-0-g${_sha:0:7}"
+[ -z "$git_rev" ] && git_rev="v0.0.0-0.g${_sha:0:7}"
 
 # Return Version without v prefix
 VERSION=${git_rev#v}
