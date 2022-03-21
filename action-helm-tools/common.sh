@@ -89,6 +89,7 @@ add_helm_repos() {
     "ingress-nginx https://kubernetes.github.io/ingress-nginx"
     "grafana https://grafana.github.io/helm-charts"
     "prometheus-community https://prometheus-community.github.io/helm-charts"
+    "connaisseur https://sse-secure-systems.github.io/connaisseur/charts"
   )
 
   echo "==> Helm registry login"
