@@ -7,7 +7,7 @@ export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="3.7.2"}
+export HELM_VERSION=${HELM_VERSION:="3.8.1"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.20.7"}
 export KIND_VERSION=${KIND_VERSION:="v0.11.1"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
