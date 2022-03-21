@@ -8,8 +8,8 @@ Sets output and environment variable that can be used in subsequent GitHub Actio
 
 Returns version based on `git describe --tags --abbrev=7`, see https://git-scm.com/docs/git-describe for more details
 
-- `1.2.3-n.g<short-commit-sha>` - Most recent tag - number of commits since tag - short commit sha preffixed with g
-- `0.0.0-0.g<short-commit-sha>` - When no tags are available it returns version `0.0.0-0` and short commit sha
+- `1.2.3-n.<short-commit-sha>` - Most recent tag - number of commits since tag - short commit sha
+- `0.0.0-0.<short-commit-sha>` - When no tags are available it returns version `0.0.0-0` and short commit sha
 - `1.2.3` - If a tag `v*.*.*` is pushed (a release tag), it will return the same tag without describing git repository
 
 *`v` (version) prefix is omitted in all cases*
