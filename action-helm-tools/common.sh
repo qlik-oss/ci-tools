@@ -27,6 +27,7 @@ get_component_properties() {
         if [[ -f "component.yaml" ]]; then
             COMPONENT_CONFIG_FILE=component.yaml
         fi
+        echo "COMPONENT_CONFIG_FILE: ${COMPONENT_CONFIG_FILE}"
         if [[ "$COMPONENT_CONFIG_FILE" == "components.yaml" ]]; then
             CHART_NAME=$(yq e '.components[0].componentId-helm' components.yaml)
             if [[ "$CHART_NAME" == "null" ]]; then
