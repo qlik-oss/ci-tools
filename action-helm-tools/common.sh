@@ -106,6 +106,7 @@ add_helm_repos() {
     "prometheus-community https://prometheus-community.github.io/helm-charts"
     "connaisseur https://sse-secure-systems.github.io/connaisseur/charts"
     "appscode https://charts.appscode.com/stable"
+    "kubed https://charts.appscode.com/stable/"
   )
 
   echo "==> Helm add repo"
