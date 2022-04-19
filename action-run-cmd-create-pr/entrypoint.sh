@@ -23,6 +23,8 @@ echo "---------------------------------------------------"
 
 
 git branch -r
+echo "Asking git to accept ${GITHUB_WORKSPACE} as a safe directory"
+git config --global --add safe.directory ${GITHUB_WORKSPACE}
 # Clone repository and run command
 git clone https://${INPUT_GH_TOKEN}@github.com/${INPUT_OWNER}/${INPUT_REPOSITORY}.git ${INPUT_BASE_BRANCH}
 cd ${INPUT_REPOSITORY}
