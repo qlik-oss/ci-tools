@@ -23,24 +23,12 @@ get_component_properties() {
     # Get chartname
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
-        export COMPONENT_CONFIG_FILE=components.yaml
-        if [[ -f "component.yaml" ]]; then
-            COMPONENT_CONFIG_FILE=component.yaml
-        fi
-        echo "COMPONENT_CONFIG_FILE: ${COMPONENT_CONFIG_FILE}"
-        if [[ "$COMPONENT_CONFIG_FILE" == "components.yaml" ]]; then
-            CHART_NAME=$(yq e '.components[0].componentId-helm' components.yaml)
-            if [[ "$CHART_NAME" == "null" ]]; then
-                CHART_NAME=$(yq e '.components[0].componentId' components.yaml)  # Default is componentId
-            fi
-        else
-            CHART_NAME=$(yq e '.componentId-helm' component.yaml)
-            if [[ "$CHART_NAME" == "null" ]]; then
-                CHART_NAME=$(yq e '.componentId' component.yaml)  # Default is componentId
-            fi
+        CHART_NAME=$(yq e '.componentId-helm' component.yaml)
+        if [[ "$CHART_NAME" == "null" ]]; then
+            CHART_NAME=$(yq e '.componentId' component.yaml)  # Default is componentId
         fi
         if [[ "$CHART_NAME" == "null" ]]; then
-            echo "::error file=${COMPONENT_CONFIG_FILE}::Cannot get componentId-helm from ${COMPONENT_CONFIG_FILE}"
+            echo "::error file=component.yaml::Cannot get componentId-helm from component.yaml"
             exit 1
         fi
     fi
