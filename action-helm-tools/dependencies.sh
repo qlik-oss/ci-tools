@@ -16,12 +16,10 @@ prep_git() {
   git checkout -f -- .
   DEFAULT_BRANCH=$(git ls-remote --symref "https://github.com/${GITHUB_REPOSITORY}.git" HEAD | grep refs/heads | awk '{split($2, a, "/"); print a[3] }')
   git checkout "$DEFAULT_BRANCH"
+  git reset --hard "origin/$DEFAULT_BRANCH"
 
   # If branch already exists use that one otherwise create it
   git checkout "$BRANCH_NAME" 2>/dev/null || git checkout -b "$BRANCH_NAME"
-
-  # Make sure we are on latest and greatest
-  git reset --hard "origin/$DEFAULT_BRANCH"
 }
 
 helm_dependency_updater() {
