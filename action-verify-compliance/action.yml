@@ -7,6 +7,9 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-go@v2
+      with:
+        go-version: '1.18'
     - id: clone-repo-with-verification-commands
       run: |
         echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
