@@ -11,6 +11,7 @@ runs:
       with:
         go-version: '1.18'
     - id: print-go-version
+      shell: bash
       run: |
         go version
     - id: clone-repo-with-verification-commands
