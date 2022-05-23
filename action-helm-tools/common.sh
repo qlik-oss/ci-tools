@@ -23,7 +23,10 @@ get_component_properties() {
     # Get chartname
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
-        CHART_NAME=$(yq e '.componentId-helm' component.yaml)
+        CHART_NAME=$(yq e '.publishedPackages.helm.ids[0]' component.yaml)  # Valid for component.yaml with new format
+        if [[ "$CHART_NAME" == "null" ]]; then
+            CHART_NAME=$(yq e '.componentId-helm' component.yaml)  # Valid for component.yaml with old format
+        fi
         if [[ "$CHART_NAME" == "null" ]]; then
             CHART_NAME=$(yq e '.componentId' component.yaml)  # Default is componentId
         fi
