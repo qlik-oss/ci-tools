@@ -89,6 +89,7 @@ add_helm_repos() {
   get_component_properties
 
   public_repos=(
+    "bitnami-pre-2022 https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami"
     "bitnami https://charts.bitnami.com/bitnami"
     "dandydev https://dandydeveloper.github.io/charts"
     "stable https://charts.helm.sh/stable"
