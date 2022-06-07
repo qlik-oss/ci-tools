@@ -23,15 +23,12 @@ get_component_properties() {
     # Get chartname
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
-        CHART_NAME=$(yq e '.publishedPackages.helm.ids[0]' component.yaml)  # Valid for component.yaml with new format
-        if [[ "$CHART_NAME" == "null" ]]; then
-            CHART_NAME=$(yq e '.componentId-helm' component.yaml)  # Valid for component.yaml with old format
-        fi
+        CHART_NAME=$(yq e '.publishedPackages.helm.ids[0]' component.yaml)
         if [[ "$CHART_NAME" == "null" ]]; then
             CHART_NAME=$(yq e '.componentId' component.yaml)  # Default is componentId
         fi
         if [[ "$CHART_NAME" == "null" ]]; then
-            echo "::error file=component.yaml::Cannot get componentId-helm from component.yaml"
+            echo "::error file=component.yaml::Cannot get chart name from component.yaml"
             exit 1
         fi
     fi
