@@ -7,7 +7,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-go@v2
+    - uses: actions/setup-go@v3
       with:
         go-version: '1.18'
     - id: clone-repo-with-verification-commands
