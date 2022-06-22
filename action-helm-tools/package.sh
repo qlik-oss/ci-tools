@@ -14,7 +14,7 @@ echo "==> Helm dependency build"
 helm dependency build "$CHART_DIR"
 
 echo "==> Merging component metadata"
-yq '.component |= load("component.yaml")' "$CHART_DIR/values.yaml"
+yq -i '.component |= load("component.yaml")' "$CHART_DIR/values.yaml"
 
 if [ "$IMAGE_TAG_UPDATE" = "false" ]; then
   echo "==> Skip updating image.tag due to IMAGE_TAG_UPDATE=$IMAGE_TAG_UPDATE"
