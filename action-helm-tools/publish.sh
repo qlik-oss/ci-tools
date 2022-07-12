@@ -16,4 +16,4 @@ helm chart push $QLIK_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
 echo "====> Chart $CHART_NAME:$VERSION pushed to GHCR"
 
 echo "====> Inspecting chart $CHART_NAME:$VERSION (to simplify debugging if needed)"
-helm show all $CHART_NAME:$VERSION
+helm show all $QLIK_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
