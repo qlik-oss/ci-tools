@@ -19,5 +19,5 @@ echo "====> Inspecting chart $CHART_NAME:$VERSION (to simplify debugging if need
 # helm show all $QLIK_HELM_DEV_REGISTRY/$CHART_NAME:$VERSION
 tar zxvf $CHART_NAME-$VERSION.tgz
 ls
-cat Chart.yaml
-cat values.yaml
+cat $CHART_NAME/Chart.yaml
+cat $CHART_NAME/values.yaml
