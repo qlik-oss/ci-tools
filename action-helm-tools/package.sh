@@ -13,6 +13,11 @@ $SCRIPT_DIR/qlikcommon-check.sh
 echo "==> Helm dependency build"
 helm dependency build "$CHART_DIR"
 
+echo "==> Merging serviceUris"
+yq '.serviceUris' < dependencies.yaml >serviceUris.yaml
+cat serviceUris.yaml
+yq -i ''.configs/data |= load("serviceUris.yaml")' "$CHART_DIR/values.yaml"
+
 echo "==> Merging component metadata"
 yq -i '.component |= load("component.yaml")' "$CHART_DIR/values.yaml"
 
