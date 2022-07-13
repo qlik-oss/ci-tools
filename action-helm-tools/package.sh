@@ -16,7 +16,7 @@ helm dependency build "$CHART_DIR"
 echo "==> Merging serviceUris"
 yq '.serviceUris' < dependencies.yaml >file1.yaml
 cat file1.yaml
-yq '.configs.data' < dependencies.yaml >file2.yaml
+yq '.configs.data' < $CHART_DIR/values.yaml >file2.yaml
 cat file2.yaml
 yq file1.yaml file2.yaml >serviceUris.yaml
 cat serviceUris.yaml
