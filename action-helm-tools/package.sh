@@ -14,7 +14,11 @@ echo "==> Helm dependency build"
 helm dependency build "$CHART_DIR"
 
 echo "==> Merging serviceUris"
-yq '.serviceUris' < dependencies.yaml >serviceUris.yaml
+yq '.serviceUris' < dependencies.yaml >file1.yaml
+cat file1.yaml
+yq '.configs.data' < dependencies.yaml >file2.yaml
+cat file2.yaml
+yq file1.yaml file2.yaml >serviceUris.yaml
 cat serviceUris.yaml
 yq -i '.configs.data |= load("serviceUris.yaml")' "$CHART_DIR/values.yaml"
 
