@@ -20,7 +20,7 @@ echo "---"
 yq '.configs.data' < $CHART_DIR/values.yaml >file2.yaml
 cat file2.yaml
 echo "---"
-yq file1.yaml file2.yaml >serviceUris.yaml
+yq m file1.yaml file2.yaml >serviceUris.yaml
 cat serviceUris.yaml
 echo "---"
 yq -i '.configs.data |= load("serviceUris.yaml")' "$CHART_DIR/values.yaml"
