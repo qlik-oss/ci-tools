@@ -21,7 +21,7 @@ yq '.configs.data' < $CHART_DIR/values.yaml >file2.yaml
 cat file2.yaml
 echo "---"
 yq --version
-yq merge file2.yaml file1.yaml >serviceUris.yaml
+yq eval-all 'select(fileIndex == 0) * select(filename == "file1.yaml")' file2.yaml file1.yaml >serviceUris.yaml
 cat serviceUris.yaml
 echo "---"
 yq -i '.configs.data |= load("serviceUris.yaml")' "$CHART_DIR/values.yaml"
