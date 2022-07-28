@@ -54,6 +54,9 @@ if [[ "${SINGLE_NATS_STREAMING:=true}" == "true" ]]; then
   options+=(-f "${SCRIPT_DIR}/helmvalues/messaging-non-clustered.yaml")
 fi
 
+echo "==> Helm version"
+runthis "helm version"
+
 runthis "helm install $CHART_NAME $CHART_NAME-$VERSION.tgz --namespace $CHART_NAME --create-namespace $EXTRA_HELM_CMD" "${options[@]}"
 
 sleep 30
