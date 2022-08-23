@@ -23,8 +23,12 @@ else
   yq e --inplace '.image.tag |= env(VERSION)' "$CHART_DIR/values.yaml"
 fi
 
-echo "==> Linting"
-runthis "helm lint $CHART_DIR --with-subcharts"
+if [ "$SKIP_LINT" = "true" ]; then
+  echo "==> Skip linting due to SKIP_LINT=$SKIP_LINT"
+else
+  echo "==> Linting"
+  runthis "helm lint $CHART_DIR --with-subcharts"
+fi
 
 echo "==> Helm package"
 runthis "helm package $CHART_DIR --version $VERSION --app-version $VERSION"

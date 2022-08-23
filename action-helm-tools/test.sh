@@ -47,6 +47,8 @@ fi
 # If tests/ci-values.yaml exits in the same folder as chart use that values file
 if [[ -f "$CHART_DIR/tests/ci-values.yaml" ]]; then
   options+=(-f "${CHART_DIR}/tests/ci-values.yaml")
+  echo "==> cat ${CHART_DIR}/tests/ci-values.yaml"
+  runthis "cat ${CHART_DIR}/tests/ci-values.yaml"
 fi
 
 # For CI testing, clustered nats-streaming is not required and this saves ~1 min of runner time
@@ -54,6 +56,7 @@ if [[ "${SINGLE_NATS_STREAMING:=true}" == "true" ]]; then
   options+=(-f "${SCRIPT_DIR}/helmvalues/messaging-non-clustered.yaml")
 fi
 
+runthis "helm show values $CHART_NAME-$VERSION.tgz"
 runthis "helm install $CHART_NAME $CHART_NAME-$VERSION.tgz --namespace $CHART_NAME --create-namespace $EXTRA_HELM_CMD" "${options[@]}"
 
 sleep 30

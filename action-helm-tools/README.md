@@ -71,7 +71,8 @@ INIT_CHART: repo/chartName # If another chart's deployment is required prior to 
 INIT_CHART_VERSION: n.m.o # Explicit init chart version, required if INIT_CHART is given
 IMAGE_TAG_UPDATE: "true|false" # DEFAULT true; Update image.tag based on VERSION env variable
 CUSTOM_ACTIONS: # During test phase, run shell commands before deploying the chart. See CUSTOM_ACTIONS below for examples.
-SINGLE_NATS_STREAMING: "true|flase" # DEFAULT true; Do not deploy clustered nats-streaming when testing chart
+SINGLE_NATS_STREAMING: "true|false" # DEFAULT true; Do not deploy clustered nats-streaming when testing chart
+SKIP_LINT: "true|false" # DEFAULT false; Skip helm lint when packaging chart (temporary setting to avoid lint crashes)
 ```
 
 **NOTE** If the action is used on a `workflow_dispatch`, the commit status (check) is not set automatically when workflow is ran. To set commit status, add the following environment variable:
