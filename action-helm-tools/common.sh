@@ -94,6 +94,7 @@ add_helm_repos() {
     "grafana https://grafana.github.io/helm-charts"
     "prometheus-community https://prometheus-community.github.io/helm-charts"
     "connaisseur https://sse-secure-systems.github.io/connaisseur/charts"
+    "infracloudio https://infracloudio.github.io/charts"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
