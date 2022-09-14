@@ -20,10 +20,10 @@ if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
             --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$QLIK_DOCKER_DEV_USERNAME \
             --docker-password=$QLIK_DOCKER_DEV_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
     else
-        echo "====> Artifactory docker registry"
-        kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
-            --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$ARTIFACTORY_USERNAME \
-            --docker-password=$ARTIFACTORY_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
+        echo "QLIK_DOCKER_DEV_REGISTRY: ${QLIK_DOCKER_DEV_REGISTRY}"
+        echo "K8S_DOCKER_REGISTRY: ${K8S_DOCKER_REGISTRY}"
+        echo "Error: Unexpected value for QLIK_DOCKER_DEV_REGISTRY and/or K8S_DOCKER_REGISTRY"
+        exit 1
     fi
 fi
 

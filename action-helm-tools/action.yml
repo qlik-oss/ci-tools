@@ -1,5 +1,5 @@
-name: 'Helm test, package, push to Artifactory'
-description: 'GitHub Action for packaging, testing helm charts and publishing to Artifactory helm repo'
+name: 'Helm test, package, push to GHCR'
+description: 'GitHub Action for packaging, testing helm charts and publishing to GHCR helm repo'
 author: 'ibiqlik'
 
 inputs:
