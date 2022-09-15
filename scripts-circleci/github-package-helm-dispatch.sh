@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 VERSION_FILE=${VERSION_FILE:="/workspace/version.txt"}
-GITHUB_WORKFLOW=${GITHUB_WORKFLOW:="package-helm.yaml"}
+GITHUB_WORKFLOW=${GITHUB_WORKFLOW:="qr_package-helm-chart.yaml"}
 
 if [ -z "${VERSION}" ]; then
   VERSION=$(cat "$VERSION_FILE")
@@ -44,7 +44,8 @@ else
   REF=${CIRCLE_BRANCH}
 fi
 
-generate_post_data()
+# TODO: Remove this function when package-helm.yaml is no longer used in any component repository
+generate_post_data_old()
 {
   cat <<EOF
 {
@@ -57,8 +58,25 @@ generate_post_data()
 EOF
 }
 
+generate_post_data()
+{
+  cat <<EOF
+{
+  "ref": "${REF}",
+  "inputs": {
+    "version": "${VERSION}",
+    "commit_sha": "${GIT_COMMIT}"
+  }
+}
+EOF
+}
+
 echo "Data:"
-generate_post_data
+if [ "${GITHUB_WORKFLOW}" == "qr_package-helm-chart.yaml" ]; then
+  generate_post_data
+else
+  generate_post_data_old
+fi
 
 curl -i --fail --location --request POST "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
   --header "Authorization: token ${GH_ACCESS_TOKEN}" \
