@@ -9,6 +9,9 @@ export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
 export K8S_DOCKER_EMAIL=${K8S_DOCKER_EMAIL:="xyz@example.com"}
 export DEPENDENCY_UPDATE=${DEPENDENCY_UPDATE:="false"}
 
+export DOCKER_DEV_REGISTRY="ghcr.io/qlik-trial"
+export HELM_DEV_REGISTRY="ghcr.io/qlik-trial/helm"
+
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.6.3"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.20.7"}
@@ -100,7 +103,11 @@ add_helm_repos() {
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
 
   echo "==> Helm add repo"
-  if [ -n "$QLIK_HELM_DEV_REGISTRY" ]; then
+  if [[ -n "$GITHUB_USER" ]] && [[ -n "$GITHUB_TOKEN" ]]; then
+    echo "==> Helm registry login (registry is $HELM_DEV_REGISTRY)"
+    echo $GITHUB_TOKEN | helm registry login --username $GITHUB_USER --password-stdin https://$HELM_DEV_REGISTRY
+  elif [ -n "$QLIK_HELM_DEV_REGISTRY" ]; then
+    # TODO: Remove this block when it is no longer used
     echo "==> Helm registry login"
     echo $QLIK_HELM_DEV_PASSWORD | helm registry login --username $QLIK_HELM_DEV_USERNAME --password-stdin https://$QLIK_HELM_DEV_REGISTRY
   fi

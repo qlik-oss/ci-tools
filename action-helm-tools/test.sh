@@ -14,12 +14,19 @@ echo "==> Deploy chart $CHART_NAME"
 kubectl create namespace $CHART_NAME
 
 if [[ -n "$K8S_DOCKER_REGISTRY_SECRET" ]]; then
-    if [[ -n "$QLIK_DOCKER_DEV_REGISTRY" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$QLIK_DOCKER_DEV_REGISTRY" ]]; then
-        echo "====> GHCR docker registry"
+    if [[ -n "$GITHUB_USER" ]] && [[ -n "$GITHUB_TOKEN" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$DOCKER_DEV_REGISTRY" ]]; then
+        echo "====> Create secret for docker registry (registry is $DOCKER_DEV_REGISTRY)"
+        kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
+            --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$GITHUB_USER \
+            --docker-password=$GITHUB_TOKEN --docker-email=$K8S_DOCKER_EMAIL
+    elif [[ -n "$QLIK_DOCKER_DEV_REGISTRY" ]] && [[ "$K8S_DOCKER_REGISTRY" == "$QLIK_DOCKER_DEV_REGISTRY" ]]; then
+        # TODO: Remove this block when it is no longer used
+        echo "====> Create secret for docker registry"
         kubectl create secret docker-registry --namespace $CHART_NAME $K8S_DOCKER_REGISTRY_SECRET \
             --docker-server=$K8S_DOCKER_REGISTRY --docker-username=$QLIK_DOCKER_DEV_USERNAME \
             --docker-password=$QLIK_DOCKER_DEV_PASSWORD --docker-email=$K8S_DOCKER_EMAIL
     else
+        # TODO: Change the output in this block when the elif block is removed
         echo "QLIK_DOCKER_DEV_REGISTRY: ${QLIK_DOCKER_DEV_REGISTRY}"
         echo "K8S_DOCKER_REGISTRY: ${K8S_DOCKER_REGISTRY}"
         echo "Error: Unexpected value for QLIK_DOCKER_DEV_REGISTRY and/or K8S_DOCKER_REGISTRY"
