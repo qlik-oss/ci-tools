@@ -2,6 +2,7 @@
 
 VERSION_FILE=${VERSION_FILE:="/workspace/version.txt"}
 GITHUB_WORKFLOW=${GITHUB_WORKFLOW:="qr_package-helm-chart.yaml"}
+echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
 
 if [ -z "${VERSION}" ]; then
   VERSION=$(cat "$VERSION_FILE")
