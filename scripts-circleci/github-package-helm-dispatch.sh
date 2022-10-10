@@ -65,7 +65,7 @@ generate_post_data()
   "ref": "${REF}",
   "inputs": {
     "version": "${VERSION}",
-    "commit_sha": "${GIT_COMMIT}"
+    "commit_sha": "${CIRCLE_SHA1}"
   }
 }
 EOF
