@@ -1,6 +1,6 @@
 # action-helm-tools
 
-GitHub Action for packaging, testing helm charts and publishing to a helm repo
+GitHub Action for packaging, testing helm charts and publishing to a Helm OCI repo
 
 ## Optional input
 
