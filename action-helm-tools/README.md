@@ -9,7 +9,7 @@ GitHub Action for packaging, testing helm charts and publishing to a Helm OCI re
 - Leave empty to run `package, test and publish`
 - `package` - Involves helm client only and does dependency build, lint and package chart
 - `test` - Creates K8s cluster (in Docker), sets up helm, install chart in a namespace and waits for all pods to be up and running
-- `publish` - Uploads chart to helm repo
+- `publish` - Uploads chart to Helm OCI repo
 - `package_and_test` - Run `package` and `test` in one step
 
 ## Version
