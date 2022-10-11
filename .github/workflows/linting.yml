@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: yaml-lint
-      uses: ibiqlik/action-yamllint@v1
+      uses: ibiqlik/action-yamllint@v3
 
     - name: shellcheck
       uses: ibiqlik/action-shellcheck@master
