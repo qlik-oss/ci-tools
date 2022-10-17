@@ -55,16 +55,16 @@ echo "Set branch_name: ${BRANCH_NAME}"
 # Set GitHub Action environment and output variable
 # VERSION
 echo "VERSION=${VERSION}" >> $GITHUB_ENV
-echo "::set-output name=VERSION::${VERSION}"
+echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
 # COMMIT_SHA
 echo "COMMIT_SHA=${_sha}" >> $GITHUB_ENV
-echo "::set-output name=COMMIT_SHA::${_sha}"
+echo "COMMIT_SHA=${_sha}" >> $GITHUB_OUTPUT
 
 # BRANCH_NAME
 echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
-echo "::set-output name=BRANCH_NAME::${BRANCH_NAME}"
+echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_OUTPUT
 
 # RELEASE TAG
 echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
-echo "::set-output name=RELEASE_TAG::${RELEASE_TAG}"
+echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT

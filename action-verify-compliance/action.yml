@@ -32,6 +32,6 @@ runs:
         go run main.go ${TARGET_OWNER} ${TARGET_NAME} ${TARGET_REF}
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
-        echo "::set-output name=verification-status::$(echo $VERIFICATION_STATUS)"
+        echo "verification-status=${VERIFICATION_STATUS}" >> $GITHUB_OUTPUT
         if [ "${VERIFICATION_STATUS}" = "failure" ] || [ "${VERIFICATION_STATUS}" = "error" ]; then exit 1; fi
       shell: bash
