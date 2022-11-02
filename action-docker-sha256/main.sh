@@ -16,4 +16,4 @@ DOCKER_SHA256=$(docker inspect $IMAGE | jq -r '(.[].RepoDigests[0] | split(":"))
 # Set GitHub Action environment and output variable
 # DOCKER_SHA256
 echo "DOCKER_SHA256=${DOCKER_SHA256}" >> $GITHUB_ENV
-echo "::set-output name=DOCKER_SHA256::${DOCKER_SHA256}"
+echo "DOCKER_SHA256=${DOCKER_SHA256}" >> $GITHUB_OUTPUT
