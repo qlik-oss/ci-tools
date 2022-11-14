@@ -14,10 +14,10 @@ export HELM_DEV_REGISTRY="ghcr.io/qlik-trial/helm"
 
 # Tools
 export HELM_VERSION=${HELM_VERSION:="3.6.3"}
-export KUBECTL_VERSION=${KUBECTL_VERSION:="1.21.14"}
+export KUBECTL_VERSION=${KUBECTL_VERSION:="1.22.15"}
 export KIND_VERSION=${KIND_VERSION:="v0.11.1"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
-export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.21.14@sha256:9d9eb5fb26b4fbc0c6d95fa8c790414f9750dd583f5d7cee45d92e8c26670aa1"}
+export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.22.15@sha256:7d9708c4b0873f0fe2e171e2b1b7f45ae89482617778c1c875f1053d4cef2e41"}
 export YQ_VERSION="4.25.2"
 
 get_component_properties() {
