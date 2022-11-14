@@ -13,6 +13,7 @@ _Note this action is written to specifically work with Helm repos in Artifactory
 - `test` - Creates K8s cluster (in Docker), sets up helm, install chart in a namespace and waits for all pods to be up and running
 - `publish` - Uses jfrog cli to check for existing package with same version and uploads if new chart is built
 - `package_and_test` - Run `package` and `test` in one step
+- `package_and_publish` - Run `package` and `publish`, skipping `test` for images that cannot start on their own
 
 ## Version
 
