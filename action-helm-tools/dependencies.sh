@@ -6,6 +6,21 @@ source $SCRIPT_DIR/common.sh
 BRANCH_NAME="ci-tools/helm-dependency-updater"
 COMMIT_MSG="chore(deps): Update helm requirements"
 
+REGISTRY=https://ghcr.io
+TAGS_FILE=docker.register.tags
+TOKEN=`echo $GITHUB_TOKEN | base64`
+WGET_COMMAND="wget -O- -q -S"
+
+listTags() {
+  image=$1
+  TAGS_LINK="/v2/qlik-prod/helm/${image}/tags/list?n=100"
+  while true; do
+   ${WGET_COMMAND} --header="Authorization: Bearer ${TOKEN}" "${REGISTRY}${TAGS_LINK}" 2>${TAGS_FILE} | jq -r ".tags | .[]" 
+   TAGS_LINK=`grep Link ${TAGS_FILE} 2>/dev/null | cut -d\< -f2 | cut -d\> -f1`
+   if [ ! -n "${TAGS_LINK}" ] ; then break; fi
+  done
+}
+
 prep_git() {
   echo "==> Configure git, clean and reset to default branch"
 
@@ -51,7 +66,7 @@ helm_dependency_updater() {
   for dep in "${deps[@]}"; do
     IFS=";" read -r -a d <<< "${dep}"
       echo "Checking for new version of ${d[0]}:${d[1]}"
-      latest_chart_version=$(curl -s -X GET -H "Authorization: Bearer $(echo $GITHUB_TOKEN | base64)" https://ghcr.io/v2/qlik-prod/helm/${d[0]}/tags/list | jq -r '.tags | .[] ' | sort -V | tail -n 1)
+      latest_chart_version=$(listTags ${d[0]} | sort -V | tail -n 1)
       echo "Latest available version ${d[0]}:$latest_chart_version"
       if semver -r ">${d[1]}" $latest_chart_version; then
         echo "Update ${d[0]}:${d[1]} to $latest_chart_version"
