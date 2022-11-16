@@ -66,7 +66,7 @@ helm_dependency_updater() {
   for dep in "${deps[@]}"; do
     IFS=";" read -r -a d <<< "${dep}"
       echo "Checking for new version of ${d[0]}:${d[1]}"
-      latest_chart_version=$(listTags ${d[0]} | sort -V | tail -n -1)
+      latest_chart_version=$(listTags ${d[0]} | sort -V | tail -n 1)
       echo "Latest available version ${d[0]}:$latest_chart_version"
       if semver -r ">${d[1]}" $latest_chart_version; then
         echo "Update ${d[0]}:${d[1]} to $latest_chart_version"
