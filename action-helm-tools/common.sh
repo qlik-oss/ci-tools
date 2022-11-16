@@ -2,7 +2,6 @@
 set -eo pipefail
 
 # Defaults
-export HELM_EXPERIMENTAL_OCI=1
 export HELM_REPO=${HELM_REPO:="helm-dev"}
 export HELM_VIRTUAL_REPO=${HELM_VIRTUAL_REPO:="qlikhelm"}
 export HELM_LOCAL_REPO=${HELM_LOCAL_REPO:="qlik"}
@@ -13,9 +12,9 @@ export DOCKER_DEV_REGISTRY="ghcr.io/qlik-trial"
 export HELM_DEV_REGISTRY="ghcr.io/qlik-trial/helm"
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="3.6.3"}
+export HELM_VERSION=${HELM_VERSION:="3.10.2"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.22.15"}
-export KIND_VERSION=${KIND_VERSION:="v0.11.1"}
+export KIND_VERSION=${KIND_VERSION:="v0.17.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
 export KIND_IMAGE=${KIND_IMAGE:="kindest/node:v1.22.15@sha256:7d9708c4b0873f0fe2e171e2b1b7f45ae89482617778c1c875f1053d4cef2e41"}
 export YQ_VERSION="4.25.2"
