@@ -5,7 +5,7 @@ author: 'eskaaren'
 inputs:
   commands:
     required: true
-    description: 'One or more commands: init, fmt, lint, validate, plan, apply'
+    description: 'One or more commands: version, init, fmt, lint, validate, plan, apply'
   chdir:
     required: false
     default: '.'
