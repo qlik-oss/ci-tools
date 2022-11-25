@@ -1,5 +1,9 @@
 #!/bin/bash
 
+terraform_version() {
+  terraform version
+}
+
 terraform_init() {
   terraform -chdir=$INPUTS_CHDIR init -backend=true 
 }
@@ -27,6 +31,9 @@ terraform_apply() {
 
 for command in $(echo $INPUTS_COMMANDS| tr ',' ' '); do
   case $command in
+    version)
+      terraform_version
+      ;;
     init)
       terraform_init
       ;;
