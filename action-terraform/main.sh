@@ -1,11 +1,7 @@
 #!/bin/bash
 
 terraform_init() {
-  terraform -chdir=$INPUTS_CHDIR init \
-    -backend=true \
-    -backend-config="bucket=${BUCKET}" \
-    -backend-config="key=${BUCKET_KEY}" \
-    -backend-config="profile=${ACCOUNT}"
+  terraform -chdir=$INPUTS_CHDIR init -backend=true 
 }
 
 terraform_fmt() {
