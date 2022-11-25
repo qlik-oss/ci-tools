@@ -1,6 +1,6 @@
 # action-terraform
 
-Run terraform commands: init, fmt, lint, validate, plan, apply.
+Run terraform commands: version, init, fmt, lint, validate, plan, apply.
 
 ## Use in GitHub Actions - workflow
 
