@@ -31,7 +31,6 @@ jobs:
 ```
 
 ### Specify terraform dir and version
-### Multiple commands
 ```yaml
 ...
 jobs:
