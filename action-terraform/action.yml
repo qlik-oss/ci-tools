@@ -1,0 +1,29 @@
+name: 'Terraform'
+description: 'GitHub Action for running Terraform commands'
+author: 'eskaaren'
+
+inputs:
+  commands:
+    required: true
+    description: 'One or more commands: init, fmt, lint, validate, plan, apply'
+  chdir:
+    required: false
+    default: '.'
+    description: 'Dir to run terraform from'
+  terraform_version:
+    required: false
+    default: '1.3.5'
+    description: 'Terraform version'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+    - id: terraform
+      run: ${{ github.action_path }}/main.sh
+      shell: bash
+      env:
+        INPUTS_COMMANDS: ${{ inputs.commands }}
+        INPUTS_CHDIR: ${{ inputs.chdir }}
