@@ -98,6 +98,8 @@ add_helm_repos() {
     "connaisseur https://sse-secure-systems.github.io/connaisseur/charts"
     "infracloudio https://infracloudio.github.io/charts"
     "datadog https://helm.datadoghq.com/"
+    "jetstack  https://charts.jetstack.io"
+    "twin https://twin.github.io/helm-charts"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
