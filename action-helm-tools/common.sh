@@ -48,6 +48,10 @@ get_component_properties() {
 
     export K8S_DOCKER_REGISTRY
     if [ -z "$K8S_DOCKER_REGISTRY" ]; then
+        echo "CHART_DIR: ${CHART_DIR}"
+        echo "------- values.yaml start -------"
+        cat ${CHART_DIR}/values.yaml
+        echo "------- values.yaml end -------"
         K8S_DOCKER_REGISTRY=$(yq e '.image.registry' "${CHART_DIR}/values.yaml")
         if [ "$K8S_DOCKER_REGISTRY" = "null" ]; then
             echo "::error file=${CHART_DIR}/values.yaml::Cannot get image.registry from values.yaml"
