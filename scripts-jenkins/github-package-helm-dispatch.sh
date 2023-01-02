@@ -36,20 +36,6 @@ else
   REF=${GIT_BRANCH}
 fi
 
-# TODO: Remove this function when package-helm.yaml is no longer used in any component repository
-generate_post_data_old()
-{
-  cat <<EOF
-{
-  "ref": "${REF}",
-  "inputs": {
-    "version": "${VERSION}",
-    "commitsha": "${GIT_COMMIT}"
-  }
-}
-EOF
-}
-
 generate_post_data()
 {
   cat <<EOF
@@ -64,18 +50,9 @@ EOF
 }
 
 echo "Data:"
-if [ "${GITHUB_WORKFLOW}" == "qr_package-helm-chart.yaml" ]; then
-  generate_post_data
-  curl -i --fail --location --request POST "https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
-    --header "Authorization: token ${GH_ACCESS_TOKEN}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/vnd.github.v3+json" \
-    --data "$(generate_post_data)"
-else
-  generate_post_data_old
-  curl -i --fail --location --request POST "https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
-    --header "Authorization: token ${GH_ACCESS_TOKEN}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/vnd.github.v3+json" \
-    --data "$(generate_post_data_old)"
-fi
+generate_post_data
+curl -i --fail --location --request POST "https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPONAME}/actions/workflows/${GITHUB_WORKFLOW}/dispatches" \
+  --header "Authorization: token ${GH_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --header "Accept: application/vnd.github.v3+json" \
+  --data "$(generate_post_data)"
