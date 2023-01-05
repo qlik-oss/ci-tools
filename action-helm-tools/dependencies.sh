@@ -82,11 +82,8 @@ helm_dependency_updater() {
   done
 
   if [ "$UPDATE_AVAILABLE" -eq "1" ]; then
-    helm version
-    helm repo list
-    helm search repo bitnami/mongodb --versions
     echo "RUNNING helm dep update"
-    helm dep update "$CHART_DIR"
+    helm dep update "$CHART_DIR" --debug
     echo "FINISHED Running helm dep update"
   else
     echo "No updates available, continue"
