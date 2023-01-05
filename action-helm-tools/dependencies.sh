@@ -80,6 +80,7 @@ helm_dependency_updater() {
   if [ "$UPDATE_AVAILABLE" -eq "1" ]; then
     echo "Running helm dep update"
     helm dep update "$CHART_DIR"
+    echo "FINISHED Running helm dep update"
   else
     echo "No updates available, continue"
     exit 0
