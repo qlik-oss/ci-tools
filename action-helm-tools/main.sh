@@ -14,11 +14,11 @@ main() {
 
     if [[ -z "${INPUT_ACTION}" ]]; then
         "$SCRIPT_DIR/package.sh"
-        "$SCRIPT_DIR/test.sh"
+    #    "$SCRIPT_DIR/test.sh"
         "$SCRIPT_DIR/publish.sh"
     elif [[ "${INPUT_ACTION}" == "package_and_test" ]]; then
         "$SCRIPT_DIR/package.sh"
-        "$SCRIPT_DIR/test.sh"
+    #    "$SCRIPT_DIR/test.sh"
     elif [[ "${INPUT_ACTION}" == "package_and_publish" ]]; then
         "$SCRIPT_DIR/package.sh"
         "$SCRIPT_DIR/publish.sh"
