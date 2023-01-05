@@ -80,6 +80,7 @@ helm_dependency_updater() {
   if [ "$UPDATE_AVAILABLE" -eq "1" ]; then
     helm version
     helm repo list
+    git diff
     echo "RUNNING helm dep update"
     helm dep update "$CHART_DIR"
     echo "FINISHED Running helm dep update"
