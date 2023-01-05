@@ -56,8 +56,12 @@ helm_dependency_updater() {
     echo "::warning ::Could not determine helm apiVersion from $CHART_DIR/Chart.yaml"
     exit 0
   fi
+  
+  echo "DEPENDENCIES_FILE $DEPENDENCIES_FILE"
+  echo "DEPENDENCIES_LOCK_FILE $DEPENDENCIES_LOCK_FILE"
 
   UPDATE_AVAILABLE=0
+  
 
   deps=($(yq e '.dependencies[] | select(.repository == "oci://ghcr.io/qlik-trial/helm") | .name + ";" + .version' $DEPENDENCIES_FILE))
 
