@@ -78,7 +78,8 @@ helm_dependency_updater() {
   done
 
   if [ "$UPDATE_AVAILABLE" -eq "1" ]; then
-    echo "Running helm dep update"
+    helm repo list
+    echo "RUNNING helm dep update"
     helm dep update "$CHART_DIR"
     echo "FINISHED Running helm dep update"
   else
