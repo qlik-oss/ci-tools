@@ -44,8 +44,6 @@ generate_post_data()
   "inputs": {
     "version": "${VERSION}",
     "commit_sha": "${GIT_COMMIT}"
-    "dependency_update": "${DEPENDENCY_UPDATE}"
-    "action": "${ACTION}"
   }
 }
 EOF
