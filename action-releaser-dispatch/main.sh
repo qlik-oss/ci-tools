@@ -19,7 +19,6 @@ if ! echo $VERSION | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
     fi
 fi
 
-
 if [[ "${EVENT_TO_TRIGGER}" == "verify-compliance" ]]; then
   body_template='{"event_type":"%s","client_payload":{"target_owner":"%s","target_name":"%s","target_ref":"%s","target_version":"%s","verification_types":"%s"}}'
   body=$(printf $body_template "$EVENT_TO_TRIGGER" "$GH_OWNER" "$GH_REPO" "$GITHUB_REF" "$VERSION" "all")
@@ -27,7 +26,6 @@ else
   body_template='{"event_type":"%s","client_payload":{"repository":"%s","tag":"%s","branch_to_release_from":"%s"}}'
   body=$(printf $body_template "$EVENT_TO_TRIGGER" "$GH_REPO" "$TAG" "$BRANCH_TO_RELEASE_FROM")
 fi
-
 
 # This block should be removed when GH_PAT is no longer used by any client workflows
 if [ -z "${GITHUB_TOKEN}" ]; then
