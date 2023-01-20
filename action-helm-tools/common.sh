@@ -105,6 +105,7 @@ add_helm_repos() {
     "jetstack  https://charts.jetstack.io"
     "twin https://twin.github.io/helm-charts"
     "argo https://argoproj.github.io/argo-helm"
+    "dynatrace https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/master/config/helm/repos/stable"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
