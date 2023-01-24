@@ -43,8 +43,8 @@ generate_post_data()
   "ref": "${REF}",
   "inputs": {
     "version": "${VERSION}",
-    "commit_sha": "${GIT_COMMIT}"
-    "dependency_update": "${DEPENDENCY_UPDATE}"
+    "commit_sha": "${GIT_COMMIT}",
+    "dependency_update": "${DEPENDENCY_UPDATE}",
     "action": "${ACTION}"
   }
 }
