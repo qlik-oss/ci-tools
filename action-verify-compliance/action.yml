@@ -1,5 +1,5 @@
 name: Verify compliance
-description: 'Performs a specific type of verification'
+description: "Performs a specific type of verification"
 outputs:
   verification-status:
     description: "Verification status"
@@ -9,7 +9,7 @@ runs:
   steps:
     - uses: actions/setup-go@v3
       with:
-        go-version: '1.18'
+        go-version: "1.18"
     - id: clone-repo-with-verification-commands
       run: |
         echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
@@ -29,7 +29,7 @@ runs:
         export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
         export VERIFICATION_TYPE_WITH_UNDERSCORES=$(echo ${VERIFICATION_TYPE} | tr '-' '_')
         cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE_WITH_UNDERSCORES}
-        go run main.go ${TARGET_OWNER} ${TARGET_NAME} ${TARGET_REF}
+        go run main.go ${TARGET_OWNER} ${TARGET_NAME} ${TARGET_REF} "${TARGET_VERSION}" # TARGET_VERSION may be empty
         export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
         echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
         echo "verification-status=${VERIFICATION_STATUS}" >> $GITHUB_OUTPUT
