@@ -106,6 +106,7 @@ add_helm_repos() {
     "twin https://twin.github.io/helm-charts"
     "argo https://argoproj.github.io/argo-helm"
     "dynatrace https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/master/config/helm/repos/stable"
+    "botkube https://charts.botkube.io"
     "karpenter https://charts.karpenter.sh"
   )
   # "kubed https://charts.appscode.com/stable/"

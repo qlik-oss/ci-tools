@@ -51,7 +51,9 @@ generate_post_data()
   "ref": "${REF}",
   "inputs": {
     "version": "${VERSION}",
-    "commit_sha": "${CIRCLE_SHA1}"
+    "commit_sha": "${CIRCLE_SHA1}",
+    "dependency_update": "${DEPENDENCY_UPDATE}",
+    "action": "${ACTION}"
   }
 }
 EOF
