@@ -37,6 +37,12 @@ fi
 if [[ -n "$CUSTOM_ACTIONS" ]]; then
   echo "==> Running custom actions"
   echo "${CUSTOM_ACTIONS}"
+  # Possibly, CUSTOM_ACTIONS is a singleline string created from a multiline string by substitution of special characters.
+  # Here, we do the inverse operation, i.e. we "multilinearize" CUSTOM_ACTIONS, to make eval work.
+  # For details, see https://renehernandez.io/snippets/multiline-strings-as-a-job-output-in-github-actions/.
+  CUSTOM_ACTIONS="${CUSTOM_ACTIONS//'%25'/'%'}"
+  CUSTOM_ACTIONS="${CUSTOM_ACTIONS//'%0A'/$'\n'}"
+  CUSTOM_ACTIONS="${CUSTOM_ACTIONS//'%0D'/$'\r'}"
   eval "${CUSTOM_ACTIONS}"
 fi
 
