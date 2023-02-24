@@ -2,7 +2,7 @@
 set -eo pipefail
 
 GH_OWNER=${GITHUB_REPOSITORY#/*}   # Strip repo
-GH_REPO=${GITHUB_REPOSITORY#*/}   # Strip owner
+GH_REPO=${GITHUB_REPOSITORY%/*}   # Strip owner
 VERSION=${VERSION#v}  # Strip v prefix as a precaution
 TAG="v${VERSION}"
 BRANCH_TO_RELEASE_FROM=${BRANCH_TO_RELEASE_FROM:=""}
