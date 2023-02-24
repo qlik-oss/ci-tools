@@ -1,7 +1,7 @@
 #!/bin/bash -l
 set -eo pipefail
 
-GH_OWNER=${GITHUB_REPOSITORY#/*}   # Strip repo
+GH_OWNER=${GITHUB_REPOSITORY%/*}   # Strip repo
 GH_REPO=${GITHUB_REPOSITORY#*/}   # Strip owner
 VERSION=${VERSION#v}  # Strip v prefix as a precaution
 TAG="v${VERSION}"
