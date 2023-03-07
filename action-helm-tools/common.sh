@@ -109,6 +109,7 @@ add_helm_repos() {
     "botkube https://charts.botkube.io"
     "karpenter https://charts.karpenter.sh"
     "teleport https://charts.releases.teleport.dev"
+    "opensearch-project https://opensearch-project.github.io/helm-charts"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
