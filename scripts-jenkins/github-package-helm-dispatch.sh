@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 VERSION_FILE=${VERSION_FILE:="/workspace/version.txt"}
-GITHUB_WORKFLOW=${GITHUB_WORKFLOW:="qr_package-helm-chart.yaml"}
+GITHUB_WORKFLOW="qr_pipeline.yaml"
 
 if [ -z "${VERSION}" ]; then
   VERSION=$(cat "$VERSION_FILE")
@@ -32,8 +32,10 @@ fi
 
 if [ -n "${TAG_NAME}" ]; then
   REF=${TAG_NAME}
+  TARGET_REF=refs/tags/${TAG_NAME}
 else
   REF=${GIT_BRANCH}
+  TARGET_REF=refs/heads/${GIT_BRANCH}
 fi
 
 generate_post_data()
@@ -42,10 +44,8 @@ generate_post_data()
 {
   "ref": "${REF}",
   "inputs": {
-    "version": "${VERSION}",
-    "commit_sha": "${GIT_COMMIT}",
-    "dependency_update": "${DEPENDENCY_UPDATE}",
-    "action": "${ACTION}"
+    "target_ref": "${TARGET_REF}",
+    "version": "${VERSION}"
   }
 }
 EOF
