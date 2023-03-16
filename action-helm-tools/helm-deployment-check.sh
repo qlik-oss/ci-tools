@@ -54,17 +54,26 @@ while [[ $SECONDS -lt $_timeout ]]; do
     deployed=1
     break
   else
-    get_pods
     sleep 10
+    get_pods
   fi
 done
+
+sleep 5
+get_pods
+if [[ -n "$pods" ]]; then
+  echo "==> DEGRADATION"
+  # For info about CrashLoopBackOff, see https://sysdig.com/blog/debug-kubernetes-crashloopbackoff
+  echo "Some pod has degraded from 'deployment OK' to 'not ready', likely because the status phase for the pod changed from 'Running' to 'CrashLoopBackOff'"
+  deployed=0
+fi
 
 POD_LOGS="${GITHUB_WORKSPACE}/podlogs/" && mkdir -p "${POD_LOGS}"
 echo "POD_LOGS=${POD_LOGS}" >> $GITHUB_ENV
 
 if [[ $deployed -ne 1 ]]; then
   echo "==> ERROR"
-  echo "$RELEASE deployment failed, pods not started are: "
+  echo "$RELEASE deployment failed; the following pods are not ready:"
   echo "$pods"
   kubectl get pods --all-namespaces
   echo "==> Get logs"
