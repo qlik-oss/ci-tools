@@ -8,7 +8,7 @@ TAG="v${VERSION}"
 BRANCH_TO_RELEASE_FROM=${BRANCH_TO_RELEASE_FROM:=""}
 
 if ! echo $VERSION | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-  echo "This is not a release tag or a push to default branch, skip."
+  echo "This is not a release tag, skip."
   exit 0
 fi
 
