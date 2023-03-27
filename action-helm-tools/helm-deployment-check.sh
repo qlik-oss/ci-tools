@@ -59,13 +59,15 @@ while [[ $SECONDS -lt $_timeout ]]; do
   fi
 done
 
-sleep 5
-get_pods
-if [[ -n "$pods" ]]; then
-  echo "==> DEGRADATION"
-  # For info about CrashLoopBackOff, see https://sysdig.com/blog/debug-kubernetes-crashloopbackoff
-  echo "Some pod has degraded from 'deployment OK' to 'not ready', likely because the status phase for the pod changed from 'Running' to 'CrashLoopBackOff'"
-  deployed=0
+if [[ $deployed == 1 ]]; then
+  sleep 5
+  get_pods
+  if [[ -n "$pods" ]]; then
+    echo "==> DEGRADATION"
+    # For info about CrashLoopBackOff, see https://sysdig.com/blog/debug-kubernetes-crashloopbackoff
+    echo "Some pod has degraded from 'deployment OK' to 'not ready', likely because the status phase for the pod changed from 'Running' to 'CrashLoopBackOff'"
+    deployed=0
+  fi
 fi
 
 POD_LOGS="${GITHUB_WORKSPACE}/podlogs/" && mkdir -p "${POD_LOGS}"
