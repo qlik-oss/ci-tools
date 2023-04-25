@@ -1,0 +1,13 @@
+name: Print event info
+description: 'Prints event info'
+runs:
+  using: "composite"
+  steps:
+    - id: print-event-info
+      run: |
+        echo "Error: qlik-oss/ci-tools/action-print-event-info has been deprecated! Use qlik-trial/qlik-releaser/.github/actions/print-event-info instead"
+        echo GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+        echo GITHUB_EVENT_PATH: ${GITHUB_EVENT_PATH}
+        cat ${GITHUB_EVENT_PATH}
+        exit 1
+      shell: bash
