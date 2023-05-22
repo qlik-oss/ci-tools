@@ -52,7 +52,7 @@ get_pods() {
 # Note: A pod could change from being an ok_pod to being a nok_pod. In other words, pod state could degrade. For example,
 # during startup of a kubernetes cluster, a pod's status.phase value could change from "Running" to "CrashLoopBackOff".
 get_nok_pods() {
-  nok_pods=$(kubectl get pods -n -$NAMESPACE -o json | jq -r '.items[] | select((.status.phase? != "Running" or .status.containerStatuses[]?.ready != true) and (.status.phase? != "Succeeded")) | .metadata.name')
+  nok_pods=$(kubectl get pods -n $NAMESPACE -o json | jq -r '.items[] | select((.status.phase? != "Running" or .status.containerStatuses[]?.ready != true) and (.status.phase? != "Succeeded")) | .metadata.name')
 }
 
 get_nok_pods
