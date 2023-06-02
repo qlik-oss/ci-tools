@@ -49,6 +49,7 @@ set_commit_status() {
     curl --fail --silent "$APIURL" \
       -H "Content-Type: application/json" \
       -H "Authorization: token ${GITHUB_TOKEN}" \
+      -H "X-GitHub-Api-Version: 2022-11-28"
       -X POST \
       -d "{\"state\": \"$STATUS\", \"context\": \"$CONTEXT\", \"target_url\": \"$TARGET_URL\"}"
   fi
