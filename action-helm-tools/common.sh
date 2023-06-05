@@ -22,7 +22,7 @@ export YQ_VERSION="4.25.2"
 get_component_properties() {
     install_yq
 
-    # Get chartname
+    # Get chart name
     export CHART_NAME
     if [ -z "$CHART_NAME" ]; then
         CHART_NAME=$(yq e '.publishedPackages.helm.ids[0]' component.yaml)
@@ -35,9 +35,18 @@ get_component_properties() {
         fi
     fi
 
-    # Set chartpath
+    # Get chart dir
     export CHART_DIR
-    [ -z "$CHART_DIR" ] && CHART_DIR="manifests/chart/${CHART_NAME}"
+    if [ -z "$CHART_DIR" ]; then
+      if [ -d "manifests/chart/${CHART_NAME}" ]; then
+        CHART_DIR="manifests/chart/${CHART_NAME}"
+      elif [ -d "manifests/${CHART_NAME}/chart/${CHART_NAME}" ]; then
+        CHART_DIR="manifests/${CHART_NAME}/chart/${CHART_NAME}"
+      else
+        echo "::error ::Cannot get chart dir"
+        exit 1
+      fi
+    fi
 
     # Get K8S registry pull secret name and registry
     export K8S_DOCKER_REGISTRY_SECRET
