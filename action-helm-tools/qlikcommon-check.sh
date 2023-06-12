@@ -7,7 +7,7 @@ function majorminor { echo "$@" | awk -F. '{ printf("%d%03d\n", $1,$2); }'; }
 
 echo "==> Checking Resource Contract compliance"
 
-LATEST_QLIKCOMMON_VERSION=$(curl -s "https://api.github.com/repos/qlik-trial/resource-contract/releases/latest" -H "Authorization: Bearer $GITHUB_TOKEN" | jq -r '.tag_name' | cut -c 2-)
+LATEST_QLIKCOMMON_VERSION=$(curl -s "https://api.github.com/repos/qlik-trial/resource-contract/releases/latest" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" | jq -r '.tag_name' | cut -c 2-)
 CURRENT_QLIKCOMMON_VERSION=$(helm inspect chart "$CHART_DIR" | yq e '.dependencies[] | select(.name == "qlikcommon") | .version' -)
 
 if [ -z "$CURRENT_QLIKCOMMON_VERSION" ]; then
