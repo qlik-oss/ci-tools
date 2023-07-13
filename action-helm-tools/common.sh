@@ -121,6 +121,7 @@ add_helm_repos() {
     "opensearch-project https://opensearch-project.github.io/helm-charts"
     "aws-eks https://aws.github.io/eks-charts"
     "uswitch https://uswitch.github.io/kiam-helm-charts/charts"
+    "sealed-secrets https://bitnami-labs.github.io/sealed-secrets"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
