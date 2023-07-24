@@ -122,6 +122,8 @@ add_helm_repos() {
     "aws-eks https://aws.github.io/eks-charts"
     "uswitch https://uswitch.github.io/kiam-helm-charts/charts"
     "sealed-secrets https://bitnami-labs.github.io/sealed-secrets"
+    "jaegertracing https://jaegertracing.github.io/helm-charts"
+    "hashicorp https://helm.releases.hashicorp.com"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
