@@ -12,7 +12,7 @@ export DOCKER_DEV_REGISTRY="ghcr.io/qlik-trial"
 export HELM_DEV_REGISTRY="ghcr.io/qlik-trial/helm"
 
 # Tools
-export HELM_VERSION=${HELM_VERSION:="3.10.2"}
+export HELM_VERSION=${HELM_VERSION:="3.12.2"}
 export KUBECTL_VERSION=${KUBECTL_VERSION:="1.24.15"}
 export KIND_VERSION=${KIND_VERSION:="v0.20.0"}
 # Get Image version from https://github.com/kubernetes-sigs/kind/releases, look for K8s version in the release notes
