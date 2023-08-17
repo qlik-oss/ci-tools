@@ -139,6 +139,11 @@ add_helm_repos() {
     echo $QLIK_HELM_DEV_PASSWORD | helm registry login --username $QLIK_HELM_DEV_USERNAME --password-stdin https://$QLIK_HELM_DEV_REGISTRY
   fi
 
+  if [ -n "$TALEND_ARTIFACTORY_USER" ]; then
+    echo "helm repo add talend https://artifactory.datapwn.com/artifactory/tlnd-helm-prod --username $TALEND_ARTIFACTORY_USER --password $TALEND_ARTIFACTORY_PASS"
+    helm repo add talend https://artifactory.datapwn.com/artifactory/tlnd-helm-prod --username $TALEND_ARTIFACTORY_USER --password $TALEND_ARTIFACTORY_PASS
+  fi
+
   for repo in "${public_repos[@]}"; do
     IFS=" " read -r -a arr <<< "${repo}"
       helm repo add "${arr[0]}" "${arr[1]}"

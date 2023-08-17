@@ -16,6 +16,13 @@ helm dependency build "$CHART_DIR"
 echo "==> Merging component metadata"
 yq -i '.component |= load("component.yaml")' "$CHART_DIR/values.yaml"
 
+echo "==> Add annotations for metadata"
+echo "org.opencontainers.image.revision: $COMMITSHA" > annotations.yaml
+cat annotations.yaml
+yq -i '.annotations |= load("annotations.yaml")' "$CHART_DIR/Chart.yaml"
+rm annotations.yaml
+cat $CHART_DIR/Chart.yaml
+
 if [ "$IMAGE_TAG_UPDATE" = "false" ]; then
   echo "==> Skip updating image.tag due to IMAGE_TAG_UPDATE=$IMAGE_TAG_UPDATE"
 else
