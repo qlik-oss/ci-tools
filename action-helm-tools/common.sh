@@ -140,7 +140,7 @@ add_helm_repos() {
   fi
 
   if [ -n "$TALEND_ARTIFACTORY_USER" ]; then
-    echo "helm repo add talend https://artifactory.datapwn.com/artifactory/tlnd-helm-dev --username $TALEND_ARTIFACTORY_USER --password $TALEND_ARTIFACTORY_PASS"
+    echo "helm repo add talend https://artifactory.datapwn.com/artifactory/tlnd-helm-dev --username *** --password ***"
     helm repo add talend https://artifactory.datapwn.com/artifactory/tlnd-helm-dev --username $TALEND_ARTIFACTORY_USER --password $TALEND_ARTIFACTORY_PASS
   fi
 
