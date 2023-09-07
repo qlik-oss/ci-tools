@@ -62,6 +62,11 @@ if [[ -f "$CHART_DIR/tests/ci-values.yaml" ]]; then
   options+=(-f "${CHART_DIR}/tests/ci-values.yaml")
 fi
 
+# If values-ci.yaml exits in the same folder as chart use that values file
+if [[ -f "$CHART_DIR/values-ci.yaml" ]]; then
+  options+=(-f "${CHART_DIR}/values-ci.yaml")
+fi
+
 # For CI testing, clustered nats-streaming is not required and this saves ~1 min of runner time
 if [[ "${SINGLE_NATS_STREAMING:=true}" == "true" ]]; then
   options+=(-f "${SCRIPT_DIR}/helmvalues/messaging-non-clustered.yaml")
