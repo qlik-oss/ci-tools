@@ -1,6 +1,8 @@
 #!/bin/bash -l
 set -eo pipefail
 
+echo "NOTE: qlik-oss/ci-tools/action-releaser-dispatch has been deprecated! Use qlik-trial/qlik-releaser/.github/actions/pipeline instead"
+
 GH_OWNER=${GITHUB_REPOSITORY%/*}   # Strip repo
 GH_REPO=${GITHUB_REPOSITORY#*/}   # Strip owner
 VERSION=${VERSION#v}  # Strip v prefix as a precaution
