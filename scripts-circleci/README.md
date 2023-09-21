@@ -1,4 +1,4 @@
-# github-package-helm-dispatch.sh
+# github-package-helm-dispatch.sh --OBSOLETE DOCUMENTATION, TO BE UPDATED--
 
 Place the following snippet in your CircleCI config to call `package-helm` Github Actions workflow in your repository
 
