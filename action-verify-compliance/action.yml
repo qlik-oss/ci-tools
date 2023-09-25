@@ -1,0 +1,37 @@
+name: Verify compliance
+description: "Performs a specific type of verification"
+outputs:
+  verification-status:
+    description: "Verification status"
+    value: ${{ steps.run-verification-command.outputs.verification-status }}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-go@v4
+      with:
+        go-version: "1.18"
+    - id: clone-repo-with-verification-commands
+      run: |
+        echo ${GITHUB_TOKEN} | xargs -I % git clone https://%@github.com/${VERIFICATION_COMMAND_REPO}.git
+        # TODO: Rename VERIFICATION_COMMAND_REPO_BRANCH to VERIFICATION_COMMAND_REPO_REF
+        if [ -n "${VERIFICATION_COMMAND_REPO_BRANCH}" ]; then
+          export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
+          cd ${VERIFICATION_COMMAND_REPO_NAME}
+          if [[ $VERIFICATION_COMMAND_REPO_BRANCH == refs/heads/* ]]; then
+            git checkout ${VERIFICATION_COMMAND_REPO_BRANCH:11}
+          else
+            git checkout ${VERIFICATION_COMMAND_REPO_BRANCH}
+          fi
+        fi
+      shell: bash
+    - id: run-verification-command
+      run: |
+        export VERIFICATION_COMMAND_REPO_NAME=${VERIFICATION_COMMAND_REPO#*/}
+        export VERIFICATION_TYPE_WITH_UNDERSCORES=$(echo ${VERIFICATION_TYPE} | tr '-' '_')
+        cd ${VERIFICATION_COMMAND_REPO_NAME}/cmd/verify_${VERIFICATION_TYPE_WITH_UNDERSCORES}
+        go run main.go ${TARGET_OWNER} ${TARGET_NAME} ${TARGET_REF} "${TARGET_VERSION}" # TARGET_VERSION may be empty
+        export VERIFICATION_STATUS=$(cat ${VERIFICATION_TYPE}-status.txt)
+        echo ${VERIFICATION_TYPE} status: ${VERIFICATION_STATUS}
+        echo "verification-status=${VERIFICATION_STATUS}" >> $GITHUB_OUTPUT
+        if [ "${VERIFICATION_STATUS}" = "failure" ] || [ "${VERIFICATION_STATUS}" = "error" ]; then exit 1; fi
+      shell: bash
