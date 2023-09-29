@@ -3,6 +3,8 @@ trap 'set_commit_status "error"' ERR
 
 set -Eeo pipefail
 
+echo "NOTE: qlik-oss/ci-tools/action-helm-tools has been deprecated! Use qlik-trial/qlik-releaser/.github/actions/helm-tools instead"
+
 export SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
 if [ -z "$VERSION" ]; then
