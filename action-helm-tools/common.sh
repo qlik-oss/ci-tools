@@ -125,6 +125,7 @@ add_helm_repos() {
     "jaegertracing https://jaegertracing.github.io/helm-charts"
     "hashicorp https://helm.releases.hashicorp.com"
     "runatlantis https://runatlantis.github.io/helm-charts"
+    "kyverno https://kyverno.github.io/kyverno/"
   )
   # "kubed https://charts.appscode.com/stable/"
   # charts.appscode.com currently not working, get builds working angain and figure out what breaks because kubed is missing instead
