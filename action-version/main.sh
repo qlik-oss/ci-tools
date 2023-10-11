@@ -1,6 +1,8 @@
 #!/bin/bash -l
 set -o pipefail
 
+echo "NOTE: qlik-oss/ci-tools/action-version has been deprecated! Use qlik-trial/qlik-releaser/.github/actions/version instead"
+
 RELEASE_TAG="0"
 BRANCH_NAME=""
 
