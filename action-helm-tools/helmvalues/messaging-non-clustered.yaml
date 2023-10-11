@@ -1,6 +1,0 @@
-messaging:
-  nats-streaming:
-    replicaCount: 1
-    readinessProbe:
-      initialDelaySeconds: 5
-    clustered: false
